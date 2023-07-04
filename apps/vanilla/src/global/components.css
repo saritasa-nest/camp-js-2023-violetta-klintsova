@@ -16,8 +16,9 @@ a:hover,
 
 .links {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
+  margin-top: 2rem;
 }
 
 .default-layout {

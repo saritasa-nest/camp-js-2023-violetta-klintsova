@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("normalize.css");
+
+/* General styles */
+
+:root {
+  --surface: rgb(255 255 255 / 100%);
+  --surface-overlay: rgb(255 255 255 / 5%);
+  --on-surface: rgb(0 0 0 / 100%);
+  --on-surface-dim: rgb(0 0 0 / 50%);
+  --primary: rgb(241 89 36 / 100%);
+  --on-primary: rgb(255 255 255);
+  --border: rgb(0 0 0 / 50%);
+}
+
+html {
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+}
+
+.wrapper {
+  max-width: 1244px;
+  margin: 0 auto;
+}
+
+/* Common classes */
+.subtitle {
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.body {
+  font-size: 1.25rem;
+  line-height: 2rem;
+  font-weight: 400;
+}
+
+.body-sm {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+
+.logo {
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem 0 4.5rem;
+}
+
+/* Footer */
+
+.footer p {
+  margin-right: 2rem;
+}
+
+.footer a:last-of-type {
+  margin-left: auto;
+}
