@@ -23,6 +23,11 @@ html {
   margin: 0 auto;
 }
 
+/* Header */
+.header {
+  padding: 1.25rem 0;
+}
+
 /* Common classes */
 .subtitle {
   font-size: 1.125rem;
