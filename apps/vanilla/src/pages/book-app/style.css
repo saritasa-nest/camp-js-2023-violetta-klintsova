@@ -15,7 +15,7 @@
 
 html {
   font-size: 16px;
-  font-family: "Inter", sans-serif;
+  font-family: Inter, sans-serif;
 }
 
 .wrapper {
@@ -25,45 +25,45 @@ html {
 
 /* Header */
 .header {
-  padding: 1.25rem 0;
+  padding: 20px 0;
 }
 
 /* Common classes */
 .subtitle {
-  font-size: 1.125rem;
-  line-height: 1.5rem;
+  font-size: 18px;
+  line-height: 24px;
   font-weight: 600;
   text-transform: uppercase;
 }
 
 .body {
-  font-size: 1.25rem;
-  line-height: 2rem;
+  font-size: 20px;
+  line-height: 32px;
   font-weight: 400;
 }
 
 .body-sm {
-  font-size: 1rem;
-  line-height: 1.5rem;
+  font-size: 16px;
+  line-height: 24px;
   font-weight: 500;
 }
 
 .logo {
-  font-size: 1.25rem;
-  line-height: 1.5rem;
+  font-size: 20px;
+  line-height: 24px;
   font-weight: 700;
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  padding: 1.5rem 0 4.5rem;
 }
 
 /* Footer */
 
+.footer {
+  display: flex;
+  align-items: center;
+  padding: 24px 0 72px;
+}
+
 .footer p {
-  margin-right: 2rem;
+  margin-right: 32px;
 }
 
 .footer a:last-of-type {
