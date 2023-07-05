@@ -18,19 +18,24 @@
             <div class="book-group__list">
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/refactoring-ui.png" alt="Refactoring UI">
+                  <img src="img/refactoring-ui.png" alt="Refactoring UI" />
                 </div>
                 <h6 class="body-sm book-title">Refactoring UI</h6>
               </div>
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/master-the-skill-of-debugging-css.png" alt="Master the Skill of Debugging CSS">
+                  <img
+                    src="img/master-the-skill-of-debugging-css.png"
+                    alt="Master the Skill of Debugging CSS"
+                  />
                 </div>
-                <h6 class="body-sm book-title">Master the Skill of Debugging CSS</h6>
+                <h6 class="body-sm book-title">
+                  Master the Skill of Debugging CSS
+                </h6>
               </div>
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/blue-period.png" alt="Blue Period">
+                  <img src="img/blue-period.png" alt="Blue Period" />
                 </div>
                 <h6 class="body-sm book-title">Blue Period</h6>
               </div>
@@ -42,45 +47,90 @@
             <div class="book-group__list">
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/yokohama-kaidashi-kikou.png" alt="Yokohama Kaidashi Kikou">
+                  <img
+                    src="img/yokohama-kaidashi-kikou.png"
+                    alt="Yokohama Kaidashi Kikou"
+                  />
                 </div>
                 <h6 class="body-sm book-title">Yokohama Kaidashi Kikou</h6>
               </div>
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/learning-javascript-design-patterns.png" alt="Learning JavaScript Design Patterns">
+                  <img
+                    src="img/learning-javascript-design-patterns.png"
+                    alt="Learning JavaScript Design Patterns"
+                  />
                 </div>
-                <h6 class="body-sm book-title">Learning JavaScript Design Patterns</h6>
+                <h6 class="body-sm book-title">
+                  Learning JavaScript Design Patterns
+                </h6>
               </div>
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/yotsuba-to.png" alt="Yotsuba to!">
+                  <img src="img/yotsuba-to.png" alt="Yotsuba to!" />
                 </div>
                 <h6 class="body-sm book-title">Yotsuba to!</h6>
               </div>
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/domain-driven-design.png" alt="Domain-Driven Design">
+                  <img
+                    src="img/domain-driven-design.png"
+                    alt="Domain-Driven Design"
+                  />
                 </div>
                 <h6 class="body-sm book-title">Domain-Driven Design</h6>
               </div>
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/implementing-domain-driven-design.png" alt="Implementing Domain-Driven Design">
+                  <img
+                    src="img/implementing-domain-driven-design.png"
+                    alt="Implementing Domain-Driven Design"
+                  />
                 </div>
-                <h6 class="body-sm book-title">Implementing Domain-Driven Design</h6>
+                <h6 class="body-sm book-title">
+                  Implementing Domain-Driven Design
+                </h6>
               </div>
               <div class="book">
                 <div class="book-cover">
-                  <img src="img/7-habits-of-highly-effective-people.png" alt="7 Навыков высокоэффективных людей">
+                  <img
+                    src="img/7-habits-of-highly-effective-people.png"
+                    alt="7 Навыков высокоэффективных людей"
+                  />
                 </div>
-                <h6 class="body-sm book-title">7 Навыков высокоэффективных людей</h6>
+                <h6 class="body-sm book-title">
+                  7 Навыков высокоэффективных людей
+                </h6>
               </div>
             </div>
           </section>
-
         </div>
-        <aside class="filters"></aside>
+        <aside class="filters">
+          <h3 class="subtitle filters__heading">Filters</h3>
+
+          <div class="filters__items">
+            <input
+              type="text"
+              class="search-bar"
+              placeholder="e.g. Refactoring"
+            />
+            <input
+              type="text"
+              class="sort-field"
+              list="search-options"
+              placeholder="Choose sort field"
+            />
+            <datalist id="search-options">
+              <option value="Year"></option>
+              <option value="Author"></option>
+            </datalist>
+
+            <label for="show-comics">
+              <input type="checkbox" class="show-comics" name="" id="show-comics" />
+              Show comics
+            </label>
+          </div>
+        </aside>
       </main>
       <footer class="footer">
         <p class="logo">Books app <span class="body">© 2023</span></p>
