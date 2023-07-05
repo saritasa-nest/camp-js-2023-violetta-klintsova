@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-@import url("normalize.css");
 
 /* General styles */
 
@@ -18,7 +17,14 @@ html {
   font-family: Inter, sans-serif;
 }
 
-.wrapper {
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.container {
   max-width: 1244px;
   margin: 0 auto;
 }
@@ -26,9 +32,48 @@ html {
 /* Header */
 .header {
   padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
 }
 
-/* Common classes */
+/* Main */
+
+.main {
+  margin: 24px 0;
+}
+
+/* Content */
+
+.book-group {
+  margin-bottom: 40px;
+}
+
+.book-group__year {
+  margin-bottom: 24px;
+}
+
+.book-group__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.book {
+  max-width: 168px;
+  min-width: 148px;
+  flex: 1;
+}
+
+.book-title {
+  margin: 8px 0 0;
+}
+
+.book-cover {
+  height: 250px;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+/* Common typography classes */
 
 .subtitle {
   font-size: 18px;
