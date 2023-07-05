@@ -111,12 +111,12 @@
           <div class="filters__items">
             <input
               type="text"
-              class="search-bar"
+              class="search-bar body"
               placeholder="e.g. Refactoring"
             />
             <input
               type="text"
-              class="sort-field"
+              class="sort-field body"
               list="search-options"
               placeholder="Choose sort field"
             />
@@ -125,8 +125,13 @@
               <option value="Author"></option>
             </datalist>
 
-            <label for="show-comics" class="body">
-              <input type="checkbox" class="show-comics" name="" id="show-comics" />
+            <label for="show-comics" class="body custom-checkbox-label">
+              <input
+                type="checkbox"
+                class="custom-checkbox"
+                name="show-comics"
+                id="show-comics"
+              />
               Show comics
             </label>
           </div>
