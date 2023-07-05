@@ -24,6 +24,30 @@ img {
   object-position: 50% 50%;
 }
 
+/* Reset some default styles */
+
+body {
+  margin: 0;
+}
+
+h3 {
+  margin: 0;
+}
+
+input {
+  outline: none;
+}
+
+p {
+  margin: 0;
+}
+
+a:visited {
+  color: inherit;
+}
+
+/* Container to keep the content centered */
+
 .container {
   max-width: 1244px;
   padding: 0 24px;
