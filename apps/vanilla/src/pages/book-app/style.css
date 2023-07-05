@@ -21,6 +21,8 @@ img {
 body {
   font-family: Inter, sans-serif;
   margin: 0;
+  color: var(--on-surface-color);
+  background-color: var(--surface-color);
 }
 
 /* Reset some defaults */
