@@ -34,7 +34,7 @@ h3 {
 
 .container {
   max-width: 1244px;
-  margin: 0 auto;
+  margin: 0 24px;
 }
 
 /* Header */
@@ -60,6 +60,8 @@ h3 {
 .filters {
   order: 1;
   margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .filters__heading {
@@ -160,4 +162,25 @@ h3 {
 
 .footer a:last-of-type {
   margin-left: auto;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 786px) {
+  .main {
+    flex-direction: row;
+  }
+
+  .content {
+    order: 1;
+  }
+
+  .filters {
+    order: 2;
+    border-bottom: none;
+  }
 }
