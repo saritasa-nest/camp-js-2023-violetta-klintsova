@@ -4,13 +4,13 @@
 /* General styles */
 
 :root {
-  --surface: rgb(255 255 255 / 100%);
-  --surface-overlay: rgb(255 255 255 / 5%);
-  --on-surface: rgb(0 0 0 / 100%);
-  --on-surface-dim: rgb(0 0 0 / 50%);
-  --primary: rgb(241 89 36 / 100%);
-  --on-primary: rgb(255 255 255);
-  --border: rgb(0 0 0 / 50%);
+  --surface-color: rgb(255 255 255 / 100%);
+  --surface-overlay-color: rgb(255 255 255 / 5%);
+  --on-surface-color: rgb(0 0 0 / 100%);
+  --on-surface-dim-color: rgb(0 0 0 / 50%);
+  --primary-color: rgb(241 89 36 / 100%);
+  --on-primary-color: rgb(255 255 255);
+  --border-color: rgb(0 0 0 / 15%);
 }
 
 html {
@@ -29,6 +29,7 @@ html {
 }
 
 /* Common classes */
+
 .subtitle {
   font-size: 18px;
   line-height: 24px;
