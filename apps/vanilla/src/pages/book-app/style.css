@@ -24,17 +24,9 @@ img {
   object-position: 50% 50%;
 }
 
-body {
-  margin: 0;
-}
-
-h3 {
-  margin: 0;
-}
-
 .container {
   max-width: 1244px;
-  margin: 0 24px;
+  padding: 0 24px;
 }
 
 /* Header */
@@ -118,6 +110,7 @@ h3 {
 .book-cover {
   height: 250px;
   border-radius: 24px;
+  border: 1px solid var(--border-color);
   overflow: hidden;
 }
 
@@ -153,35 +146,44 @@ h3 {
 .footer {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
   padding: 24px 0 72px;
+  border-top: 1px solid var(--border-color);
 }
 
-.footer .logo {
-  margin-right: 32px;
-}
-
-.page-top-link {
+.page-top {
   margin-left: auto;
   text-decoration: none;
 }
 
-@media (min-width: 1200px) {
-  .container {
-    margin: 0 auto;
-  }
-}
+/* Devices with width > 786px */
 
 @media (min-width: 786px) {
   .main {
     flex-direction: row;
   }
 
+  .container {
+    margin: 0 auto;
+  }
+
   .content {
     order: 1;
+    flex-basis: 900px;
+    flex-grow: 0;
   }
 
   .filters {
     order: 2;
     border-bottom: none;
+    flex-grow: 1;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .footer {
+    gap: 32px;
   }
 }
