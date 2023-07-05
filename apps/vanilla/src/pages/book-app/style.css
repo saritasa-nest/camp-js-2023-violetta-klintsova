@@ -156,12 +156,13 @@ h3 {
   padding: 24px 0 72px;
 }
 
-.footer p {
+.footer .logo {
   margin-right: 32px;
 }
 
-.footer a:last-of-type {
+.page-top-link {
   margin-left: auto;
+  text-decoration: none;
 }
 
 @media (min-width: 1200px) {
