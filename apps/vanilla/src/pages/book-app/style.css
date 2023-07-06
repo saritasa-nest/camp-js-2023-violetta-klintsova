@@ -233,10 +233,13 @@ a:visited {
 
 .book-title {
   margin: 8px 0 0;
+  overflow: hidden;
+
+  /* Stylelint shows an error here, but not sure why and how to fix */
+  /* stylelint-disable-next-line value-no-vendor-prefix */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .book-cover {
