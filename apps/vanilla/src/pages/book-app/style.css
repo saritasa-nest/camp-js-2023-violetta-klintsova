@@ -66,7 +66,6 @@ a:visited {
 
 /* Main */
 .main {
-  margin: 24px 0;
   display: flex;
   flex-direction: column;
 }
@@ -80,7 +79,7 @@ a:visited {
 }
 
 .filters__heading {
-  margin-bottom: 24px;
+  padding: 24px 0;
 }
 
 .filters__items {
@@ -90,14 +89,22 @@ a:visited {
 }
 
 .search-bar {
-  background: url("img/magnifier.svg") no-repeat left;
+  background: url("img/magnifier.svg") no-repeat 16px;
   background-size: 18px;
   padding: 8px 12px 8px 48px;
-  background-position: 16px;
+}
+
+/* Remove default arrow, which appears when datalist is used */
+.sort-field::-webkit-calendar-picker-indicator {
+  display: none;
+  opacity: 0;
 }
 
 .sort-field {
   padding: 8px 12px 8px 16px;
+  position: relative;
+  background: url("img/down-arrow.svg") no-repeat 94%;
+  background-size: 16px;
 }
 
 .search-bar,
@@ -107,6 +114,7 @@ a:visited {
   background-color: var(--surface-overlay-color);
 }
 
+/* Checkbox */
 .custom-checkbox-label {
   display: flex;
   gap: 12px;
@@ -155,7 +163,8 @@ a:visited {
 }
 
 .book-group__year {
-  margin-bottom: 24px;
+  padding: 24px 0;
+  background-color: var(--surface-color);
 }
 
 .book-group__list {

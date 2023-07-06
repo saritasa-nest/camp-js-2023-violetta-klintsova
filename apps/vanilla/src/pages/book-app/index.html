@@ -14,7 +14,7 @@
       <main class="main">
         <div class="content">
           <section class="book-group">
-            <h3 class="subtitle book-group__year">2020 year</h3>
+            <h3 class="subtitle book-group__year sticky">2020 year</h3>
             <div class="book-group__list">
               <div class="book">
                 <div class="book-cover">
@@ -43,7 +43,7 @@
           </section>
 
           <section class="book-group">
-            <h3 class="subtitle book-group__year">1980 year</h3>
+            <h3 class="subtitle book-group__year sticky">1980 year</h3>
             <div class="book-group__list">
               <div class="book">
                 <div class="book-cover">
@@ -109,18 +109,21 @@
           <h3 class="subtitle filters__heading">Filters</h3>
 
           <div class="filters__items">
+
             <input
               type="text"
               class="search-bar body"
               placeholder="e.g. Refactoring"
             />
+
             <input
               type="text"
               class="sort-field body"
               list="search-options"
               placeholder="Choose sort field"
             />
-            <datalist id="search-options">
+            
+            <datalist id="search-options" class="sort-field-datalist">
               <option value="Year"></option>
               <option value="Author"></option>
             </datalist>
