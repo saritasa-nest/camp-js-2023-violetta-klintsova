@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>Vite App</title>
-    <link rel="stylesheet" href="/camp-js-2023-violetta-klintsova/pr-preview/pr-1/assets/index-65374f8c.css">
+    <link rel="stylesheet" href="/camp-js-2023-violetta-klintsova/pr-preview/pr-1/assets/index-c1b79cc5.css">
   </head>
   <body>
     <div class="container">
@@ -116,17 +116,11 @@
               placeholder="e.g. Refactoring"
             />
 
-            <input
-              type="text"
-              class="sort-field body"
-              list="search-options"
-              placeholder="Choose sort field"
-            />
-            
-            <datalist id="search-options">
-              <option value="Year"></option>
-              <option value="Author"></option>
-            </datalist>
+            <select name="sort-field" class="sort-field body" required>
+              <option value="" selected>Choose sort field</option>
+              <option value="year">Year</option>
+              <option value="Author">Author</option>
+            </select>
 
             <label for="show-comics" class="body custom-checkbox-label">
               <input
