@@ -205,7 +205,6 @@ a:visited {
 }
 
 /* Grid approach */
-
 .book-group__items {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
@@ -216,20 +215,6 @@ a:visited {
   max-width: 168px;
   min-width: 148px;
 }
-
-/* Flex approach with small issues on mobile */
-
-/* .book-group__items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.book-card {
-  max-width: 168px;
-  min-width: 148px;
-  flex: 1;
-} */
 
 .book-title {
   margin: 8px 0 0;
