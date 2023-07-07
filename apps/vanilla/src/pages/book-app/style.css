@@ -59,7 +59,7 @@ body {
 }
 
 /* Common typography classes */
-.subtitle {
+.subtitle-text {
   font-size: 18px;
   line-height: 24px;
   font-weight: 600;
@@ -67,19 +67,19 @@ body {
   letter-spacing: 0.9px;
 }
 
-.body {
+.body-text {
   font-size: 20px;
   line-height: 32px;
   font-weight: 400;
 }
 
-.body-sm {
+.body-sm-text {
   font-size: 16px;
   line-height: 24px;
   font-weight: 500;
 }
 
-.logo {
+.logo-text {
   font-size: 20px;
   line-height: 24px;
   font-weight: 700;
@@ -210,6 +210,9 @@ body {
 
 .book-group {
   padding-bottom: 40px;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: inherit;
 }
 
 .book-group__year {
