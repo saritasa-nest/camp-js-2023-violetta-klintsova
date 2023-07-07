@@ -115,17 +115,11 @@
               placeholder="e.g. Refactoring"
             />
 
-            <input
-              type="text"
-              class="sort-field body"
-              list="search-options"
-              placeholder="Choose sort field"
-            />
-            
-            <datalist id="search-options">
-              <option value="Year"></option>
-              <option value="Author"></option>
-            </datalist>
+            <select name="sort-field" class="sort-field body" required>
+              <option value="" selected>Choose sort field</option>
+              <option value="year">Year</option>
+              <option value="Author">Author</option>
+            </select>
 
             <label for="show-comics" class="body custom-checkbox-label">
               <input
