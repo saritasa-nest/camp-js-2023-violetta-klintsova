@@ -27,13 +27,13 @@ select {
   font-family: inherit;
 }
 
+select {
+  appearance: none;
+}
+
 input:focus,
 select:focus {
   outline: 1px solid var(--border-color);
-}
-
-select {
-  appearance: none;
 }
 
 p {
