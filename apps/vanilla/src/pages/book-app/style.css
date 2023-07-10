@@ -24,8 +24,12 @@ h3 {
 
 input,
 select {
-  outline: none;
   font-family: inherit;
+}
+
+input:focus,
+select:focus {
+  outline: 1px solid var(--border-color);
 }
 
 select {
