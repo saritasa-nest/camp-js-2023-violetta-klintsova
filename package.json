@@ -38,6 +38,7 @@
     "@reduxjs/toolkit": "1.9.3",
     "axios": "^1.4.0",
     "core-js": "^3.30.2",
+    "normalize.css": "^8.0.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-redux": "8.0.5",
@@ -88,5 +89,8 @@
     "stylelint-config-standard": "^25.0.0",
     "ts-node": "10.9.1",
     "typescript": "~5.0.2"
-  }
+  },
+  "description": "Monorepo with Angular, React, Vanilla TS boilerplates for JS camp. Created with [Nx](https://nx.dev/). Update project name and description, when you start working on your own project.",
+  "main": "index.js",
+  "author": "Violetta Klintsova"
 }

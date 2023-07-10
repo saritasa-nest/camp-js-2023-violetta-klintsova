@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Book app</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header" id="page-top">
+        <h1 class="logo-text header-logo">📚 Books app</h1>
+      </header>
+      <main class="main">
+        <div class="content">
+          <section class="book-group">
+            <h2 class="subtitle-text book-group-year sticky">2020 year</h2>
+            <div class="book-group-items">
+              <div class="book-card">
+                <div class="book-cover">
+                  <img src="img/refactoring-ui.png" alt="Refactoring UI" />
+                </div>
+                <h3 class="body-sm-text book-title">Refactoring UI</h3>
+              </div>
+              <div class="book-card">
+                <div class="book-cover">
+                  <img
+                    src="img/master-the-skill-of-debugging-css.png"
+                    alt="Master the Skill of Debugging CSS"
+                  />
+                </div>
+                <h3 class="body-sm-text book-title">
+                  Master the Skill of Debugging CSS
+                </h3>
+              </div>
+              <div class="book-card">
+                <div class="book-cover">
+                  <img src="img/blue-period.png" alt="Blue Period" />
+                </div>
+                <h3 class="body-sm-text book-title">Blue Period</h3>
+              </div>
+            </div>
+          </section>
+          <section class="book-group">
+            <h2 class="subtitle-text book-group-year sticky">1980 year</h2>
+            <div class="book-group-items">
+              <div class="book-card">
+                <div class="book-cover">
+                  <img
+                    src="img/yokohama-kaidashi-kikou.png"
+                    alt="Yokohama Kaidashi Kikou"
+                  />
+                </div>
+                <h3 class="body-sm-text book-title">Yokohama Kaidashi Kikou</h3>
+              </div>
+              <div class="book-card">
+                <div class="book-cover">
+                  <img
+                    src="img/learning-javascript-design-patterns.png"
+                    alt="Learning JavaScript Design Patterns"
+                  />
+                </div>
+                <h3 class="body-sm-text book-title">
+                  Learning JavaScript Design Patterns
+                </h3>
+              </div>
+              <div class="book-card">
+                <div class="book-cover">
+                  <img src="img/yotsuba-to.png" alt="Yotsuba to!" />
+                </div>
+                <h3 class="body-sm-text book-title">Yotsuba to!</h3>
+              </div>
+              <div class="book-card">
+                <div class="book-cover">
+                  <img
+                    src="img/domain-driven-design.png"
+                    alt="Domain-Driven Design"
+                  />
+                </div>
+                <h3 class="body-sm-text book-title">Domain-Driven Design</h3>
+              </div>
+              <div class="book-card">
+                <div class="book-cover">
+                  <img
+                    src="img/implementing-domain-driven-design.png"
+                    alt="Implementing Domain-Driven Design"
+                  />
+                </div>
+                <h3 class="body-sm-text book-title">
+                  Implementing Domain-Driven Design
+                </h3>
+              </div>
+              <div class="book-card">
+                <div class="book-cover">
+                  <img
+                    src="img/7-habits-of-highly-effective-people.png"
+                    alt="7 Навыков высокоэффективных людей"
+                  />
+                </div>
+                <h3 class="body-sm-text book-title">
+                  7 Навыков высокоэффективных людей
+                </h3>
+              </div>
+            </div>
+          </section>
+        </div>
+        <aside class="filters">
+          <h2 class="subtitle-text filters-heading">Filters</h2>
+          <div class="filters-items">
+            <input
+              type="text"
+              class="search-bar body-text"
+              placeholder="e.g. Refactoring"
+            />
+            <select name="sort-field" class="sort-field body-text" required>
+              <option value="" selected>Choose sort field</option>
+              <option value="year">Year</option>
+              <option value="Author">Author</option>
+            </select>
+            <label class="body-text custom-checkbox-label">
+              <input
+                type="checkbox"
+                class="custom-checkbox"
+                name="show-comics"
+              />
+              Show comics
+            </label>
+          </div>
+        </aside>
+      </main>
+      <footer class="footer">
+        <div class="logo-text">Books app <span class="body-text">© 2022</span></div>
+        <a href="#" target="_blank">GitHub</a>
+        <a href="#page-top" class="page-top">Go to top ↑</a>
+      </footer>
+    </div>
+  </body>
+</html>
