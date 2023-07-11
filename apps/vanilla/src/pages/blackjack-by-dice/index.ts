@@ -160,4 +160,3 @@ subject.attach(observerTwo);
 const displays = new DisplayResults(document.querySelector('.displays')!);
 const dice = new DiceGenerator();
 const turnGenerator = new TurnGenerator(2);
-
