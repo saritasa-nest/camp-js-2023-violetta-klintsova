@@ -60,6 +60,9 @@ body {
 /* Set color to be the same */
 ::placeholder {
   color: var(--on-surface-dim-color);
+
+  /* for Firefox specifically */
+  opacity: 1;
 }
 
 /* Common typography classes */
