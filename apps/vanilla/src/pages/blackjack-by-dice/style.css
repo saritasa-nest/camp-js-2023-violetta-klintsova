@@ -1,0 +1,21 @@
+body {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.displays {
+  margin-bottom: 50px;
+}
+
+.display-0 {
+  padding: 20px;
+  width: 30%;
+  border: 3px solid pink;
+  margin-bottom: 20px;
+}
+
+.display-1 {
+  padding: 20px;
+  width: 30%;
+  border: 3px solid rgb(192, 204, 255);
+}
