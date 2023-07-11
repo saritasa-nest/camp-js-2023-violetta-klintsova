@@ -86,13 +86,6 @@ class Player {
 	readonly diceNumbers: number[] = [];
   diceSum = 0;
   winStatus: boolean = false;
-
-	// constructor(diceResult: number[], playerIndex: number, winStatus: boolean) {
-	// 	this.diceNumbers = diceResult;
-  //   this.diceSum = this.diceSum;
-	// 	this.playerIndex = playerIndex;
-  //   this.winStatus = winStatus;
-	// }
 }
 
 
@@ -167,7 +160,4 @@ subject.attach(observerTwo);
 const displays = new DisplayResults(document.querySelector('.displays')!);
 const dice = new DiceGenerator();
 const turnGenerator = new TurnGenerator(2);
-
-const player1 = new Player(0);
-const player2 = new Player(1);
 
