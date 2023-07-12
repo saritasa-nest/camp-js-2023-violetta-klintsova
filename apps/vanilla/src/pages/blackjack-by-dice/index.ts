@@ -1,26 +1,26 @@
 /* eslint-disable */
 
-interface Subject {
-	attach(observer: Observer): void;
+interface Subject<T> {
+	attach(observer: T): void;
 
-	detach(observer: Observer): void;
+	detach(observer: T): void;
 
 	notify(): void;
 }
 
-interface Observer {
+interface Observer<T> {
 	// Receive update from subject aka Publisher
-	update(subject: Subject): void;
+	update(subject?: T): void;
 }
 
-class Publisher implements Subject {
-	observers: Observer[] = [];
+class Publisher implements Subject<object> {
+	observers: Observer<object>[] = [];
 
-	attach(observer: Observer): void {
+	attach(observer: Observer<object>): void {
 		this.observers.push(observer);
 	}
 
-	detach(observer: Observer): void {
+	detach(observer: Observer<object>): void {
 		const observerIndex = this.observers.indexOf(observer);
 		this.observers.splice(observerIndex, 1);
 	}
@@ -32,7 +32,7 @@ class Publisher implements Subject {
 	}
 }
 
-// TURN GENERATOR
+// Turn generator
 class TurnGenerator extends Publisher {
 	private playersCount: number;
 	public currentPlayerIndex = 0;
@@ -43,16 +43,18 @@ class TurnGenerator extends Publisher {
 	}
 
 	next() {
-		// First we notify as we start from 0
+		// Notify subscribers first
 		this.notify();
 
-		// Then change player turn
+		// TODO Then increase the turn (for multiple players)
+
+		// Works for 2 players
 		this.currentPlayerIndex === 0 ? (this.currentPlayerIndex = 1) : (this.currentPlayerIndex = 0);
 	}
 }
 
-// DICE GENERATOR
-class DiceGenerator extends Publisher implements Observer {
+// Dice generator
+class DiceGenerator extends Publisher implements Observer<object> {
 	sides = 7;
 
 	constructor(sidesNumber: number) {
@@ -63,13 +65,16 @@ class DiceGenerator extends Publisher implements Observer {
 	getRandomNumber(min: number, max = this.sides): number {
 		min = Math.ceil(min);
 		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+		// The maximum is exclusive and the minimum is inclusive
+		return Math.floor(Math.random() * (max - min) + min);
 	}
 
 	update(subject: TurnGenerator): void {
-		console.log('From Dice Generator');
-		console.log(subject);
 
+		// TODO
+		// Save in the object 
+		// const turnResults = new PlayerTurnResult(subject.currentPlayerIndex, this.getRandomNumber(0, this.sides));
+		
 		// Update side object with results
 		playerResult.playerIndex = subject.currentPlayerIndex;
 		playerResult.diceResult = this.getRandomNumber(0, this.sides);
@@ -78,7 +83,8 @@ class DiceGenerator extends Publisher implements Observer {
 	}
 }
 
-class Player implements Observer {
+// Represent the main game player
+class Player implements Observer<object> {
 	diceNumbers: number[];
 	diceSum: number;
 	winStatus: boolean;
@@ -91,24 +97,25 @@ class Player implements Observer {
 		this.playerIndex = playerIndex;
 	}
 
-	update(subject: Subject): void {
-
+	update(): void {
+		// Based on the condition choose the player to be updated
 		if (this.playerIndex === playerResult.playerIndex) {
 			this.diceNumbers.push(playerResult.diceResult);
 			this.diceSum += playerResult.diceResult;
-
+			
+			// Check is the sum of all dice number is equal or more than 21
 			if (this.diceSum > 21) {
 				this.winStatus = true;
 			}
 
-			console.log(player1);
-			console.log(player2);
-
+			// Call the method to update GUI
 			display.update(this);
 		}
 	}
 }
 
+
+// Store turn results in the object
 class PlayerTurnResult {
 	playerIndex: number;
 	diceResult: number;
@@ -120,7 +127,7 @@ class PlayerTurnResult {
 }
 
 
-// CLASS DOM
+// Display results of the dice roll
 class DisplayResults {
 	element: HTMLElement;
 
@@ -138,6 +145,7 @@ class DisplayResults {
 	}
 }
 
+// Create core publisher which will be the base for Dice and Turn generator
 const publisher = new Publisher();
 
 const turnGenerator = new TurnGenerator(2);
@@ -150,15 +158,16 @@ const playerResult = new PlayerTurnResult(0, 0);
 
 // Let make a couple of players
 const player1 = new Player(0);
-diceGenerator.attach(player1);
-
 const player2 = new Player(1);
+
+// Attach them to their Publisher
+diceGenerator.attach(player1);
 diceGenerator.attach(player2);
 
-// const displayElement = document.querySelector('.displays')!;
-const display = new DisplayResults(document.querySelector('.displays')!);
+// Select all displays, then choose a child display depending on the condition
+const display = new DisplayResults(document.querySelector('.displays') as HTMLElement);
 
-// Roll the dice button
+// Fires each time the button "Roll the dice" is clicked
 const button = document.querySelector('.roll-dice-button');
 button?.addEventListener('click', () => {
 	turnGenerator.next();
