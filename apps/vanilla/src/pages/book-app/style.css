@@ -9,7 +9,6 @@
   --primary-color: rgb(241 89 36 / 100%);
   --on-primary-color: rgb(255 255 255);
   --border-color: rgb(0 0 0 / 15%);
-  --book-border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Normalize/reset some defaults */
@@ -252,7 +251,7 @@ body {
   height: 250px;
   border-radius: 24px;
   overflow: hidden;
-  border: 1px solid var(--book-border-color);
+  border: 1px solid var(--border-color);
 }
 
 .book-cover img {
