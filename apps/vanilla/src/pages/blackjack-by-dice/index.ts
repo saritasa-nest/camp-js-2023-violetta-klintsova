@@ -1,11 +1,5 @@
-// Disable eslint for some time
 /* eslint-disable */
 
-
-// INTERFACES
-/**
- * The Subject interface declares a set of methods for managing subscribers.
- */
 interface Subject {
 	attach(observer: Observer): void;
 
@@ -19,6 +13,113 @@ interface Observer {
 	update(subject: Subject): void;
 }
 
+class Publisher implements Subject {
+	observers: Observer[] = [];
+
+	attach(observer: Observer): void {
+		this.observers.push(observer);
+	}
+
+	detach(observer: Observer): void {
+		const observerIndex = this.observers.indexOf(observer);
+		this.observers.splice(observerIndex, 1);
+	}
+
+	notify(): void {
+		for (const observer of this.observers) {
+			observer.update(this);
+		}
+	}
+}
+
+// TURN GENERATOR
+class TurnGenerator extends Publisher {
+	private playersCount: number;
+	public currentPlayerIndex = 0;
+
+	constructor(playerCount: number) {
+		super();
+		this.playersCount = playerCount;
+	}
+
+	next() {
+		// First we notify as we start from 0
+		this.notify();
+
+		// Then change player turn
+		this.currentPlayerIndex === 0 ? (this.currentPlayerIndex = 1) : (this.currentPlayerIndex = 0);
+	}
+}
+
+// DICE GENERATOR
+class DiceGenerator extends Publisher implements Observer {
+	sides = 7;
+
+	constructor(sidesNumber: number) {
+		super();
+		this.sides = sidesNumber;
+	}
+
+	getRandomNumber(min: number, max = this.sides): number {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+	}
+
+	update(subject: TurnGenerator): void {
+		console.log('From Dice Generator');
+		console.log(subject);
+
+		// Update side object with results
+		playerResult.playerIndex = subject.currentPlayerIndex;
+		playerResult.diceResult = this.getRandomNumber(0, this.sides);
+
+		this.notify();
+	}
+}
+
+class Player implements Observer {
+	diceNumbers: number[];
+	diceSum: number;
+	winStatus: boolean;
+	playerIndex: number;
+
+	constructor(playerIndex: number, diceNumbers: number[] = [], diceSum: number = 0, winStatus: boolean = false) {
+		this.diceNumbers = diceNumbers;
+		this.diceSum = diceSum;
+		this.winStatus = winStatus;
+		this.playerIndex = playerIndex;
+	}
+
+	update(subject: Subject): void {
+
+		if (this.playerIndex === playerResult.playerIndex) {
+			this.diceNumbers.push(playerResult.diceResult);
+			this.diceSum += playerResult.diceResult;
+
+			if (this.diceSum > 21) {
+				this.winStatus = true;
+			}
+
+			console.log(player1);
+			console.log(player2);
+
+			display.update(this);
+		}
+	}
+}
+
+class PlayerTurnResult {
+	playerIndex: number;
+	diceResult: number;
+
+	constructor(playerIndex: number, diceResult: number) {
+		this.playerIndex = playerIndex;
+		this.diceResult = diceResult;
+	}
+}
+
+
 // CLASS DOM
 class DisplayResults {
 	element: HTMLElement;
@@ -27,136 +128,38 @@ class DisplayResults {
 		this.element = el;
 	}
 
-	update(childDisplayIndex: number, val: number) {
-		console.log(childDisplayIndex);
-		const subDisplay = this.element.querySelector(`.display-${childDisplayIndex}`)!;
-		subDisplay.innerHTML += val;
-	}
-}
+	update(subject: Player) {
+		const subDisplay = this.element.querySelector(`.display-${playerResult.playerIndex}`) as HTMLElement;
+		subDisplay.innerHTML += playerResult.diceResult;
 
-
-// CLASS WITH DEFINED UPDATE METHOD
-class ConcreteObserver implements Observer {
-	update(subject: Subject): void {
-		if (subject instanceof ConcreteSubject) {
-			console.log(subject.diceRolls[subject.diceRolls.length - 1]);
+		if (subject.winStatus) {
+			subDisplay.style.backgroundColor = 'pink';
 		}
 	}
 }
 
-// DICE GENERATOR
-class DiceGenerator {
-  sides = 7;
+const publisher = new Publisher();
 
-	getRandom(min: number, max = this.sides): number {
-		min = Math.ceil(min);
-		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
-	}
-}
+const turnGenerator = new TurnGenerator(2);
+
+const diceGenerator = new DiceGenerator(7);
+turnGenerator.attach(diceGenerator);
+
+// Store turn results
+const playerResult = new PlayerTurnResult(0, 0);
+
+// Let make a couple of players
+const player1 = new Player(0);
+diceGenerator.attach(player1);
+
+const player2 = new Player(1);
+diceGenerator.attach(player2);
+
+// const displayElement = document.querySelector('.displays')!;
+const display = new DisplayResults(document.querySelector('.displays')!);
 
 // Roll the dice button
 const button = document.querySelector('.roll-dice-button');
 button?.addEventListener('click', () => {
-  subject.someBusinessLogic()
+	turnGenerator.next();
 });
-
-
-
-//  TURN GENERATOR
-class TurnGenerator {
-  playersCount: number;
-  currentPlayerIndex = 0;
-
-  constructor(playerCount: number) {
-    this.playersCount = playerCount; 
-  }
-
-  next() {
-    if (this.currentPlayerIndex + 1 === this.playersCount) {
-      this.currentPlayerIndex = 0;
-    } else {
-      this.currentPlayerIndex++;
-    }
-  }
-}
-
-// Save Player turn result
-class Player {
-	readonly diceNumbers: number[] = [];
-  diceSum = 0;
-  winStatus: boolean = false;
-}
-
-
-class ConcreteSubject implements Subject {
-	readonly observers: Observer[] = [];
-  diceRolls: number[] = [];
-  rollCount: number = 0;
-  playerTurn: number = 0;
-
-	attach(observer: Observer): void {
-		const isExist = this.observers.includes(observer);
-		if (isExist) {
-			return console.log('Player was already registered');
-		}
-
-		this.observers.push(observer);
-		console.log('Subject: register a new player');
-	}
-
-  detach(observer: Observer):void {
-    const observerIndex =  this.observers.indexOf(observer);
-    if (observerIndex === -1) {
-      return console.log("Subject: Nonexistent observer")
-    }
-
-    this.observers.splice(observerIndex, 1);
-    console.log("Subject: detached an observer")
-  }
-
-  notify(): void {
-    console.log("Subject: notifying....");
-
-    for (const observer of this.observers) {
-      observer.update(this);
-      displays.update(this.playerTurn, this.diceRolls[this.diceRolls.length - 1]);
-    }
-  }
-
-  someBusinessLogic(): void {
-    console.log("Doing some business...");
-
-    // Get random dice number and add it to array
-    this.diceRolls.push(dice.getRandom(0));
-
-    // Increase roll count
-    this.rollCount++;
-
-    // Assign current turn, then increase
-    this.playerTurn = turnGenerator.currentPlayerIndex;
-
-
-    // Increase the turn at the end
-    turnGenerator.next();
-
-    console.log(`Roll count: ${this.rollCount}`);
-    console.log(`Player turn: ${this.playerTurn}`);
-
-    this.notify();
-  }
-}
-
-
-const subject = new ConcreteSubject();
-
-const observerOne = new ConcreteObserver();
-subject.attach(observerOne);
-
-const observerTwo = new ConcreteObserver();
-subject.attach(observerTwo);
-
-// ! so that TS would complain about being null
-const displays = new DisplayResults(document.querySelector('.displays')!);
-const dice = new DiceGenerator();
-const turnGenerator = new TurnGenerator(2);
