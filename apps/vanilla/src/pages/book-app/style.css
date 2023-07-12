@@ -252,9 +252,7 @@ body {
   height: 250px;
   border-radius: 24px;
   overflow: hidden;
-  /* box-shadow: 0 0 5px 50px var(--book-border-color) inset; */
-  /* box-shadow: 2px 2px 5px 1px red inset; */
-  box-shadow: 5px 10px inset;
+  border: 1px solid var(--book-border-color);
 }
 
 .book-cover img {
