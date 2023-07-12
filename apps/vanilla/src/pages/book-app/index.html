@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
     <link rel="stylesheet" href="./style.css" />
     <title>Book app</title>
   </head>
@@ -113,7 +117,7 @@
               placeholder="e.g. Refactoring"
             />
             <select name="sort-field" class="sort-field body-text" required>
-              <option value="" selected>Choose sort field</option>
+              <option value="" disabled selected hidden>Choose sort field</option>
               <option value="year">Year</option>
               <option value="Author">Author</option>
             </select>
@@ -129,7 +133,9 @@
         </aside>
       </main>
       <footer class="footer">
-        <div class="logo-text">Books app <span class="body-text">© 2022</span></div>
+        <div class="logo-text">
+          Books app <span class="body-text">© 2022</span>
+        </div>
         <a href="#" target="_blank">GitHub</a>
         <a href="#page-top" class="page-top">Go to top ↑</a>
       </footer>

@@ -25,6 +25,7 @@ h2 {
 input,
 select {
   font-family: inherit;
+  width: 100%;
 }
 
 select {
@@ -55,11 +56,15 @@ body {
   margin: 0;
   color: var(--on-surface-color);
   background-color: var(--surface-color);
+  padding: 0 24px;
 }
 
 /* Set color to be the same */
 ::placeholder {
   color: var(--on-surface-dim-color);
+
+  /* for Firefox specifically */
+  opacity: 1;
 }
 
 /* Common typography classes */
@@ -92,7 +97,7 @@ body {
 /* Container to keep the content centered */
 .container {
   max-width: 1244px;
-  padding: 0 24px;
+  margin: 0 auto;
 }
 
 /* Sticky */
@@ -113,6 +118,7 @@ body {
 
 /* Main */
 .main {
+  max-width: 1244px;
   display: flex;
   flex-direction: column-reverse;
 }
@@ -219,7 +225,6 @@ body {
   background-color: var(--surface-color);
 }
 
-/* Grid approach */
 .book-group-items {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
@@ -227,8 +232,9 @@ body {
 }
 
 .book-card {
-  max-width: 168px;
+  max-width: 167px;
   min-width: 148px;
+  flex: 1;
 }
 
 .book-title {
@@ -241,10 +247,11 @@ body {
 }
 
 .book-cover {
+  box-sizing: border-box;
   height: 250px;
   border-radius: 24px;
-  border: 1px solid var(--border-color);
   overflow: hidden;
+  border: 1px solid var(--border-color);
 }
 
 .book-cover img {
@@ -268,24 +275,34 @@ body {
   text-decoration: none;
 }
 
+@media (min-width: 360px) {
+  .book-card {
+    max-width: 172px;
+  }
+}
+
 /* Devices with width > 786px */
 @media (min-width: 786px) {
   .main {
+    display: flex;
     flex-direction: row;
     gap: 24px;
   }
 
-  .container {
-    margin: 0 auto;
+  .book-group-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
-  .content {
-    flex: 0 900px;
+  .book-card {
+    max-width: 167px;
+    min-width: 167px;
   }
 
   .filters {
+    min-width: 290px;
     border-bottom: none;
-    flex-grow: 1;
     margin-bottom: 0;
     padding-bottom: 0;
 
