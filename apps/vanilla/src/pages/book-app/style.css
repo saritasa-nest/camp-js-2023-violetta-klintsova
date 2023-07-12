@@ -9,6 +9,7 @@
   --primary-color: rgb(241 89 36 / 100%);
   --on-primary-color: rgb(255 255 255);
   --border-color: rgb(0 0 0 / 15%);
+  --book-border-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Normalize/reset some defaults */
@@ -25,6 +26,7 @@ h2 {
 input,
 select {
   font-family: inherit;
+  width: 100%;
 }
 
 select {
@@ -55,6 +57,7 @@ body {
   margin: 0;
   color: var(--on-surface-color);
   background-color: var(--surface-color);
+  padding: 0 24px;
 }
 
 /* Set color to be the same */
@@ -95,7 +98,7 @@ body {
 /* Container to keep the content centered */
 .container {
   max-width: 1244px;
-  padding: 0 24px;
+  margin: 0 auto;
 }
 
 /* Sticky */
@@ -116,6 +119,7 @@ body {
 
 /* Main */
 .main {
+  max-width: 1244px;
   display: flex;
   flex-direction: column-reverse;
 }
@@ -222,7 +226,6 @@ body {
   background-color: var(--surface-color);
 }
 
-/* Grid approach */
 .book-group-items {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
@@ -230,8 +233,9 @@ body {
 }
 
 .book-card {
-  max-width: 168px;
+  max-width: 167px;
   min-width: 148px;
+  flex: 1;
 }
 
 .book-title {
@@ -244,10 +248,13 @@ body {
 }
 
 .book-cover {
+  box-sizing: border-box;
   height: 250px;
   border-radius: 24px;
-  border: 1px solid var(--border-color);
   overflow: hidden;
+  /* box-shadow: 0 0 5px 50px var(--book-border-color) inset; */
+  /* box-shadow: 2px 2px 5px 1px red inset; */
+  box-shadow: 5px 10px inset;
 }
 
 .book-cover img {
@@ -274,21 +281,20 @@ body {
 /* Devices with width > 786px */
 @media (min-width: 786px) {
   .main {
+    display: flex;
     flex-direction: row;
     gap: 24px;
   }
 
-  .container {
-    margin: 0 auto;
-  }
-
-  .content {
-    flex: 0 900px;
+  .book-group-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
   .filters {
+    min-width: 290px;
     border-bottom: none;
-    flex-grow: 1;
     margin-bottom: 0;
     padding-bottom: 0;
 
