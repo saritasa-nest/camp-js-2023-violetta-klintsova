@@ -8,19 +8,33 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>Blackjack by Dice</h1>
-    <main>
-      <div class="displays">
-        <div class="display-0">
-          <h2>Player 1</h2>
-          Rolls:
+    <div class="container">
+    <h1 class="game-title">Blackjack by Dice</h1>
+    <h3 class="rules">Rules are simple: just roll the dice until one of the player gets 21 points or more :) </h3>
+    
+      <main class="main">
+
+        <div class="displays">
+          <div class="display display-0">
+            <div class="player-avatar">
+              <img src="img/moster-blue.jpg" alt="" />
+            </div>
+            <h3 class="player">Player 1</h3>
+            Rolls:
+           
+          </div>
+
+          <div class="display display-1">
+            <div class="player-avatar">
+              <img src="img/moster-red.jpg" alt="" />
+            </div>
+            <h3 class="player">Player 2</h3>
+            Rolls:
+          </div>
         </div>
-        <div class="display-1">
-          <h2>Player 2</h2>
-          Rolls:
-        </div>
+
+        <button class="roll-dice-button">Roll the Dice</button>
+      </main>
       </div>
-      <button class="roll-dice-button">Roll the Dice</button>
-    </main>
   </body>
 </html>

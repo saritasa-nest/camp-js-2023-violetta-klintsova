@@ -1,21 +1,76 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.rules {
+  max-width: 350px;
+  margin-bottom: 40px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.game-title {
+  text-align: center;
 }
 
 .displays {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
   margin-bottom: 50px;
 }
 
-.display-0 {
+.display {
   padding: 20px;
-  width: 30%;
-  border: 3px solid pink;
-  margin-bottom: 20px;
+  border-radius: 7px;
+}
+
+.display-0 {
+  border: 3px solid #c0ccff;
 }
 
 .display-1 {
-  padding: 20px;
-  width: 30%;
-  border: 3px solid rgb(192, 204, 255);
+  border: 3px solid #c0ccff;
+}
+
+.player {
+  text-align: center;
+}
+
+.player-avatar {
+  max-width: 150px;
+}
+
+.roll-dice-button {
+  padding: 1em 1.7em;
+  background-color: #e6dbff;
+  border: none;
+  border-radius: 5px;
+  font-size: 17px;
+}
+
+.roll-dice-button:hover {
+  background-color: #dccdff;
 }
