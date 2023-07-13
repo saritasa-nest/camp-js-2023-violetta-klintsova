@@ -1,9 +1,9 @@
-/* eslint-disable */
 
 /**
  * Interface for implementation of any Observer.
  */
 interface Subscriber<T> {
+
 	/**
 	 *
 	 * @param context
@@ -16,6 +16,7 @@ interface Subscriber<T> {
  * Interface for implementation of any Subject.
  */
 interface IPublisher<T> {
+
 	/**
 	 *
 	 * @param subscriber
@@ -70,7 +71,8 @@ class Publisher<T> implements IPublisher<T> {
 	}
 
 	/**
-	 * Notify all current subscribers on change.
+	 *
+	 * @param context - Some value which will be passed to subscriber's update method.
 	 */
 	public notify(context: T): void {
 		for (const subscriber of this.subscribers) {
@@ -79,9 +81,7 @@ class Publisher<T> implements IPublisher<T> {
 	}
 }
 
-/**
- * Generate which player will roll the dice.
- */
+/** Generate which player will roll the dice. */
 class TurnGenerator extends Publisher<number> {
 	private playersCount: number;
 
@@ -93,7 +93,7 @@ class TurnGenerator extends Publisher<number> {
 	 * @param playerCount
 	 * Specify how many players will be in the game.
 	 */
-	constructor(playerCount: number) {
+	public constructor(playerCount: number) {
 		super();
 		this.playersCount = playerCount;
 	}
@@ -110,22 +110,30 @@ class TurnGenerator extends Publisher<number> {
 	}
 }
 
-// Dice generator
+/** Generate random dice number. */
 class DiceGenerator extends Publisher<TurnResults> implements Subscriber<number> {
 	private maxSides: number;
 
-	constructor(maxSides: number) {
+	public constructor(maxSides: number) {
 		super();
 		this.maxSides = maxSides;
 	}
 
-	getRandomNumber(max: number): number {
-		max = Math.floor(max);
+	/**
+	 *
+	 * @param max - Number representing maximum dice sides.
+	 */
+	private getRandomNumber(max: number): number {
+
 		// The maximum is exclusive and the minimum is inclusive
-		return Math.floor(Math.random() * max);;
+		return Math.floor(Math.random() * max);
 	}
 
-	update(context: number): void {
+	/**
+	 *
+	 * @param context - Index of the player whose turn it is now.
+	 */
+	public update(context: number): void {
 
 		// Update side object with results
 		const turnResults = new TurnResults(context, this.getRandomNumber(this.maxSides));
@@ -134,18 +142,29 @@ class DiceGenerator extends Publisher<TurnResults> implements Subscriber<number>
 	}
 }
 
-// Represent the main game player
+/** Represents the main game player. */
 class Player extends Publisher<Player> implements Subscriber<TurnResults> {
+	/** Collect all dice number of the player. */
 	public diceResults: number[] = [];
+
+	/** Accumulate sum of dice numbers. */
 	public diceSum = 0;
+
+	/** Player game status. */
 	public winStatus = false;
+
+	/** Player index in the game. */
 	public playerIndex: number;
 
-	constructor(playerIndex: number) {
+	public constructor(playerIndex: number) {
 		super();
 		this.playerIndex = playerIndex;
 	}
 
+	/**
+	 * Updates current player values and checks whether he has won.
+	 * @param context - Object with current player index and dice number.
+	 */
 	public update(context: TurnResults): void {
 		// Based on the condition choose the player to be updated
 		if (this.playerIndex === context.playerIndex) {
@@ -158,40 +177,53 @@ class Player extends Publisher<Player> implements Subscriber<TurnResults> {
 			}
 
 			// Notify displays to display recent changes
-			this.notify(this)
+			this.notify(this);
 		}
 	}
 }
 
+/** Store all dice numbers. */
 class Accumulator extends Publisher<number[]> implements Subscriber<TurnResults> {
+	/** Array to store all dice numbers. */
 	public allDiceNumbers: number[] = [];
 
+	/**
+	 * Updates the array with all numbers.
+	 * @param context - Object with current player index and dice number.
+	 */
 	public update(context: TurnResults): void {
-		this.allDiceNumbers.push(context.diceResult)
-		this.notify(this.allDiceNumbers)
+		this.allDiceNumbers.push(context.diceResult);
+		this.notify(this.allDiceNumbers);
 	}
 }
 
-// Store turn results in the object
+/** Stores turn results. */
 class TurnResults {
+	/** Player index. */
 	public playerIndex: number;
+
+	/** Player dice result. */
 	public diceResult: number;
 
-	constructor(playerIndex: number, diceResult: number) {
+	public constructor(playerIndex: number, diceResult: number) {
 		this.playerIndex = playerIndex;
 		this.diceResult = diceResult;
 	}
 }
 
-// Display results of the dice roll
+/** Display results of the player's dice roll to GUI. */
 class PlayerResultsDisplay implements Subscriber<Player> {
 	private element: HTMLElement;
 
-	constructor(el: HTMLElement) {
+	public constructor(el: HTMLElement) {
 		this.element = el;
 	}
 
-	public update(context: Player) {
+	/**
+	 * Display results to player's display.
+	 * @param context - Object with current player index and dice number.
+	 */
+	public update(context: Player): void {
 		const display = this.element;
 
 		// Display the last element of array with player dice numbers
@@ -204,15 +236,21 @@ class PlayerResultsDisplay implements Subscriber<Player> {
 	}
 }
 
+/** Display results of the all players' dice rolls to GUI.  */
 class ResultsCollectorDisplay implements Subscriber<number[]> {
 	private element: HTMLElement;
 
-	constructor(el: HTMLElement) {
+	public constructor(el: HTMLElement) {
 		this.element = el;
 	}
 
-	public update(context: number[]) {
+	/**
+	 * Display the last dice number from the accumulated array.
+	 * @param context - Array with all dice numbers.
+	 */
+	public update(context: number[]): void {
 		const display = this.element;
+
 		// Display the last element of array with player dice numbers
 		display.innerHTML += `${context.at(-1)} `;
 	}
@@ -241,7 +279,6 @@ player1.attach(display1);
 
 const display2 = new PlayerResultsDisplay(document.querySelector('.display-1') as HTMLElement);
 player2.attach(display2);
-
 
 // Create accumulator which will receive all numbers
 const numbersAccumulator = new Accumulator();
