@@ -163,6 +163,15 @@ class Player extends Publisher<Player> implements Subscriber<TurnResults> {
 	}
 }
 
+class Accumulator extends Publisher<number[]> implements Subscriber<TurnResults> {
+	public allDiceNumbers: number[] = [];
+
+	public update(context: TurnResults): void {
+		this.allDiceNumbers.push(context.diceResult)
+		this.notify(this.allDiceNumbers)
+	}
+}
+
 // Store turn results in the object
 class TurnResults {
 	public playerIndex: number;
@@ -195,17 +204,17 @@ class PlayerResultsDisplay implements Subscriber<Player> {
 	}
 }
 
-class ResultsCollectorDisplay implements Subscriber<TurnResults> {
+class ResultsCollectorDisplay implements Subscriber<number[]> {
 	private element: HTMLElement;
 
 	constructor(el: HTMLElement) {
 		this.element = el;
 	}
 
-	public update(context: TurnResults) {
+	public update(context: number[]) {
 		const display = this.element;
 		// Display the last element of array with player dice numbers
-		display.innerHTML += `${context.diceResult} `;
+		display.innerHTML += `${context.at(-1)} `;
 	}
 }
 
@@ -233,8 +242,14 @@ player1.attach(display1);
 const display2 = new PlayerResultsDisplay(document.querySelector('.display-1') as HTMLElement);
 player2.attach(display2);
 
+
+// Create accumulator which will receive all numbers
+const numbersAccumulator = new Accumulator();
+diceGenerator.attach(numbersAccumulator);
+
+// Display numbers from accumulator
 const collectorDisplay = new ResultsCollectorDisplay(document.querySelector('.collector-display') as HTMLElement);
-diceGenerator.attach(collectorDisplay);
+numbersAccumulator.attach(collectorDisplay);
 
 // Fires each time the button "Roll the dice" is clicked
 const button = document.querySelector('.roll-dice-button');
