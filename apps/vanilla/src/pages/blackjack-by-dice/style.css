@@ -55,6 +55,10 @@ img {
   border: 3px solid #c0ccff;
 }
 
+.collector-display {
+  margin-top: 20px;
+}
+
 .player {
   text-align: center;
 }
