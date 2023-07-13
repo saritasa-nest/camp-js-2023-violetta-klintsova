@@ -14,18 +14,18 @@ interface Observer<T> {
 }
 
 class Publisher implements Subject<object> {
-	observers: Observer<object>[] = [];
+	private observers: Observer<object>[] = [];
 
-	attach(observer: Observer<object>): void {
+	public attach(observer: Observer<object>): void {
 		this.observers.push(observer);
 	}
 
-	detach(observer: Observer<object>): void {
+	public detach(observer: Observer<object>): void {
 		const observerIndex = this.observers.indexOf(observer);
 		this.observers.splice(observerIndex, 1);
 	}
 
-	notify(): void {
+	public notify(): void {
 		for (const observer of this.observers) {
 			observer.update(this);
 		}
@@ -42,42 +42,42 @@ class TurnGenerator extends Publisher {
 		this.playersCount = playerCount;
 	}
 
-	next() {
+	public next() {
 		// Notify subscribers first
 		this.notify();
 
-		// TODO Then increase the turn (for multiple players)
-
-		// Works for 2 players
-		this.currentPlayerIndex === 0 ? (this.currentPlayerIndex = 1) : (this.currentPlayerIndex = 0);
+		// Increase the turn
+		this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playersCount;
 	}
 }
 
 // Dice generator
 class DiceGenerator extends Publisher implements Observer<object> {
-	sides = 7;
+	private minSides: number;
+	private maxSides : number;
 
-	constructor(sidesNumber: number) {
+	constructor(minSides: number, maxSides: number) {
 		super();
-		this.sides = sidesNumber;
+		this.maxSides = minSides;
+		this.minSides = maxSides;
 	}
 
-	getRandomNumber(min: number, max = this.sides): number {
+	getRandomNumber(min: number, max: number): number {
 		min = Math.ceil(min);
 		max = Math.floor(max);
 		// The maximum is exclusive and the minimum is inclusive
 		return Math.floor(Math.random() * (max - min) + min);
 	}
 
-	update(subject: TurnGenerator): void {
 
+	update(subject: TurnGenerator): void {
 		// TODO
-		// Save in the object 
-		// const turnResults = new PlayerTurnResult(subject.currentPlayerIndex, this.getRandomNumber(0, this.sides));
-		
+		// Save in the object
+		// const turnResults = new TurnResults(subject.currentPlayerIndex, this.getRandomNumber(0, this.sides));
+
 		// Update side object with results
-		playerResult.playerIndex = subject.currentPlayerIndex;
-		playerResult.diceResult = this.getRandomNumber(0, this.sides);
+		turnResults.playerIndex = subject.currentPlayerIndex;
+		turnResults.diceResult = this.getRandomNumber(this.minSides, this.maxSides);
 
 		this.notify();
 	}
@@ -85,23 +85,23 @@ class DiceGenerator extends Publisher implements Observer<object> {
 
 // Represent the main game player
 class Player implements Observer<object> {
-	diceNumbers: number[];
-	diceSum: number;
-	winStatus: boolean;
-	playerIndex: number;
+	private diceResults: number[];
+	public diceSum: number;
+	public winStatus: boolean;
+	public playerIndex: number;
 
-	constructor(playerIndex: number, diceNumbers: number[] = [], diceSum: number = 0, winStatus: boolean = false) {
-		this.diceNumbers = diceNumbers;
+	constructor(playerIndex: number, diceResults: number[] = [], diceSum: number = 0, winStatus: boolean = false) {
+		this.diceResults = diceResults;
 		this.diceSum = diceSum;
 		this.winStatus = winStatus;
 		this.playerIndex = playerIndex;
 	}
 
-	update(): void {
+	public update(): void {
 		// Based on the condition choose the player to be updated
-		if (this.playerIndex === playerResult.playerIndex) {
-			this.diceNumbers.push(playerResult.diceResult);
-			this.diceSum += playerResult.diceResult;
+		if (this.playerIndex === turnResults.playerIndex) {
+			this.diceResults.push(turnResults.diceResult);
+			this.diceSum += turnResults.diceResult;
 			
 			// Check is the sum of all dice number is equal or more than 21
 			if (this.diceSum > 21) {
@@ -116,9 +116,9 @@ class Player implements Observer<object> {
 
 
 // Store turn results in the object
-class PlayerTurnResult {
-	playerIndex: number;
-	diceResult: number;
+class TurnResults {
+	public playerIndex: number;
+	public diceResult: number;
 
 	constructor(playerIndex: number, diceResult: number) {
 		this.playerIndex = playerIndex;
@@ -129,15 +129,15 @@ class PlayerTurnResult {
 
 // Display results of the dice roll
 class DisplayResults {
-	element: HTMLElement;
+	private element: HTMLElement;
 
 	constructor(el: HTMLElement) {
 		this.element = el;
 	}
 
-	update(subject: Player) {
-		const subDisplay = this.element.querySelector(`.display-${playerResult.playerIndex}`) as HTMLElement;
-		subDisplay.innerHTML += playerResult.diceResult;
+	public update(subject: Player) {
+		const subDisplay = this.element.querySelector(`.display-${turnResults.playerIndex}`) as HTMLElement;
+		subDisplay.innerHTML += `${turnResults.diceResult} `;
 
 		if (subject.winStatus) {
 			subDisplay.style.backgroundColor = 'pink';
@@ -150,11 +150,11 @@ const publisher = new Publisher();
 
 const turnGenerator = new TurnGenerator(2);
 
-const diceGenerator = new DiceGenerator(7);
+const diceGenerator = new DiceGenerator(1, 7);
 turnGenerator.attach(diceGenerator);
 
 // Store turn results
-const playerResult = new PlayerTurnResult(0, 0);
+const turnResults = new TurnResults(0, 0);
 
 // Let make a couple of players
 const player1 = new Player(0);
