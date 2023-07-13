@@ -1,115 +1,167 @@
 /* eslint-disable */
 
-interface Subject<T> {
-	attach(observer: T): void;
-
-	detach(observer: T): void;
-
-	notify(): void;
+/**
+ * Interface for implementation of any Observer.
+ */
+interface Subscriber<T> {
+	/**
+	 *
+	 * @param context
+	 * Receive update from subject.
+	 */
+	update(context?: T): void;
 }
 
-interface Observer<T> {
-	// Receive update from subject aka Publisher
-	update(subject?: T): void;
+/**
+ * Interface for implementation of any Subject.
+ */
+interface IPublisher<T> {
+	/**
+	 *
+	 * @param subscriber
+	 * Object which will be added to the list of subscribers
+	 * receiving notifications.
+	 */
+	attach(subscriber: Subscriber<T>): void;
+
+	/**
+	 *
+	 * @param subscriber
+	 * Object which will be removed from the list of subscribers.
+	 */
+	detach(subscriber: Subscriber<T>): void;
+
+	/**
+	 * Method to notify subscribers on change.
+	 */
+	notify(context: T): void;
 }
 
-class Publisher implements Subject<object> {
-	private observers: Observer<object>[] = [];
+/**
+ * Base class defining implementation of methods.
+ */
+class Publisher<T> implements IPublisher<T> {
+	private subscribers: Subscriber<T>[] = [];
 
-	public attach(observer: Observer<object>): void {
-		this.observers.push(observer);
+	/**
+	 *
+	 * @param subscriber
+	 * Attach new subscriber to the notification list.
+	 */
+	public attach(subscriber: Subscriber<T>): void {
+		const isExist = this.subscribers.includes(subscriber);
+		if (isExist) {
+			return;
+		}
+		this.subscribers.push(subscriber);
 	}
 
-	public detach(observer: Observer<object>): void {
-		const observerIndex = this.observers.indexOf(observer);
-		this.observers.splice(observerIndex, 1);
+	/**
+	 *
+	 * @param subscriber
+	 * Detach the subscriber from the notification list.
+	 */
+	public detach(subscriber: Subscriber<T>): void {
+		const subscriberIndex = this.subscribers.indexOf(subscriber);
+		if (subscriberIndex === -1) {
+			return;
+		}
+		this.subscribers.splice(subscriberIndex, 1);
 	}
 
-	public notify(): void {
-		for (const observer of this.observers) {
-			observer.update(this);
+	/**
+	 * Notify all current subscribers on change.
+	 */
+	public notify(context: T): void {
+		for (const subscriber of this.subscribers) {
+			subscriber.update(context);
 		}
 	}
 }
 
-// Turn generator
-class TurnGenerator extends Publisher {
+/**
+ * Generate which player will roll the dice.
+ */
+class TurnGenerator extends Publisher<number> {
 	private playersCount: number;
+
+	/** Save the index of the current player. Start from 0. */
 	public currentPlayerIndex = 0;
 
+	/**
+	 *
+	 * @param playerCount
+	 * Specify how many players will be in the game.
+	 */
 	constructor(playerCount: number) {
 		super();
 		this.playersCount = playerCount;
 	}
 
-	public next() {
+	/**
+	 * Increase the turn after notification.
+	 */
+	public next(): void {
 		// Notify subscribers first
-		this.notify();
+		this.notify(this.currentPlayerIndex);
 
-		// Increase the turn
+		// The increase the turn
 		this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playersCount;
 	}
 }
 
 // Dice generator
-class DiceGenerator extends Publisher implements Observer<object> {
-	private minSides: number;
-	private maxSides : number;
+class DiceGenerator extends Publisher<TurnResults> implements Subscriber<number> {
+	private maxSides: number;
 
-	constructor(minSides: number, maxSides: number) {
+	constructor(maxSides: number) {
 		super();
-		this.maxSides = minSides;
-		this.minSides = maxSides;
+		this.maxSides = maxSides;
 	}
 
-	getRandomNumber(min: number, max: number): number {
-		min = Math.ceil(min);
+	getRandomNumber(max: number): number {
 		max = Math.floor(max);
 		// The maximum is exclusive and the minimum is inclusive
-		return Math.floor(Math.random() * (max - min) + min);
+		return Math.floor(Math.random() * max);;
 	}
 
+	update(context: number): void {
 
-	update(subject: TurnGenerator): void {
 		// Update side object with results
-		turnResults.playerIndex = subject.currentPlayerIndex;
-		turnResults.diceResult = this.getRandomNumber(this.minSides, this.maxSides);
+		const turnResults = new TurnResults(context, this.getRandomNumber(this.maxSides));
 
-		this.notify();
+		this.notify(turnResults);
 	}
 }
 
 // Represent the main game player
-class Player implements Observer<object> {
-	private diceResults: number[];
-	public diceSum: number;
-	public winStatus: boolean;
+class Player extends Publisher<Player> implements Subscriber<TurnResults> {
+	public diceResults: number[] = [];
+	public diceSum = 0;
+	public winStatus = false;
 	public playerIndex: number;
 
-	constructor(playerIndex: number, diceResults: number[] = [], diceSum: number = 0, winStatus: boolean = false) {
-		this.diceResults = diceResults;
-		this.diceSum = diceSum;
-		this.winStatus = winStatus;
+	constructor(playerIndex: number) {
+		super();
 		this.playerIndex = playerIndex;
 	}
 
-	public update(): void {
+	public update(context: TurnResults): void {
 		// Based on the condition choose the player to be updated
-		if (this.playerIndex === turnResults.playerIndex) {
-			this.diceResults.push(turnResults.diceResult);
-			this.diceSum += turnResults.diceResult;
-			
+		if (this.playerIndex === context.playerIndex) {
+			this.diceResults.push(context.diceResult);
+			this.diceSum += context.diceResult;
+
 			// Check is the sum of all dice number is equal or more than 21
 			if (this.diceSum > 21) {
 				this.winStatus = true;
 			}
 
-			// Call the method to update GUI
-			display.update(this);
+			// Notify displays to display recent changes
+			this.notify(this)
 		}
 	}
 }
-
 
 // Store turn results in the object
 class TurnResults {
@@ -122,46 +174,67 @@ class TurnResults {
 	}
 }
 
-
 // Display results of the dice roll
-class DisplayResults {
+class PlayerResultsDisplay implements Subscriber<Player> {
 	private element: HTMLElement;
 
 	constructor(el: HTMLElement) {
 		this.element = el;
 	}
 
-	public update(subject: Player) {
-		const subDisplay = this.element.querySelector(`.display-${turnResults.playerIndex}`) as HTMLElement;
-		subDisplay.innerHTML += `${turnResults.diceResult} `;
+	public update(context: Player) {
+		const display = this.element;
 
-		if (subject.winStatus) {
-			subDisplay.style.backgroundColor = 'pink';
+		// Display the last element of array with player dice numbers
+		display.innerHTML += `${context.diceResults.at(-1)} `;
+
+		// Change the background color if player has won
+		if (context.winStatus) {
+			display.style.backgroundColor = 'pink';
 		}
 	}
 }
 
-// Create core publisher which will be the base for Dice and Turn generator
-const publisher = new Publisher();
+class ResultsCollectorDisplay implements Subscriber<TurnResults> {
+	private element: HTMLElement;
 
+	constructor(el: HTMLElement) {
+		this.element = el;
+	}
+
+	public update(context: TurnResults) {
+		const display = this.element;
+		// Display the last element of array with player dice numbers
+		display.innerHTML += `${context.diceResult} `;
+	}
+}
+
+// Create generator for turn
 const turnGenerator = new TurnGenerator(2);
 
-const diceGenerator = new DiceGenerator(1, 7);
-turnGenerator.attach(diceGenerator);
+// Create generator for random turn numbers
+const diceGenerator = new DiceGenerator(7);
 
-// Store turn results
-const turnResults = new TurnResults(0, 0);
+// Attach it to its publisher
+turnGenerator.attach(diceGenerator);
 
 // Let make a couple of players
 const player1 = new Player(0);
 const player2 = new Player(1);
 
-// Attach them to their Publisher
+// Attach them to their publisher
 diceGenerator.attach(player1);
 diceGenerator.attach(player2);
 
-// Select all displays, then choose a child display depending on the condition
-const display = new DisplayResults(document.querySelector('.displays') as HTMLElement);
+// Select a display for each player
+const display1 = new PlayerResultsDisplay(document.querySelector('.display-0') as HTMLElement);
+player1.attach(display1);
+
+const display2 = new PlayerResultsDisplay(document.querySelector('.display-1') as HTMLElement);
+player2.attach(display2);
+
+const collectorDisplay = new ResultsCollectorDisplay(document.querySelector('.collector-display') as HTMLElement);
+diceGenerator.attach(collectorDisplay);
 
 // Fires each time the button "Roll the dice" is clicked
 const button = document.querySelector('.roll-dice-button');
