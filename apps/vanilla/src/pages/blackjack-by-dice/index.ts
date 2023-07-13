@@ -71,10 +71,6 @@ class DiceGenerator extends Publisher implements Observer<object> {
 
 
 	update(subject: TurnGenerator): void {
-		// TODO
-		// Save in the object
-		// const turnResults = new TurnResults(subject.currentPlayerIndex, this.getRandomNumber(0, this.sides));
-
 		// Update side object with results
 		turnResults.playerIndex = subject.currentPlayerIndex;
 		turnResults.diceResult = this.getRandomNumber(this.minSides, this.maxSides);
