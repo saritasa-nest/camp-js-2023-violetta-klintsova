@@ -4,7 +4,7 @@ import { Publisher } from './Publisher';
 export class TurnGenerator extends Publisher<number> {
 	private playersCount: number;
 
-	/** Save the index of the current player. Start from 0. */
+	/** Save the index of the current player (starts from 0). */
 	public currentPlayerIndex = 0;
 
 	/**
@@ -18,13 +18,13 @@ export class TurnGenerator extends Publisher<number> {
 	}
 
 	/**
-	 * Increase the turn after notification.
+	 * Increase the turn after notification was sent.
 	 */
 	public next(): void {
 		// Notify subscribers first
 		this.notify(this.currentPlayerIndex);
 
-		// The increase the turn
+		// Then increase the turn
 		this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playersCount;
 	}
 }

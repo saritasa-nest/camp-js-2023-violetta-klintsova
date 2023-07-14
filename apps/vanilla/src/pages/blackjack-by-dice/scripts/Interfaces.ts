@@ -1,5 +1,5 @@
 /**
- * Interface for implementation of any Subject.
+ * Interface for implementation of any publisher.
  */
 export interface IPublisher<T> {
 
@@ -19,20 +19,20 @@ export interface IPublisher<T> {
 	detach(subscriber: Subscriber<T>): void;
 
 	/**
-	 * Method to notify subscribers on change.
+	 * Notify subscribers on change.
 	 */
 	notify(context: T): void;
 }
 
 /**
- * Interface for implementation of any Observer.
+ * Interface for implementation of any subscriber.
  */
 export interface Subscriber<T> {
 
 	/**
 	 *
 	 * @param context
-	 * Receive update from subject.
+	 * Receive update from publisher.
 	 */
 	update(context?: T): void;
 }

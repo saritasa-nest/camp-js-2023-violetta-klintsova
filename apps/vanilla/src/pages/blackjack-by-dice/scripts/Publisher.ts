@@ -1,7 +1,7 @@
 import { Subscriber, IPublisher } from './Interfaces';
 
 /**
- * Base class defining implementation of methods.
+ * Base class defining implementation of publisher methods.
  */
 export class Publisher<T> implements IPublisher<T> {
 	private subscribers: Subscriber<T>[] = [];
@@ -34,7 +34,7 @@ export class Publisher<T> implements IPublisher<T> {
 
 	/**
 	 *
-	 * @param context - Some value which will be passed to subscriber's update method.
+	 * @param context - Value/Object which will be passed to subscriber's update method.
 	 */
 	public notify(context: T): void {
 		for (const subscriber of this.subscribers) {

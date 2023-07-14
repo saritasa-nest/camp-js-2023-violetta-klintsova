@@ -10,7 +10,7 @@ export class PlayerResultsDisplay implements Subscriber<Player> {
 	}
 
 	/**
-	 * Display results to player's display.
+	 * Display results.
 	 * @param context - Object with current player index and dice number.
 	 */
 	public update(context: Player): void {

@@ -14,7 +14,7 @@ const diceGenerator = new DiceGenerator(7);
 // Attach it to its publisher
 turnGenerator.attach(diceGenerator);
 
-// Let make a couple of players
+// Make a couple of players
 const player1 = new Player(0);
 const player2 = new Player(1);
 
@@ -22,7 +22,7 @@ const player2 = new Player(1);
 diceGenerator.attach(player1);
 diceGenerator.attach(player2);
 
-// Select a display for each player
+// Select a display for each player and attach it
 const display1 = new PlayerResultsDisplay(document.querySelector('.display-0') as HTMLElement);
 player1.attach(display1);
 

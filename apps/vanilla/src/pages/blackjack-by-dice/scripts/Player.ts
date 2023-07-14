@@ -26,17 +26,18 @@ export class Player extends Publisher<Player> implements Subscriber<TurnResults>
 	 * @param context - Object with current player index and dice number.
 	 */
 	public update(context: TurnResults): void {
-		// Based on the condition choose the player to be updated
+		// Based on the condition choose the player to be updated.
 		if (this.playerIndex === context.playerIndex) {
 			this.diceResults.push(context.diceResult);
 			this.diceSum += context.diceResult;
 
 			// Check is the sum of all dice number is equal or more than 21
+			// Change winStatus if true
 			if (this.diceSum > 21) {
 				this.winStatus = true;
 			}
 
-			// Notify displays to display recent changes
+			// Notify to display recent changes
 			this.notify(this);
 		}
 	}
