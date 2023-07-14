@@ -1,7 +1,7 @@
 import { Subscriber } from './Interfaces';
 
 /** Display results of the all players' dice rolls to GUI.  */
-export class AccumulatorResultsDisplay implements Subscriber<number[]> {
+export class DiceStorageDisplay implements Subscriber<number[]> {
 	private element: HTMLElement;
 
 	public constructor(el: HTMLElement) {

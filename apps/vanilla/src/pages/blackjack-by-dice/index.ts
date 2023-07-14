@@ -2,8 +2,8 @@ import { TurnGenerator } from './scripts/TurnGenerator';
 import { DiceGenerator } from './scripts/DiceGenerator';
 import { Player } from './scripts/Player';
 import { PlayerResultsDisplay } from './scripts/PlayerResultsDisplay';
-import { Accumulator } from './scripts/Accumulator';
-import { AccumulatorResultsDisplay } from './scripts/AccumulatorResultsDisplay';
+import { DiceStorage } from './scripts/DiceStorage';
+import { DiceStorageDisplay } from './scripts/DiceStorageDisplay';
 
 // Create generator for turn
 const turnGenerator = new TurnGenerator(2);
@@ -30,11 +30,11 @@ const display2 = new PlayerResultsDisplay(document.querySelector('.display-1') a
 player2.attach(display2);
 
 // Create accumulator which will receive all numbers
-const numbersAccumulator = new Accumulator();
+const numbersAccumulator = new DiceStorage();
 diceGenerator.attach(numbersAccumulator);
 
 // Display numbers from accumulator
-const accumulatorDisplay = new AccumulatorResultsDisplay(document.querySelector('.accumulator-display') as HTMLElement);
+const accumulatorDisplay = new DiceStorageDisplay(document.querySelector('.accumulator-display') as HTMLElement);
 numbersAccumulator.attach(accumulatorDisplay);
 
 // Fires each time the button "Roll the dice" is clicked

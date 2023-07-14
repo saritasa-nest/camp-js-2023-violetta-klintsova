@@ -3,7 +3,7 @@ import { Publisher } from './Publisher';
 import { TurnResults } from './TurnResults';
 
 /** Store all dice numbers. */
-export class Accumulator extends Publisher<number[]> implements Subscriber<TurnResults> {
+export class DiceStorage extends Publisher<number[]> implements Subscriber<TurnResults> {
 	/** Array to store all dice numbers. */
 	public allDiceNumbers: number[] = [];
 
