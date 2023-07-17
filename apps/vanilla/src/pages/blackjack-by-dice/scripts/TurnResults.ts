@@ -1,13 +1,9 @@
 /** Stores turn results. */
-export class TurnResults {
+export interface TurnResults {
+
 	/** Player index. */
-	public playerIndex: number;
+	playerIndex: number;
 
 	/** Player dice result. */
-	public diceResult: number;
-
-	public constructor(playerIndex: number, diceResult: number) {
-		this.playerIndex = playerIndex;
-		this.diceResult = diceResult;
-	}
+	diceResult: number;
 }
