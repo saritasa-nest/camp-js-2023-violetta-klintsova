@@ -113,3 +113,7 @@ img {
 .roll-dice-button:hover {
   background-color: var(--accent-light-color);
 }
+
+.show-winner {
+  background-color: var(--winner-color);
+}
