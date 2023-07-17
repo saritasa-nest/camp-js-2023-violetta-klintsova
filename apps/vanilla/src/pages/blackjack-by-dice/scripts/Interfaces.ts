@@ -6,13 +6,13 @@ export interface IPublisher<T> {
 	 * receiving notifications.
 	 * @param subscriber
 	 */
-	attach(subscriber: Subscriber<T>): void;
+	subscribe(subscriber: Subscriber<T>): void;
 
 	/**
 	 * Object which will be removed from the list of subscribers.
 	 * @param subscriber
 	 */
-	detach(subscriber: Subscriber<T>): void;
+	unsubscribe(subscriber: Subscriber<T>): void;
 
 	/**
 	 * Notify subscribers on change.

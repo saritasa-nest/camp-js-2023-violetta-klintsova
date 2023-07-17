@@ -5,7 +5,7 @@ export class Publisher<T> implements IPublisher<T> {
 	private subscribers: Subscriber<T>[] = [];
 
 	/** @inheritdoc */
-	public attach(subscriber: Subscriber<T>): void {
+	public subscribe(subscriber: Subscriber<T>): void {
 		const isExist = this.subscribers.includes(subscriber);
 		if (isExist) {
 			return;
@@ -14,7 +14,7 @@ export class Publisher<T> implements IPublisher<T> {
 	}
 
 	/** @inheritdoc */
-	public detach(subscriber: Subscriber<T>): void {
+	public unsubscribe(subscriber: Subscriber<T>): void {
 		const subscriberIndex = this.subscribers.indexOf(subscriber);
 		if (subscriberIndex === -1) {
 			return;

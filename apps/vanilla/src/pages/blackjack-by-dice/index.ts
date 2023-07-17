@@ -12,30 +12,30 @@ const turnGenerator = new TurnGenerator(2);
 const diceGenerator = new DiceGenerator(7);
 
 // Attach it to its publisher
-turnGenerator.attach(diceGenerator);
+turnGenerator.subscribe(diceGenerator);
 
 // Make a couple of players
 const player1 = new Player(0);
 const player2 = new Player(1);
 
 // Attach them to their publisher
-diceGenerator.attach(player1);
-diceGenerator.attach(player2);
+diceGenerator.subscribe(player1);
+diceGenerator.subscribe(player2);
 
-// Select a display for each player and attach it
+// Select a display for each player and subscribe it
 const display1 = new PlayerResultsDisplay(document.querySelector('.display-0') as HTMLElement);
-player1.attach(display1);
+player1.subscribe(display1);
 
 const display2 = new PlayerResultsDisplay(document.querySelector('.display-1') as HTMLElement);
-player2.attach(display2);
+player2.subscribe(display2);
 
 // Create accumulator which will receive all numbers
 const numbersAccumulator = new DiceStorage();
-diceGenerator.attach(numbersAccumulator);
+diceGenerator.subscribe(numbersAccumulator);
 
 // Display numbers from accumulator
 const accumulatorDisplay = new DiceStorageDisplay(document.querySelector('.accumulator-display') as HTMLElement);
-numbersAccumulator.attach(accumulatorDisplay);
+numbersAccumulator.subscribe(accumulatorDisplay);
 
 // Fires each time the button "Roll the dice" is clicked
 const button = document.querySelector('.roll-dice-button');
