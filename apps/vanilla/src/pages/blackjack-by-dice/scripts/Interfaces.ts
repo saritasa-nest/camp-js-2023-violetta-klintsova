@@ -16,13 +16,12 @@ export interface IPublisher<T> {
 
 	/**
 	 * Notify subscribers on change.
+	 * @param context - Value/Object which will be passed to subscriber's update method.
 	 */
 	notify(context: T): void;
 }
 
-/**
- * Interface for implementation of any subscriber.
- */
+/** Interface for implementation of any subscriber. */
 export interface Subscriber<T> {
 
 	/**
