@@ -2,7 +2,7 @@ import { Subscriber } from './Interfaces';
 import { Publisher } from './Publisher';
 import { TurnResults } from './TurnResults';
 
-/** Generate random dice number. */
+/** Dice generator. */
 export class DiceGenerator extends Publisher<TurnResults> implements Subscriber<number> {
 
 	public constructor(private maxSides: number) {
