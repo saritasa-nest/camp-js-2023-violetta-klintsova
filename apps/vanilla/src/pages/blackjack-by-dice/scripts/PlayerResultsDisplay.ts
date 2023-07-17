@@ -7,8 +7,8 @@ export class PlayerResultsDisplay implements Subscriber<Player> {
 	}
 
 	/**
-	 * Display results.
-	 * @param context - Object with current player index and dice number.
+	 * @inheritdoc
+	 * Display changes on the webpage.
 	 */
 	public update(context: Player): void {
 		const display = this.element;

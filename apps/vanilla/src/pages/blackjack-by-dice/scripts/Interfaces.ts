@@ -2,15 +2,14 @@
 export interface IPublisher<T> {
 
 	/**
-	 * Object which will be added to the list of subscribers
-	 * receiving notifications.
-	 * @param subscriber
+	 * Subscribes to the event.
+	 * @param subscriber Object which will be added to the list of subscribers.
 	 */
 	subscribe(subscriber: Subscriber<T>): void;
 
 	/**
-	 * Object which will be removed from the list of subscribers.
-	 * @param subscriber
+	 * Unsubscribes from the event.
+	 * @param subscriber Object which will be removed from the list of subscribers.
 	 */
 	unsubscribe(subscriber: Subscriber<T>): void;
 
