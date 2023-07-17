@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlackJack by Dice</title>
+    <script type="module" src="index.ts" defer></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1 class="game-title">Blackjack by Dice</h1>
+        <p class="rules">
+          Rules are simple: just roll the dice until one of the players gets 21
+          points or more. The winner will turn pink :)
+        </p>
+      </header>
+
+      <main class="main">
+        <div class="displays">
+          <div class="display display-0">
+            <div class="player-avatar">
+              <img src="img/moster-blue.jpg" alt="" />
+            </div>
+            <p class="player">Player 1</p>
+            Rolls:
+          </div>
+          <div class="display display-1">
+            <div class="player-avatar">
+              <img src="img/moster-red.jpg" alt="" />
+            </div>
+            <p class="player">Player 2</p>
+            Rolls:
+          </div>
+        </div>
+        <button class="roll-dice-button">Roll the Dice</button>
+        <div class="display accumulator-display">
+          <p class="all-dice-numbers">All dice numbers</p>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

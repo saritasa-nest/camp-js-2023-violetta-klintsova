@@ -23,7 +23,8 @@ export default defineConfig({
         resolve(root, 'index.html'),
         resolve(root, 'example', 'index.html'),
         resolve(root, 'example', 'nested', 'index.html'),
-        resolve(root, 'book-app', 'index.html')
+        resolve(root, 'book-app', 'index.html'),
+        resolve(root, 'blackjack-by-dice', 'index.html')
       ],
     },
   },
