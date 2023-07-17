@@ -8,7 +8,6 @@ export class PlayerResultsDisplay implements Subscriber<Player> {
 
 	/**
 	 * @inheritdoc
-	 * Display changes on the webpage.
 	 */
 	public update(context: Player): void {
 		const display = this.element;

@@ -6,7 +6,6 @@ export class DiceStorageDisplay implements Subscriber<number[]> {
 
 	/**
 	 * @inheritdoc
-	 * Display changes on the webpage.
 	 */
 	public update(context: number[]): void {
 		const display = this.element;
