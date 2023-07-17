@@ -33,9 +33,7 @@ export class Player extends Publisher<Player> implements Subscriber<TurnResults>
 			this.diceResults.push(context.diceResult);
 			this.diceSum += context.diceResult;
 
-			if (this.diceSum >= this.winNumber) {
-				this.winStatus = true;
-			}
+			this.winStatus = this.diceSum >= this.winNumber;
 
 			// Notify to display recent changes
 			this.notify(this);

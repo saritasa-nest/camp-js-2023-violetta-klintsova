@@ -23,7 +23,9 @@ export class DiceGenerator extends Publisher<TurnResults> implements Subscriber<
 	 * @param context - Index of the player whose turn it is now.
 	 */
 	public update(context: number): void {
-		const turnResults = { playerIndex: context, diceResult: this.getRandomNumber(this.maxSides) };
-		this.notify(turnResults);
+		this.notify({
+			playerIndex: context,
+			diceResult: this.getRandomNumber(this.maxSides),
+		});
 	}
 }
