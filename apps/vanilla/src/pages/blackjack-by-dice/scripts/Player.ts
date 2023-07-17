@@ -16,9 +16,6 @@ export class Player extends Publisher<Player> implements Subscriber<TurnResults>
 	/** Represents how many points a player should get to win. */
 	private winNumber = 21;
 
-	/**
-	 * @param playerIndex - Player index in the game.
-	 */
 	public constructor(public playerIndex: number) {
 		super();
 	}
