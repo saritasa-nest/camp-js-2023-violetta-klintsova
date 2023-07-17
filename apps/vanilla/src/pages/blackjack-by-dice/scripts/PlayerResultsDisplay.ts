@@ -3,10 +3,7 @@ import { Player } from './Player';
 
 /** Display results of the player's dice roll to GUI. */
 export class PlayerResultsDisplay implements Subscriber<Player> {
-	private element: HTMLElement;
-
-	public constructor(el: HTMLElement) {
-		this.element = el;
+	public constructor(private element: HTMLElement) {
 	}
 
 	/**

@@ -4,11 +4,9 @@ import { TurnResults } from './TurnResults';
 
 /** Generate random dice number. */
 export class DiceGenerator extends Publisher<TurnResults> implements Subscriber<number> {
-	private maxSides: number;
 
-	public constructor(maxSides: number) {
+	public constructor(private maxSides: number) {
 		super();
-		this.maxSides = maxSides;
 	}
 
 	/**
