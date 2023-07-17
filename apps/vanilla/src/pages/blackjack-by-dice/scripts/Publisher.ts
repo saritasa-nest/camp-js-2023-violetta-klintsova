@@ -1,4 +1,5 @@
-import { Subscriber, IPublisher } from './Interfaces';
+import { IPublisher } from './Interfaces';
+import { Subscriber } from './Interface-Subscriber';
 
 /** Base class defining implementation of publisher methods. */
 export class Publisher<T> implements IPublisher<T> {
