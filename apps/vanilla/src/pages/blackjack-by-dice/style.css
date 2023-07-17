@@ -1,5 +1,4 @@
 :root {
-  /* --primary-color: #c0ccff; */
   --primary-color: #192736;
   --accent-color: #407e99;
   --accent-light-color: #4689a5;
@@ -38,7 +37,7 @@ img {
     linear-gradient(25deg, transparent 75%, var(--accent-bg-color) 50%),
     linear-gradient(-115deg, transparent 75%, var(--accent-bg-color) 50%),
     linear-gradient(115deg, transparent 75%, var(--accent-bg-color) 50%);
-  background-size: 1rem 19rem;
+  background-size: 18px 300px;
 }
 
 .game-title {
@@ -108,7 +107,7 @@ img {
   background-color: var(--accent-color);
   border: none;
   border-radius: var(--border-radius);
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .roll-dice-button:hover {
