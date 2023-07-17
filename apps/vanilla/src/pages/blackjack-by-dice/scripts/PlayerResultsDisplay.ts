@@ -17,7 +17,7 @@ export class PlayerResultsDisplay implements Subscriber<Player> {
 
 		// Change the background color if player has won
 		if (context.winStatus) {
-			display.classList.add('winner');
+			display.classList.add('show-winner');
 		}
 	}
 }
