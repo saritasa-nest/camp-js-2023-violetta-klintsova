@@ -13,6 +13,9 @@ export class Player extends Publisher<Player> implements Subscriber<TurnResults>
 	/** Player game status. */
 	public winStatus = false;
 
+	/** Represents how many points a player should get to win. */
+	private winNumber = 21;
+
 	/** Player index in the game. */
 	public playerIndex: number;
 
@@ -31,9 +34,7 @@ export class Player extends Publisher<Player> implements Subscriber<TurnResults>
 			this.diceResults.push(context.diceResult);
 			this.diceSum += context.diceResult;
 
-			// Check is the sum of all dice number is equal or more than 21
-			// Change winStatus if true
-			if (this.diceSum > 21) {
+			if (this.diceSum >= this.winNumber) {
 				this.winStatus = true;
 			}
 
