@@ -1,9 +1,13 @@
-.anime-list-caption {
-  text-align: left;
+.anime-table {
+  margin: 50px 0;
+  width: 100%;
 }
 
-.anime-table {
-  width: 100%;
+.anime-list-caption {
+  text-align: left;
+  font-size: var(--large-font-size);
+  font-weight: 700;
+  margin-bottom: 30px;
 }
 
 .cell-anime-img img {
