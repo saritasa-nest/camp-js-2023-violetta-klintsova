@@ -14,7 +14,7 @@ export interface AnimeItemDto {
 	readonly title_eng: string;
 
 	/** Image title. */
-	readonly title_jpg: string;
+	readonly title_jpn: string;
 
 	/** Image URL. */
 	readonly image: string;

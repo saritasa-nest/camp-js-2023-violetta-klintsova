@@ -10,9 +10,9 @@ export namespace AnimeItemMapper {
 	export function fromDto(dto: AnimeItemDto): AnimeItem {
 		return new AnimeItem({
 			id: dto.id,
-			title: dto.title_eng,
+			titleEng: dto.title_eng,
 			image: dto.image,
-			imageTitle: dto.title_jpg,
+			titleJpn: dto.title_jpn,
 			airedStartDate: new Date(dto.aired.start),
 			type: dto.type,
 			status: dto.status,

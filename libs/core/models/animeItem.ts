@@ -6,13 +6,13 @@ export class AnimeItem extends Immerable {
 	public readonly id: number;
 
 	/** Title. */
-	public readonly title: string;
+	public readonly titleEng: string;
 
 	/** Image. */
 	public readonly image: string;
 
 	/** Image title. */
-	public readonly imageTitle: string;
+	public readonly titleJpn: string;
 
 	/** Release date. */
 	public readonly airedStartDate: Date;
@@ -26,9 +26,9 @@ export class AnimeItem extends Immerable {
 	public constructor(data: AnimeItemConstructorData) {
 		super();
 		this.id = data.id;
-		this.title = data.title;
+		this.titleEng = data.titleEng;
 		this.image = data.image;
-		this.imageTitle = data.image;
+		this.titleJpn = data.titleJpn;
 		this.airedStartDate = data.airedStartDate;
 		this.type = data.type;
 		this.status = data.status;
