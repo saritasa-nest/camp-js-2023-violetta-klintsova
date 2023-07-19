@@ -5,11 +5,10 @@ import { MatTableModule } from '@angular/material/table';
 
 import { AnimeTableComponent } from './anime-table.component';
 
+/** Anime table module. */
 @NgModule({
 	imports: [CommonModule, MatTableModule],
 	declarations: [AnimeTableComponent],
 	exports: [AnimeTableComponent],
 })
-
-/** Anime table module. */
 export class AnimeTableModule { }
