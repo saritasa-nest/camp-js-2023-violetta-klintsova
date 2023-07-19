@@ -5,7 +5,7 @@
 export const environment = {
 	production: false,
 	apiKey: 'a2c78359-e077-4c97-b5d2-0a0b6e42ed47',
-	animeUrl: 'https://api.camp-js.saritasa.rocks/api/v1/',
+	apiUrl: 'https://api.camp-js.saritasa.rocks/api/v1/',
 };
 
 /*
