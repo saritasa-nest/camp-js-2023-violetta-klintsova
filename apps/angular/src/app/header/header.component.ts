@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+/** Header component. */
 @Component({
 	selector: 'camp-header',
 	templateUrl: './header.component.html',
