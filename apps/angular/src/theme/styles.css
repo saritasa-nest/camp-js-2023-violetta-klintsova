@@ -3,9 +3,20 @@
 :root {
   --small-font-size: 12px;
   --medium-font-size: 16px;
-  --large-font-size: 20px;
+  --large-font-size: 22px;
   --primary-color: #494949;
-  --accent-color: #002652;
+  --accent-color: #bd0e0e;
+  --border-color: #bebebe;
+  --bottom-border-thin: 2px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
 }
 
 body {
