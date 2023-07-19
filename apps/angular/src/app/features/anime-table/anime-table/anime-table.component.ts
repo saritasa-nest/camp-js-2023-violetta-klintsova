@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { AnimeItem } from '@js-camp/core/models/animeItem';
+import { Observable } from 'rxjs';
 
 /** Anime table component. */
 @Component({
@@ -10,7 +11,7 @@ import { AnimeItem } from '@js-camp/core/models/animeItem';
 })
 export class AnimeTableComponent implements OnInit {
 	/** Array of anime items. */
-	public animeList: AnimeItem[] = [];
+	public obs$: Observable<AnimeItem[]> | undefined;
 
 	/** Columns to be displayed in the table. */
 	public readonly displayedColumns: string[] = ['titleEng', 'image', 'titleJpn', 'airedStartDate', 'type', 'status'];
@@ -19,11 +20,11 @@ export class AnimeTableComponent implements OnInit {
 
 	/** Gets list of anime when component on init. */
 	public ngOnInit(): void {
-		this.getAnimeList();
+		this.obs$ = this.getAnimeList();
 	}
 
 	/** Gets anime list. */
-	public getAnimeList(): void {
-		this.animeService.getAnimeList().subscribe((animeList: AnimeItem[]) => (this.animeList = animeList));
+	public getAnimeList(): Observable<AnimeItem[]> {
+		return this.animeService.getAnimeList();
 	}
 }
