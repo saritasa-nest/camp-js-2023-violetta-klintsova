@@ -17,7 +17,7 @@ import { environment } from '@js-camp/angular/environments/environment';
 	providedIn: 'root',
 })
 export class AnimeService {
-	private animeUrl = environment.apiUrl;
+	private apiUrl = environment.apiUrl;
 
 	private headers = new HttpHeaders().set('Api-Key', environment.apiKey);
 
@@ -26,8 +26,8 @@ export class AnimeService {
 	/** Gets anime list. */
 	public getAnimeList(): Observable<AnimeItem[]> {
 		const path = 'anime/anime/';
-		const url = `${this.animeUrl}${path}`;
-		return this.http.get<AnimeResponseDto<AnimeItemDto>>(url, { headers: this.headers }).pipe(
+		const url = new URL(path, this.apiUrl);
+		return this.http.get<AnimeResponseDto<AnimeItemDto>>(url.toString(), { headers: this.headers }).pipe(
 			map((el: AnimeResponseDto<AnimeItemDto>) => el.results),
 			map((items: AnimeItemDto[]) => items.map((i: AnimeItemDto) => AnimeItemMapper.fromDto(i))),
 		);
