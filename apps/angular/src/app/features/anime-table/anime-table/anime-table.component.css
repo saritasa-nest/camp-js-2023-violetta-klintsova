@@ -1,6 +1,7 @@
 .anime-table {
   margin: 50px 0;
   width: 100%;
+  border-collapse: collapse;
 }
 
 .anime-list-caption {
@@ -13,4 +14,20 @@
 .cell-anime-img img {
   max-width: 150px;
   max-height: 150px;
+}
+
+.cdk-table {
+  border: 1px solid var(--border-dark-color);
+}
+
+.cdk-row {
+  height: 150px;
+}
+
+.cdk-header-cell {
+  border-bottom: 2px solid var(--border-dark-color);
+}
+
+.cdk-cell {
+  border-bottom: 1px solid var(--border-color);
 }
