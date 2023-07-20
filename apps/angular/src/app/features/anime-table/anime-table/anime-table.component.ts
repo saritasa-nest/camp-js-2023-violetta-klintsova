@@ -27,4 +27,13 @@ export class AnimeTableComponent implements OnInit {
 	public getAnimeList(): Observable<AnimeItem[]> {
 		return this.animeService.getAnimeList();
 	}
+
+	/**
+	 * Returns a unique number for each table row.
+	 *  @param index Iteration index.
+	 *  @param item Anime item.
+	 */
+	public trackById(index: number, item: AnimeItem): string {
+		return `${item.id}`;
+	}
 }
