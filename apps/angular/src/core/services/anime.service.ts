@@ -21,7 +21,7 @@ export class AnimeService {
 
 	private headers = new HttpHeaders().set('Api-Key', environment.apiKey);
 
-	private constructor(private http: HttpClient) {}
+	public constructor(private http: HttpClient) {}
 
 	/** Gets anime list. */
 	public getAnimeList(): Observable<AnimeItem[]> {
