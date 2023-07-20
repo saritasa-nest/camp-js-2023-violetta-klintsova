@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { AnimeItem } from '@js-camp/core/models/animeItem';
 import { Observable } from 'rxjs';
@@ -9,18 +9,15 @@ import { Observable } from 'rxjs';
 	templateUrl: './anime-table.component.html',
 	styleUrls: ['./anime-table.component.css'],
 })
-export class AnimeTableComponent implements OnInit {
+export class AnimeTableComponent {
 	/** Array of anime items. */
-	public obs$: Observable<AnimeItem[]> | undefined;
+	protected readonly animeItemList$: Observable<AnimeItem[]> | undefined;
 
 	/** Columns to be displayed in the table. */
 	public readonly displayedColumns: string[] = ['titleEng', 'image', 'titleJpn', 'airedStartDate', 'type', 'status'];
 
-	public constructor(private animeService: AnimeService) {}
-
-	/** Gets list of anime when component on init. */
-	public ngOnInit(): void {
-		this.obs$ = this.getAnimeList();
+	public constructor(private readonly animeService: AnimeService) {
+		this.animeItemList$ = this.getAnimeList();
 	}
 
 	/** Gets anime list. */
