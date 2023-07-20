@@ -28,8 +28,8 @@ export class AnimeService {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
 		return this.http.get<AnimeResponseDto<AnimeItemDto>>(url.toString(), { headers: this.headers }).pipe(
-			map((el: AnimeResponseDto<AnimeItemDto>) => el.results),
-			map((items: AnimeItemDto[]) => items.map((i: AnimeItemDto) => AnimeItemMapper.fromDto(i))),
+			map(el => el.results),
+			map(items => items.map(i => AnimeItemMapper.fromDto(i))),
 		);
 	}
 }
