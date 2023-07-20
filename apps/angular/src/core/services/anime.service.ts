@@ -17,9 +17,9 @@ import { environment } from '@js-camp/angular/environments/environment';
 	providedIn: 'root',
 })
 export class AnimeService {
-	private apiUrl = environment.apiUrl;
+	private readonly apiUrl = environment.apiUrl;
 
-	private headers = new HttpHeaders().set('Api-Key', environment.apiKey);
+	private readonly headers = new HttpHeaders().set('Api-Key', environment.apiKey);
 
 	public constructor(private http: HttpClient) {}
 
