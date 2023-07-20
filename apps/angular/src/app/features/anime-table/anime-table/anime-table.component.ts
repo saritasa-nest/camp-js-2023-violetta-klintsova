@@ -24,7 +24,7 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/** Gets anime list. */
-	public getAnimeList(): Observable<AnimeItem[]> {
+	private getAnimeList(): Observable<AnimeItem[]> {
 		return this.animeService.getAnimeList();
 	}
 
