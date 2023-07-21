@@ -6,13 +6,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AnimeTableModule } from './features/anime-table/anime-table/anime-table.module';
+import { AnimeModule } from './features/anime-table/anime-table/anime.module';
 import { HeaderComponent } from './header/header.component';
 
 /** App module. */
 @NgModule({
 	declarations: [AppComponent, HeaderComponent],
-	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, AnimeTableModule],
+	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, AnimeModule],
 	providers: [],
 	bootstrap: [AppComponent],
 })

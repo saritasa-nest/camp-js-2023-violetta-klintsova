@@ -11,4 +11,4 @@ import { AnimeTableComponent } from './anime-table.component';
 	declarations: [AnimeTableComponent],
 	exports: [AnimeTableComponent],
 })
-export class AnimeTableModule { }
+export class AnimeModule { }
