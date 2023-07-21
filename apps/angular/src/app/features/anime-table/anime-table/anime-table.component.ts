@@ -11,13 +11,13 @@ import { Observable } from 'rxjs';
 })
 export class AnimeTableComponent {
 	/** Array of anime items. */
-	protected readonly animeItemList$: Observable<AnimeItem[]> | undefined;
+	protected readonly animeList$: Observable<AnimeItem[]>;
 
 	/** Columns to be displayed in the table. */
 	public readonly displayedColumns: string[] = ['titleEng', 'image', 'titleJpn', 'airedStartDate', 'type', 'status'];
 
 	public constructor(private readonly animeService: AnimeService) {
-		this.animeItemList$ = this.getAnimeList();
+		this.animeList$ = this.getAnimeList();
 	}
 
 	/** Gets anime list. */
@@ -30,7 +30,7 @@ export class AnimeTableComponent {
 	 *  @param index Iteration index.
 	 *  @param item Anime item.
 	 */
-	public trackById(index: number, item: AnimeItem): string {
-		return `${item.id}`;
+	public trackById(index: number, item: AnimeItem): number {
+		return item.id;
 	}
 }
