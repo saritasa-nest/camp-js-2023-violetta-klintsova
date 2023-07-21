@@ -11,7 +11,7 @@ export class Pagination<T> {
 	public readonly previous: string;
 
 	/** Array of requested items. */
-	public readonly results: readonly T[];
+	public readonly results: T[];
 
 	public constructor(data: Pagination<T>) {
 		this.count = data.count;
