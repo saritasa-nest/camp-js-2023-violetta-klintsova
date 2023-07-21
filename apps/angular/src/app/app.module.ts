@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { httpInterceptorProviders } from '../core/interceptors/httpInterceptors';
+
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +15,7 @@ import { HeaderComponent } from './header/header.component';
 @NgModule({
 	declarations: [AppComponent, HeaderComponent],
 	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, AnimeModule],
-	providers: [],
+	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

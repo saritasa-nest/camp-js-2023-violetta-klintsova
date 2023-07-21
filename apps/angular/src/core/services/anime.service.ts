@@ -19,15 +19,13 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 export class AnimeService {
 	private readonly apiUrl = environment.apiUrl;
 
-	private readonly headers = new HttpHeaders().set('Api-Key', environment.apiKey);
-
 	public constructor(private http: HttpClient) {}
 
 	/** Gets anime list. */
 	public getAnimeList(): Observable<AnimeItem[]> {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.get<PaginationDto<AnimeItemDto>>(url.toString(), { headers: this.headers }).pipe(
+		return this.http.get<PaginationDto<AnimeItemDto>>(url.toString()).pipe(
 			map(el => el.results),
 			map(items => items.map(i => AnimeItemMapper.fromDto(i))),
 		);
