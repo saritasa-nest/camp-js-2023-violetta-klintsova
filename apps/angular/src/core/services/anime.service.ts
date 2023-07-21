@@ -7,10 +7,10 @@ import { map } from 'rxjs/operators';
 
 import { AnimeItem } from '@js-camp/core/models/animeItem';
 import { AnimeItemDto } from '@js-camp/core/dtos/animeItem.dto';
-import { AnimeResponseDto } from '@js-camp/core/dtos/animeResponse.dto';
 import { AnimeItemMapper } from '@js-camp/core/mappers/animeItem.mapper';
 
 import { environment } from '@js-camp/angular/environments/environment';
+import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 
 /** Service to get different type of anime data. */
 @Injectable({
@@ -27,7 +27,7 @@ export class AnimeService {
 	public getAnimeList(): Observable<AnimeItem[]> {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.get<AnimeResponseDto<AnimeItemDto>>(url.toString(), { headers: this.headers }).pipe(
+		return this.http.get<PaginationDto<AnimeItemDto>>(url.toString(), { headers: this.headers }).pipe(
 			map(el => el.results),
 			map(items => items.map(i => AnimeItemMapper.fromDto(i))),
 		);
