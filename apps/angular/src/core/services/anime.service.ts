@@ -4,13 +4,15 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '@js-camp/angular/environments/environment';
 
 import { AnimeItem } from '@js-camp/core/models/animeItem';
 import { AnimeItemDto } from '@js-camp/core/dtos/animeItem.dto';
 import { AnimeItemMapper } from '@js-camp/core/mappers/animeItem.mapper';
 
-import { environment } from '@js-camp/angular/environments/environment';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
+import { Pagination } from '@js-camp/core/models/pagination';
+import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
 /** Service to get different type of anime data. */
 @Injectable({
@@ -22,12 +24,11 @@ export class AnimeService {
 	public constructor(private http: HttpClient) {}
 
 	/** Gets anime list. */
-	public getAnimeList(): Observable<AnimeItem[]> {
+	public getAnimeList(): Observable<Pagination<AnimeItem[]>> {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.get<PaginationDto<AnimeItemDto>>(url.toString()).pipe(
-			map(el => el.results),
-			map(items => items.map(i => AnimeItemMapper.fromDto(i))),
+		return this.http.get<PaginationDto<AnimeItemDto[]>>(url.toString()).pipe(
+			map(el => PaginationMapper.fromDto(el, AnimeItemMapper.fromDto)),
 		);
 	}
 }
