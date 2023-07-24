@@ -1,17 +1,17 @@
-import { AnimeItemDto } from '../dtos/animeItem.dto';
-import { AnimeItem } from '../models/animeItem';
+import { AnimeDto } from '../dtos/anime.dto';
+import { Anime } from '../models/anime';
 
 import { TypeOptions } from '../utils/typeOptions';
 import { StatusOptions } from '../utils/statusOptions';
 
-export namespace AnimeItemMapper {
+export namespace AnimeMapper {
 
 	/**
 	 * Maps dto to model.
 	 * @param dto Anime list dto.
 	 */
-	export function fromDto(dto: AnimeItemDto): AnimeItem {
-		return new AnimeItem({
+	export function fromDto(dto: AnimeDto): Anime {
+		return new Anime({
 			id: dto.id,
 			titleEng: dto.title_eng,
 			image: dto.image,

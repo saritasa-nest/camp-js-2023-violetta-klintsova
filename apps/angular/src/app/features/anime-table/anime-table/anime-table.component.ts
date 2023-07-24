@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { AnimeItem } from '@js-camp/core/models/animeItem';
+import { Anime } from '@js-camp/core/models/anime';
 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,13 +13,13 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class AnimeTableComponent implements OnInit, AfterViewInit {
 	/** List of anime. */
-	public animeList: AnimeItem[] = [];
+	public animeList: Anime[] = [];
 
 	/** Number of existing items. */
 	public totalItems = 0;
 
 	/** Data for paginator. */
-	public dataSource = new MatTableDataSource<AnimeItem>();
+	public dataSource = new MatTableDataSource<Anime>();
 
 	/** Paginator. */
 	@ViewChild(MatPaginator) public paginator!: MatPaginator;
@@ -55,7 +55,7 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 		this.animeService.getAnimeList(this.pageSize.toString(), this.offset.toString()).subscribe(response => {
 			this.animeList = response.results;
 			this.totalItems = response.count;
-			this.dataSource = new MatTableDataSource<AnimeItem>(this.animeList);
+			this.dataSource = new MatTableDataSource<Anime>(this.animeList);
 		});
 	}
 
@@ -80,7 +80,7 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	 * @param item Anime item.
 	 * @returns A unique number for each table row.
 	 */
-	public trackById(index: number, item: AnimeItem): number {
+	public trackById(index: number, item: Anime): number {
 		return item.id;
 	}
 }

@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@js-camp/angular/environments/environment';
 
-import { AnimeItem } from '@js-camp/core/models/animeItem';
-import { AnimeItemDto } from '@js-camp/core/dtos/animeItem.dto';
-import { AnimeItemMapper } from '@js-camp/core/mappers/animeItem.mapper';
+import { Anime } from '@js-camp/core/models/anime';
+import { AnimeDto } from '@js-camp/core/dtos/anime.dto';
+import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
@@ -27,14 +27,14 @@ export class AnimeService {
 	 * @param limit Max number of items to get.
 	 * @param offset Offset value.
 	 */
-	public getAnimeList(limit: string, offset: string): Observable<Pagination<AnimeItem>> {
+	public getAnimeList(limit: string, offset: string): Observable<Pagination<Anime>> {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
 		const httpParams = new HttpParams()
 			.set('offset', offset)
 			.set('limit', limit);
-		return this.http.get<PaginationDto<AnimeItemDto[]>>(url.toString(), { params: httpParams }).pipe(
-			map(el => PaginationMapper.fromDto(el, AnimeItemMapper.fromDto)),
+		return this.http.get<PaginationDto<AnimeDto[]>>(url.toString(), { params: httpParams }).pipe(
+			map(el => PaginationMapper.fromDto(el, AnimeMapper.fromDto)),
 		);
 	}
 }

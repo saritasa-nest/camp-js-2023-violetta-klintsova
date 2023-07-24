@@ -2,7 +2,7 @@ import { TypeOptions } from '../utils/typeOptions';
 import { StatusOptions } from '../utils/statusOptions';
 
 /** List of all anime. */
-export class AnimeItem {
+export class Anime {
 	/** ID. */
 	public readonly id: number;
 
@@ -24,7 +24,7 @@ export class AnimeItem {
 	/** Status. */
 	public readonly status: StatusOptions;
 
-	public constructor(data: AnimeItem) {
+	public constructor(data: Anime) {
 		this.id = data.id;
 		this.titleEng = data.titleEng;
 		this.image = data.image;
