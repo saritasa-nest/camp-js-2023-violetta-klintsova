@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,11 +23,17 @@ export class AnimeService {
 
 	public constructor(private http: HttpClient) {}
 
-	/** Gets anime list. */
-	public getAnimeList(): Observable<Pagination<AnimeItem>> {
+	/** Gets anime list.
+	 * @param limit Max number of items to get.
+	 * @param offset Offset value.
+	 */
+	public getAnimeList(limit: string, offset: string): Observable<Pagination<AnimeItem>> {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.get<PaginationDto<AnimeItemDto[]>>(url.toString()).pipe(
+		const httpParams = new HttpParams()
+			.set('offset', offset)
+			.set('limit', limit);
+		return this.http.get<PaginationDto<AnimeItemDto[]>>(url.toString(), { params: httpParams }).pipe(
 			map(el => PaginationMapper.fromDto(el, AnimeItemMapper.fromDto)),
 		);
 	}
