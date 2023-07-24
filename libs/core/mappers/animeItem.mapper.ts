@@ -1,8 +1,10 @@
 import { AnimeItemDto } from '../dtos/animeItem.dto';
 import { AnimeItem } from '../models/animeItem';
 
-export namespace AnimeItemMapper {
+import { TypeOptions } from '../utils/typeOptions';
+import { StatusOptions } from '../utils/statusOptions';
 
+export namespace AnimeItemMapper {
 	/**
 	 * Maps dto to model.
 	 * @param dto Anime list dto.
@@ -14,8 +16,8 @@ export namespace AnimeItemMapper {
 			image: dto.image,
 			titleJpn: dto.title_jpn,
 			airedStartDate: new Date(dto.aired.start),
-			type: dto.type,
-			status: dto.status.replace(/_/g, ' '),
+			type: dto.type as TypeOptions,
+			status: dto.status.replace(/_/g, ' ') as StatusOptions,
 		});
 	}
 }
