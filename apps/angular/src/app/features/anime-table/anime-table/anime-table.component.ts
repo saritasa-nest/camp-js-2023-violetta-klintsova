@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { AnimeItem } from '@js-camp/core/models/animeItem';
+import { Anime } from '@js-camp/core/models/anime';
 import { Observable } from 'rxjs';
 
 /** Anime table component. */
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class AnimeTableComponent {
 	/** Array of anime items. */
-	protected readonly animeList$: Observable<AnimeItem[]>;
+	protected readonly animeList$: Observable<Anime[]>;
 
 	/** Columns to be displayed in the table. */
 	protected readonly displayedColumns: readonly string[] = [
@@ -28,7 +28,7 @@ export class AnimeTableComponent {
 	}
 
 	/** Gets anime list. */
-	private getAnimeList(): Observable<AnimeItem[]> {
+	private getAnimeList(): Observable<Anime[]> {
 		return this.animeService.getAnimeList();
 	}
 
@@ -37,7 +37,7 @@ export class AnimeTableComponent {
 	 * @param item Anime item.
 	 * @returns A unique number for each table row.
 	 */
-	public trackById(index: number, item: AnimeItem): number {
+	public trackById(index: number, item: Anime): number {
 		return item.id;
 	}
 }

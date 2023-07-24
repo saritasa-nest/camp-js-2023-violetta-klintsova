@@ -1,7 +1,7 @@
 import { DateRange } from '../utils/dateRange';
 
 /** Anime Item DTO. */
-export interface AnimeItemDto {
+export interface AnimeDto {
 
 	/** ID. */
 	readonly id: number;
