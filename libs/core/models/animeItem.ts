@@ -1,8 +1,6 @@
-import { Immerable, OmitImmerable } from './immerable';
-
 /** List of all anime. */
-export class AnimeItem extends Immerable {
-	/** ID.  */
+export class AnimeItem {
+	/** ID. */
 	public readonly id: number;
 
 	/** Title. */
@@ -23,8 +21,7 @@ export class AnimeItem extends Immerable {
 	/** Status (e.g. Airing, closed ). */
 	public readonly status: string;
 
-	public constructor(data: AnimeItemConstructorData) {
-		super();
+	public constructor(data: AnimeItem) {
 		this.id = data.id;
 		this.titleEng = data.titleEng;
 		this.image = data.image;
@@ -34,5 +31,3 @@ export class AnimeItem extends Immerable {
 		this.status = data.status;
 	}
 }
-
-type AnimeItemConstructorData = OmitImmerable<AnimeItem>;

@@ -1,4 +1,4 @@
-/** Anime list DTO. */
+/** Anime Item DTO. */
 export interface AnimeItemDto {
 
 	/** ID. */
@@ -19,7 +19,7 @@ export interface AnimeItemDto {
 	/** Image URL. */
 	readonly image: string;
 
-	/** Airing tart and end dates. */
+	/** Airing period. */
 	readonly aired: {readonly start: string; readonly end: string;};
 
 	/** Type. */
