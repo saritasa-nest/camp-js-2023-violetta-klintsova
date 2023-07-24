@@ -1,5 +1,5 @@
 .anime-table {
-  padding: 40px 0;
+  padding: 20px 0;
   width: 100%;
   border-collapse: collapse;
 }
@@ -16,18 +16,10 @@
   max-height: 150px;
 }
 
-.cdk-table {
-  border: 1px solid var(--border-dark-color);
-}
-
 .cdk-row {
   height: 150px;
 }
 
 .cdk-header-cell {
-  border-bottom: 2px solid var(--border-dark-color);
-}
-
-.cdk-cell {
-  border-bottom: 1px solid var(--border-color);
+  font-weight: 700;
 }
