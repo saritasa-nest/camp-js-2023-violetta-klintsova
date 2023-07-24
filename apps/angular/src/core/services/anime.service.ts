@@ -26,7 +26,7 @@ export class AnimeService {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
 		return this.http.get<PaginationDto<AnimeItemDto>>(url.toString()).pipe(
-			map(el => el.results),
+			map(({ results }) => results),
 			map(items => items.map(i => AnimeItemMapper.fromDto(i))),
 		);
 	}
