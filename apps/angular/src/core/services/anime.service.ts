@@ -19,7 +19,7 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 export class AnimeService {
 	private readonly apiUrl = environment.apiUrl;
 
-	public constructor(private http: HttpClient) {}
+	public constructor(private readonly http: HttpClient) {}
 
 	/** Gets anime list. */
 	public getAnimeList(): Observable<AnimeItem[]> {
