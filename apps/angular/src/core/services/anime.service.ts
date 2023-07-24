@@ -12,7 +12,7 @@ import { AnimeItemMapper } from '@js-camp/core/mappers/animeItem.mapper';
 import { environment } from '@js-camp/angular/environments/environment';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 
-/** Service to get different type of anime data. */
+/** Anime service. */
 @Injectable({
 	providedIn: 'root',
 })
