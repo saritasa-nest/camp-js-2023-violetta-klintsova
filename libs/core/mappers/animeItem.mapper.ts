@@ -5,6 +5,7 @@ import { TypeOptions } from '../utils/typeOptions';
 import { StatusOptions } from '../utils/statusOptions';
 
 export namespace AnimeItemMapper {
+
 	/**
 	 * Maps dto to model.
 	 * @param dto Anime list dto.
