@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '@js-camp/angular/environments/environment';
 
-/** Interceptor to handle authorization.  */
+/** Interceptor to handle api key. */
 @Injectable()
 export class ApiKeyInterceptor implements HttpInterceptor {
 
