@@ -13,7 +13,7 @@
     <ng-container matColumnDef="titleEng">
       <th mat-header-cell *matHeaderCellDef>Title (English)</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.titleEng || "Unknown" }}
+        {{ element.titleEng | emptyValue }}
       </td>
     </ng-container>
 
@@ -27,7 +27,7 @@
     <ng-container matColumnDef="titleJpn">
       <th mat-header-cell *matHeaderCellDef>Title (Japanese)</th>
       <td mat-cell *matCellDef="let element">
-        {{ element.titleJpn || "Unknown" }}
+        {{ element.titleJpn | emptyValue }}
       </td>
     </ng-container>
 
