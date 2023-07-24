@@ -34,7 +34,14 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	public offset = 0;
 
 	/** Columns to be displayed in the table. */
-	public readonly displayedColumns: string[] = ['titleEng', 'image', 'titleJpn', 'airedStartDate', 'type', 'status'];
+	protected readonly displayedColumns: readonly string[] = [
+		'titleEng',
+		'image',
+		'titleJpn',
+		'airedStartDate',
+		'type',
+		'status',
+	];
 
 	public constructor(private readonly animeService: AnimeService) {}
 
@@ -69,9 +76,9 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	}
 
 	/**
-	 * Returns a unique number for each table row.
-	 *  @param index Iteration index.
-	 *  @param item Anime item.
+	 * @param index Iteration index.
+	 * @param item Anime item.
+	 * @returns A unique number for each table row.
 	 */
 	public trackById(index: number, item: AnimeItem): number {
 		return item.id;

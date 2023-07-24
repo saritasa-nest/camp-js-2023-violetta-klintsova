@@ -14,14 +14,14 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
-/** Service to get different type of anime data. */
+/** Anime service. */
 @Injectable({
 	providedIn: 'root',
 })
 export class AnimeService {
 	private readonly apiUrl = environment.apiUrl;
 
-	public constructor(private http: HttpClient) {}
+	public constructor(private readonly http: HttpClient) {}
 
 	/** Gets anime list.
 	 * @param limit Max number of items to get.

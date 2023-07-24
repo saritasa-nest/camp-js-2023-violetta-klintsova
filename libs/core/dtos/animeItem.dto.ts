@@ -1,4 +1,6 @@
-/** Anime list DTO. */
+import { DateRange } from '../utils/dateRange';
+
+/** Anime Item DTO. */
 export interface AnimeItemDto {
 
 	/** ID. */
@@ -19,8 +21,8 @@ export interface AnimeItemDto {
 	/** Image URL. */
 	readonly image: string;
 
-	/** Airing tart and end dates. */
-	readonly aired: {readonly start: string; readonly end: string;};
+	/** Airing period. */
+	readonly aired: DateRange;
 
 	/** Type. */
 	readonly type: string;

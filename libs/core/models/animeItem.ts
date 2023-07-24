@@ -1,6 +1,9 @@
+import { TypeOptions } from '../utils/typeOptions';
+import { StatusOptions } from '../utils/statusOptions';
+
 /** List of all anime. */
 export class AnimeItem {
-	/** ID.  */
+	/** ID. */
 	public readonly id: number;
 
 	/** Title. */
@@ -16,10 +19,10 @@ export class AnimeItem {
 	public readonly airedStartDate: Date;
 
 	/** Type. */
-	public readonly type: string;
+	public readonly type: TypeOptions;
 
-	/** Status (e.g. Airing, closed ). */
-	public readonly status: string;
+	/** Status. */
+	public readonly status: StatusOptions;
 
 	public constructor(data: AnimeItem) {
 		this.id = data.id;
