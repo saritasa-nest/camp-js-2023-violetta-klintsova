@@ -15,23 +15,26 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	/** List of anime. */
 	public animeList: Anime[] = [];
 
+	/** Paginator. */
+	@ViewChild(MatPaginator) public paginator!: MatPaginator;
+
 	/** Number of existing items. */
 	public totalItems = 0;
 
 	/** Data for paginator. */
 	public dataSource = new MatTableDataSource<Anime>();
 
-	/** Paginator. */
-	@ViewChild(MatPaginator) public paginator!: MatPaginator;
-
 	/** Page size. */
-	public pageSize = 10;
+	public readonly pageSize = 10;
 
 	/** Page index. */
 	public pageIndex = 0;
 
 	/** Offset. */
 	public offset = 0;
+
+	/** Enable first anf last buttons. */
+	public readonly showFirstLastButtons = true;
 
 	/** Columns to be displayed in the table. */
 	protected readonly displayedColumns: readonly string[] = [
@@ -52,7 +55,7 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 
 	/** Gets anime list. */
 	private getAnimeList(): void {
-		this.animeService.getAnimeList(this.pageSize.toString(), this.offset.toString()).subscribe(response => {
+		this.animeService.getAnimeList(this.pageSize.toString(), this.offset.toString()).subscribe((response) => {
 			this.animeList = response.results;
 			this.totalItems = response.count;
 			this.dataSource = new MatTableDataSource<Anime>(this.animeList);
@@ -71,7 +74,6 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	public handlePageChange(e: PageEvent): void {
 		this.pageIndex = e.pageIndex;
 		this.offset = this.pageSize * this.pageIndex;
-
 		this.getAnimeList();
 	}
 

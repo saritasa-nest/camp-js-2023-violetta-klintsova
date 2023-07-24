@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { httpInterceptorProviders } from '../core/interceptors/httpInterceptors';
 
@@ -14,7 +15,7 @@ import { HeaderComponent } from './header/header.component';
 /** App module. */
 @NgModule({
 	declarations: [AppComponent, HeaderComponent],
-	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, AnimeModule],
+	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, AnimeModule, BrowserAnimationsModule],
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],
 })

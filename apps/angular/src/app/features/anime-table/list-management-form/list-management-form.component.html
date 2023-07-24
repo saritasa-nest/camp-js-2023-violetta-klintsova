@@ -1,0 +1,34 @@
+<div class="form">
+  <form [formGroup]="form">
+    <mat-form-field formControlName="sortOption">
+      <mat-label>Sort by</mat-label>
+      <mat-select placeholder="Sort by" formControlName="sortOption">
+        <mat-option value="title_eng">Title (eng)</mat-option>
+        <mat-option value="aired__startswith">Airing start date</mat-option>
+        <mat-option value="status">Status</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field formControlName="sortOption">
+      <mat-label>Filter by</mat-label>
+      <mat-select placeholder="Sort by" formControlName="filterOption">
+        <mat-option value="TV">TV</mat-option>
+        <mat-option value="OVA">Ova</mat-option>
+        <mat-option value="MUSIC">Music</mat-option>
+        <mat-option value="SPECIAL">Special</mat-option>
+        <mat-option value="ONA">Ona</mat-option>
+        <mat-option value="MOVIE">Movie</mat-option>
+        <mat-option value="UNKNOWN">Unknown</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Search</mat-label>
+      <input matInput formControlName="searchOption" />
+    </mat-form-field>
+  </form>
+
+  <button mat-raised-button color="primary" type="button" (click)="onSubmit()">
+    Apply
+  </button>
+</div>
