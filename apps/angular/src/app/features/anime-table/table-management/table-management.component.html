@@ -1,6 +1,6 @@
 <div class="form">
   <form [formGroup]="form">
-    <mat-form-field formControlName="sortOption">
+    <mat-form-field>
       <mat-label>Sort by</mat-label>
       <mat-select placeholder="Sort by" formControlName="sortOption">
         <mat-option value="title_eng">Title (eng)</mat-option>
@@ -9,7 +9,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field formControlName="sortOption">
+    <mat-form-field>
       <mat-label>Filter by</mat-label>
       <mat-select placeholder="Sort by" formControlName="filterOption" multiple>
         <mat-option value="TV">TV</mat-option>

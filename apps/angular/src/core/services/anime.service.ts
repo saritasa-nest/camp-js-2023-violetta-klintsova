@@ -29,8 +29,14 @@ export class AnimeService {
 	 * @param limit Max number of items to get.
 	 * @param offset Offset value.
 	 * @param managementOptions Management options.
+	 * @param searchTerm Term to search for.
 	 */
-	public getAnimeList(limit: string, offset: string, managementOptions: ManagementOptions): Observable<Pagination<Anime>> {
+	public getAnimeList(
+		limit: string,
+		offset: string,
+		managementOptions: ManagementOptions,
+		searchTerm: string,
+	): Observable<Pagination<Anime>> {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
 		let httpParams = new HttpParams()
@@ -45,8 +51,12 @@ export class AnimeService {
 			httpParams = httpParams.append('type__in', managementOptions.filter.toString());
 		}
 
-		return this.http.get<PaginationDto<AnimeDto[]>>(url.toString(), { params: httpParams }).pipe(
-			map(el => PaginationMapper.fromDto(el, AnimeMapper.fromDto)),
-		);
+		if (searchTerm) {
+			httpParams = httpParams.append('search', searchTerm);
+		}
+
+		return this.http
+			.get<PaginationDto<AnimeDto[]>>(url.toString(), { params: httpParams })
+			.pipe(map(el => PaginationMapper.fromDto(el, AnimeMapper.fromDto)));
 	}
 }

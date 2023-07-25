@@ -11,13 +11,13 @@ export class TableManagementComponent {
 
 	/** Selected option for sorting. */
 	public form = new FormGroup({
-		sortOption: new FormControl(),
+		sortOption: new FormControl(''),
 		filterOption: new FormControl([]),
 	});
 
 	/** Push object with filter/sort value to its parent component. */
 	@Output()
-	public valueChangeEvent = new EventEmitter();
+	public selectionChange = new EventEmitter();
 
 	/** Happens when the form is sent. */
 	public onApply(): void {
@@ -25,7 +25,7 @@ export class TableManagementComponent {
 			sort: this.form.value.sortOption,
 			filter: this.form.value.filterOption,
 		};
-
-		this.valueChangeEvent.emit(values);
+		
+		this.selectionChange.emit(values);
 	}
 }

@@ -10,15 +10,15 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class TableSearchComponent {
 	/** Selected option for sorting. */
 	public form = new FormGroup({
-		searchValue: new FormControl(),
+		searchValue: new FormControl(''),
 	});
 
 	/** Push object with search value to its parent component. */
 	@Output()
-	public valueChangeEvent = new EventEmitter();
+	public inputChange = new EventEmitter();
 
 	/** Happens when the form is sent. */
-	public onSubmit(): void {
-		this.valueChangeEvent.emit(this.form.value.searchValue);
+	public onSearch(): void {
+		this.inputChange.emit(this.form.value.searchValue);
 	}
 }
