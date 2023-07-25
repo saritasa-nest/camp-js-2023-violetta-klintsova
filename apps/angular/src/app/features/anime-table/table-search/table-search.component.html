@@ -1,0 +1,12 @@
+<div class="search-wrapper">
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Search</mat-label>
+      <input matInput formControlName="searchValue" />
+    </mat-form-field>
+  </form>
+
+  <button mat-raised-button color="primary" type="button" (click)="onSubmit()">
+    Apply
+  </button>
+</div>

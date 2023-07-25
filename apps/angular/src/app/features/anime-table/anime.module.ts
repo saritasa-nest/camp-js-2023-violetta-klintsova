@@ -11,9 +11,10 @@ import { MatInputModule } from '@angular/material/input';
 
 import { EmptyValue } from '@js-camp/angular/core/utils/EmptyValuePipe';
 
-import { TableManagementComponent } from '../table-management/table-management.component';
+import { TableManagementComponent } from './table-management/table-management.component';
 
-import { AnimeTableComponent } from './anime-table.component';
+import { AnimeTableComponent } from './anime-table/anime-table.component';
+import { TableSearchComponent } from './table-search/table-search.component';
 
 /** Anime table module. */
 @NgModule({
@@ -28,7 +29,7 @@ import { AnimeTableComponent } from './anime-table.component';
 		MatButtonModule,
 		MatInputModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, TableManagementComponent],
+	declarations: [AnimeTableComponent, EmptyValue, TableManagementComponent, TableSearchComponent],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}
