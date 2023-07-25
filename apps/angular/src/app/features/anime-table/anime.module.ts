@@ -8,6 +8,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { EmptyValue } from '@js-camp/angular/core/utils/EmptyValuePipe';
 
@@ -28,6 +29,7 @@ import { TableSearchComponent } from './table-search/table-search.component';
 		ReactiveFormsModule,
 		MatButtonModule,
 		MatInputModule,
+		MatProgressSpinnerModule,
 	],
 	declarations: [AnimeTableComponent, EmptyValue, TableManagementComponent, TableSearchComponent],
 	exports: [AnimeTableComponent],
