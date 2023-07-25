@@ -8,7 +8,7 @@ import { ManagementOptions } from '@js-camp/angular/core/utils/TableManagementOp
 
 /** Anime table. */
 @Component({
-	selector: 'anime-table',
+	selector: 'camp-anime-table',
 	templateUrl: './anime-table.component.html',
 	styleUrls: ['./anime-table.component.css'],
 })
