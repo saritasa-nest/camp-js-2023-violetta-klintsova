@@ -1,13 +1,13 @@
+<h2 id="anime-table" class="anime-table-title">All anime</h2>
+
 <camp-table-management
   (selectionChange)="manageTable($event)"
 ></camp-table-management>
 
 <camp-table-search (inputChange)="searchValue($event)"></camp-table-search>
 
-<p id="anime-table" class="anime-table-title">All anime</p>
 <div class="wrapper">
-
-  <div class="example-loading-shade" *ngIf="isLoading">
+  <div class="spinner-with-shade" *ngIf="isLoading">
     <mat-spinner *ngIf="isLoading"></mat-spinner>
   </div>
 

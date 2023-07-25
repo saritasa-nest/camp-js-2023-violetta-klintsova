@@ -25,7 +25,7 @@ export class TableManagementComponent {
 			sort: this.form.value.sortOption,
 			filter: this.form.value.filterOption,
 		};
-		
+
 		this.selectionChange.emit(values);
 	}
 }
