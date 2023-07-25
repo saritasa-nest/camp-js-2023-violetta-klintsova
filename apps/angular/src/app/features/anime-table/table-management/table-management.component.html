@@ -2,7 +2,7 @@
   <form [formGroup]="form">
     <mat-form-field>
       <mat-label>Sort by</mat-label>
-      <mat-select placeholder="Sort by" formControlName="sortOption">
+      <mat-select formControlName="sortOption">
         <mat-option value="title_eng">Title (eng)</mat-option>
         <mat-option value="aired__startswith">Airing start date</mat-option>
         <mat-option value="status">Status</mat-option>
@@ -11,7 +11,7 @@
 
     <mat-form-field>
       <mat-label>Filter by</mat-label>
-      <mat-select placeholder="Sort by" formControlName="filterOption" multiple>
+      <mat-select formControlName="filterOption" multiple>
         <mat-option value="TV">TV</mat-option>
         <mat-option value="OVA">Ova</mat-option>
         <mat-option value="MUSIC">Music</mat-option>
