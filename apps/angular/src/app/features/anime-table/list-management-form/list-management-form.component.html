@@ -11,7 +11,7 @@
 
     <mat-form-field formControlName="sortOption">
       <mat-label>Filter by</mat-label>
-      <mat-select placeholder="Sort by" formControlName="filterOption">
+      <mat-select placeholder="Sort by" formControlName="filterOption" multiple>
         <mat-option value="TV">TV</mat-option>
         <mat-option value="OVA">Ova</mat-option>
         <mat-option value="MUSIC">Music</mat-option>
@@ -22,10 +22,10 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field class="example-full-width">
+    <!-- <mat-form-field class="example-full-width">
       <mat-label>Search</mat-label>
       <input matInput formControlName="searchOption" />
-    </mat-form-field>
+    </mat-form-field> -->
   </form>
 
   <button mat-raised-button color="primary" type="button" (click)="onSubmit()">

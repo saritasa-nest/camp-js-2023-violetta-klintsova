@@ -1,6 +1,6 @@
-<camp-list-management-form></camp-list-management-form>
+<camp-list-management-form (valueChangeEvent)="manageTable($event)"></camp-list-management-form>
 
-<div class="anime-table">
+<div class="anime-table" >
   <table
     mat-table
     [dataSource]="animeList"

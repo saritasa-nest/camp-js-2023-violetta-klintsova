@@ -4,6 +4,7 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ManagementOptions } from '@js-camp/angular/core/utils/TableManagementOptions';
 
 /** Anime table. */
 @Component({
@@ -46,25 +47,35 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 		'status',
 	];
 
+	/** List of management options. */
+	public managementOptions: ManagementOptions = {
+		sort: '',
+		filter: [],
+	};
+
 	public constructor(private readonly animeService: AnimeService) {}
 
 	/** Something.  */
 	public ngOnInit(): void {
-		this.getAnimeList();
-	}
-
-	/** Gets anime list. */
-	private getAnimeList(): void {
-		this.animeService.getAnimeList(this.pageSize.toString(), this.offset.toString()).subscribe((response) => {
-			this.animeList = response.results;
-			this.totalItems = response.count;
-			this.dataSource = new MatTableDataSource<Anime>(this.animeList);
-		});
+		this.getAnimeList(this.managementOptions);
 	}
 
 	/** Set paginator to the list. */
 	public ngAfterViewInit(): void {
 		this.dataSource.paginator = this.paginator;
+	}
+
+	/** Gets anime list.
+	 * @param managementOptions Configurable options for filtering and sorting.
+	 */
+	private getAnimeList(managementOptions: ManagementOptions): void {
+		this.animeService
+			.getAnimeList(this.pageSize.toString(), this.offset.toString(), managementOptions)
+			.subscribe(response => {
+				this.animeList = response.results;
+				this.totalItems = response.count;
+				this.dataSource = new MatTableDataSource<Anime>(this.animeList);
+			});
 	}
 
 	/**
@@ -74,7 +85,23 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	public handlePageChange(e: PageEvent): void {
 		this.pageIndex = e.pageIndex;
 		this.offset = this.pageSize * this.pageIndex;
-		this.getAnimeList();
+		this.getAnimeList(this.managementOptions);
+	}
+
+	/**
+	 * Add.
+	 * @param options Options for table management.
+	 */
+	public manageTable(options: ManagementOptions): void {
+		this.managementOptions.sort = options.sort;
+		this.managementOptions.filter = options.filter;
+
+		// Reset page index and go to the beginning in case of filtering by type.
+		if (this.managementOptions.filter.length) {
+			this.pageIndex = 0;
+		}
+
+		this.getAnimeList(this.managementOptions);
 	}
 
 	/**
