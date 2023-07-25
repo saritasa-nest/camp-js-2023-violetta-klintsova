@@ -5,6 +5,7 @@ import { Anime } from '@js-camp/core/models/anime';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ManagementOptions } from '@js-camp/angular/core/utils/TableManagementOptions';
+import { BehaviorSubject, combineLatest, switchMap } from 'rxjs';
 
 /** Anime table. */
 @Component({
@@ -13,29 +14,26 @@ import { ManagementOptions } from '@js-camp/angular/core/utils/TableManagementOp
 	styleUrls: ['./anime-table.component.css'],
 })
 export class AnimeTableComponent implements OnInit, AfterViewInit {
-	/** List of anime. */
-	public animeList: Anime[] = [];
-
 	/** Paginator. */
 	@ViewChild(MatPaginator) public paginator!: MatPaginator;
 
-	/** Number of existing items. */
-	public totalItems = 0;
+	/** Boolean for progress spinner. */
+	protected isLoading = true;
 
-	/** Data for paginator. */
-	public dataSource = new MatTableDataSource<Anime>();
+	/** Number of existing items. */
+	protected totalItems = 0;
+
+	/** List of anime. */
+	protected animeList = new MatTableDataSource<Anime>();
 
 	/** Page size. */
-	public readonly pageSize = 10;
+	protected readonly pageSize = 10;
 
 	/** Page index. */
-	public pageIndex = 0;
-
-	/** Offset. */
-	public offset = 0;
+	protected pageIndex = 0;
 
 	/** Enable first anf last buttons. */
-	public readonly showFirstLastButtons = true;
+	protected readonly showFirstLastButtons = true;
 
 	/** Columns to be displayed in the table. */
 	protected readonly displayedColumns: readonly string[] = [
@@ -47,61 +45,72 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 		'status',
 	];
 
-	/** List of management options. */
-	public managementOptions: ManagementOptions = {
-		sort: '',
-		filter: [],
-	};
+	/** Page index subject. */
+	private offset$ = new BehaviorSubject<string>('0');
+
+	/** Search subject. */
+	private search$ = new BehaviorSubject<string>('');
+
+	/** Sort subject. */
+	private sort$ = new BehaviorSubject<string>('');
+
+	/** Filters subject. */
+	private filter$ = new BehaviorSubject<string[]>([]);
 
 	public constructor(private readonly animeService: AnimeService) {}
 
 	/** Something.  */
 	public ngOnInit(): void {
-		this.getAnimeList(this.managementOptions);
+		combineLatest([this.offset$, this.search$, this.sort$, this.filter$])
+			.pipe(
+				switchMap(([offset, search, sort, filter]) => {
+					this.isLoading = true;
+					return this.animeService.getAnimeList(this.pageSize.toString(), offset, { filter, sort }, search);
+				}),
+			)
+			.subscribe((response) => {
+				this.totalItems = response.count;
+				this.animeList = new MatTableDataSource<Anime>(response.results);
+				this.isLoading = false;
+			});
 	}
 
 	/** Set paginator to the list. */
 	public ngAfterViewInit(): void {
-		this.dataSource.paginator = this.paginator;
-	}
-
-	/** Gets anime list.
-	 * @param managementOptions Configurable options for filtering and sorting.
-	 */
-	private getAnimeList(managementOptions: ManagementOptions): void {
-		this.animeService
-			.getAnimeList(this.pageSize.toString(), this.offset.toString(), managementOptions)
-			.subscribe(response => {
-				this.animeList = response.results;
-				this.totalItems = response.count;
-				this.dataSource = new MatTableDataSource<Anime>(this.animeList);
-			});
+		this.animeList.paginator = this.paginator;
 	}
 
 	/**
 	 * Function to change the page.
-	 *  @param e Event.
+	 *  @param e Page event.
 	 */
-	public handlePageChange(e: PageEvent): void {
+	protected handlePageChange(e: PageEvent): void {
 		this.pageIndex = e.pageIndex;
-		this.offset = this.pageSize * this.pageIndex;
-		this.getAnimeList(this.managementOptions);
+		this.offset$.next((this.pageSize * this.pageIndex).toString());
 	}
 
 	/**
 	 * Add.
 	 * @param options Options for table management.
 	 */
-	public manageTable(options: ManagementOptions): void {
-		this.managementOptions.sort = options.sort;
-		this.managementOptions.filter = options.filter;
-
-		// Reset page index and go to the beginning in case of filtering by type.
-		if (this.managementOptions.filter.length) {
+	protected manageTable(options: ManagementOptions): void {
+		if (options.filter?.length) {
 			this.pageIndex = 0;
+			this.filter$.next(options.filter);
 		}
 
-		this.getAnimeList(this.managementOptions);
+		if (options.sort) {
+			this.sort$.next(options.sort);
+		}
+	}
+
+	/**
+	 * Searches for a certain value entered by the user.
+	 * @param value Value to search for.
+	 */
+	protected searchValue(value: string): void {
+		this.pageIndex = 0;
+		this.search$.next(value);
 	}
 
 	/**
