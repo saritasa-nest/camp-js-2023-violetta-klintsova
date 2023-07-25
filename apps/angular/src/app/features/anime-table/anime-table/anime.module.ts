@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import { EmptyValue } from '@js-camp/angular/core/utils/EmptyValuePipe';
 
-import { ListManagementFormComponent } from '../list-management-form/list-management-form.component';
+import { TableManagementComponent } from '../table-management/table-management.component';
 
 import { AnimeTableComponent } from './anime-table.component';
 
@@ -28,7 +28,7 @@ import { AnimeTableComponent } from './anime-table.component';
 		MatButtonModule,
 		MatInputModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, ListManagementFormComponent],
+	declarations: [AnimeTableComponent, EmptyValue, TableManagementComponent],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}
