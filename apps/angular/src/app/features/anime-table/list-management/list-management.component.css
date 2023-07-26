@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 0;
+}
+
+.filter-field {
+  margin-right: 20px;
+}
+
+.search {
+  margin-left: auto;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}

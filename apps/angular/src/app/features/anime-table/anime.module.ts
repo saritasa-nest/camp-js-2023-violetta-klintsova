@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { EmptyValue } from '@js-camp/angular/core/utils/EmptyValuePipe';
 
-import { TableManagementComponent } from './table-management/table-management.component';
+import { ListManagementComponent } from './list-management/list-management.component';
 
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 
@@ -30,7 +30,7 @@ import { AnimeTableComponent } from './anime-table/anime-table.component';
 		MatInputModule,
 		MatProgressSpinnerModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, TableManagementComponent],
+	declarations: [AnimeTableComponent, EmptyValue, ListManagementComponent],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}

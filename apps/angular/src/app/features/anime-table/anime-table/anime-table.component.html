@@ -1,9 +1,9 @@
 <h2 id="anime-table" class="anime-table-title">All anime</h2>
 
-<camp-table-management
+<camp-list-management
   (selectionChange)="manageTable($event)"
   (inputChange)="searchValue($event)"
-></camp-table-management>
+></camp-list-management>
 
 <div class="wrapper">
   <div class="spinner-with-shade" *ngIf="isLoading">

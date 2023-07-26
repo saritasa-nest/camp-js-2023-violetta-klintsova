@@ -3,12 +3,11 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 /** Table management component. */
 @Component({
-	selector: 'camp-table-management',
-	templateUrl: './table-management.component.html',
-	styleUrls: ['./table-management.component.css'],
+	selector: 'camp-list-management',
+	templateUrl: './list-management.component.html',
+	styleUrls: ['./list-management.component.css'],
 })
-export class TableManagementComponent implements OnInit {
-
+export class ListManagementComponent implements OnInit {
 	/** Sets a default sort value. */
 	public ngOnInit(): void {
 		this.sortAndFilter.controls.sortOption.setValue('title_eng');
@@ -30,8 +29,6 @@ export class TableManagementComponent implements OnInit {
 			sort: this.sortAndFilter.value.sortOption,
 			filter: this.sortAndFilter.value.filterOption,
 		};
-
-		console.log(values);
 		this.selectionChange.emit(values);
 	}
 
@@ -46,6 +43,6 @@ export class TableManagementComponent implements OnInit {
 
 	/** Emits search value to its parent component. */
 	public onSearch(): void {
-		this.inputChange.emit(this.search.value.searchValue);
+		this.inputChange.emit(this.search.value.searchValue?.trim());
 	}
 }
