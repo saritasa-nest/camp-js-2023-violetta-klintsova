@@ -1,6 +1,6 @@
-import { DateRange } from '../utils/dateRange';
+import { DateRangeDto } from './dateRangeDto';
 
-/** Anime Item DTO. */
+/** Anime DTO. */
 export interface AnimeDto {
 
 	/** ID. */
@@ -22,7 +22,7 @@ export interface AnimeDto {
 	readonly image: string;
 
 	/** Airing period. */
-	readonly aired: DateRange;
+	readonly aired: DateRangeDto;
 
 	/** Type. */
 	readonly type: string;

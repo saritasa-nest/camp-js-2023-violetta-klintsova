@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 	styleUrls: ['./anime-table.component.css'],
 })
 export class AnimeTableComponent {
-	/** Array of anime items. */
+	/** Anime list. */
 	protected readonly animeList$: Observable<Anime[]>;
 
 	/** Columns to be displayed in the table. */

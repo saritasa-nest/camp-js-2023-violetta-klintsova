@@ -8,7 +8,7 @@ export namespace AnimeMapper {
 
 	/**
 	 * Maps dto to model.
-	 * @param dto Anime list dto.
+	 * @param dto Anime dto.
 	 */
 	export function fromDto(dto: AnimeDto): Anime {
 		return new Anime({

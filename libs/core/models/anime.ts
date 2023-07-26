@@ -1,7 +1,7 @@
 import { TypeOptions } from '../utils/typeOptions';
 import { StatusOptions } from '../utils/statusOptions';
 
-/** List of all anime. */
+/** Anime. */
 export class Anime {
 	/** ID. */
 	public readonly id: number;

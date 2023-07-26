@@ -10,6 +10,6 @@ export class EmptyValue implements PipeTransform {
 	 * @returns Original string or 'unknown.
 	 */
 	public transform(value: string): string {
-		return value || 'Unknown';
+		return value === '' ? 'Unknown' : value;
 	}
 }
