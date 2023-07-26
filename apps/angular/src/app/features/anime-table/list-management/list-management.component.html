@@ -1,44 +1,33 @@
 <div class="wrapper">
-  <div class="sort-and-filter">
-    <form [formGroup]="sortAndFilter">
-      <mat-form-field class="filter-field">
-        <mat-label>Sort by</mat-label>
-        <mat-select formControlName="sortOption" (selectionChange)="onApply()">
-          <mat-option value="title_eng">Title (eng)</mat-option>
-          <mat-option value="aired__startswith">Airing start date</mat-option>
-          <mat-option value="status">Status</mat-option>
-        </mat-select>
-      </mat-form-field>
+  <form (ngSubmit)="onSearch($event)" class="management-form">
+    <mat-form-field class="filter-field">
+      <mat-label>Sort by</mat-label>
+      <mat-select [(value)]="sortOption" (selectionChange)="onSort($event)">
+        <mat-option value="title_eng">Title (eng)</mat-option>
+        <mat-option value="aired__startswith">Airing start date</mat-option>
+        <mat-option value="status">Status</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Filter by</mat-label>
-        <mat-select
-          formControlName="filterOption"
-          (selectionChange)="onApply()"
-          multiple
-        >
-          <mat-option value="TV">TV</mat-option>
-          <mat-option value="OVA">Ova</mat-option>
-          <mat-option value="MUSIC">Music</mat-option>
-          <mat-option value="SPECIAL">Special</mat-option>
-          <mat-option value="ONA">Ona</mat-option>
-          <mat-option value="MOVIE">Movie</mat-option>
-          <mat-option value="UNKNOWN">Unknown</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </form>
-  </div>
+    <mat-form-field>
+      <mat-label>Filter by</mat-label>
+      <mat-select
+        [(value)]="filterOption"
+        (selectionChange)="onFilter($event)"
+        multiple
+      >
+        <mat-option value="TV">TV</mat-option>
+        <mat-option value="OVA">Ova</mat-option>
+        <mat-option value="MUSIC">Music</mat-option>
+        <mat-option value="SPECIAL">Special</mat-option>
+        <mat-option value="ONA">Ona</mat-option>
+        <mat-option value="MOVIE">Movie</mat-option>
+        <mat-option value="UNKNOWN">Unknown</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <div class="search">
-    <form [formGroup]="search">
-      <mat-form-field>
-        <input
-          matInput
-          formControlName="searchValue"
-          placeholder="Search..."
-          (keyup.enter)="onSearch()"
-        />
-      </mat-form-field>
-    </form>
-  </div>
+    <mat-form-field class="search">
+      <input matInput placeholder="Search..." />
+    </mat-form-field>
+  </form>
 </div>

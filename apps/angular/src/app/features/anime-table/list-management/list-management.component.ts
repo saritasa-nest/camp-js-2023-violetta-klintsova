@@ -1,48 +1,55 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { MatInput } from '@angular/material/input';
+import { MatSelectChange } from '@angular/material/select';
 
-/** Table management component. */
+/** List management component. */
 @Component({
 	selector: 'camp-list-management',
 	templateUrl: './list-management.component.html',
 	styleUrls: ['./list-management.component.css'],
 })
-export class ListManagementComponent implements OnInit {
-	/** Sets a default sort value. */
-	public ngOnInit(): void {
-		this.sortAndFilter.controls.sortOption.setValue('title_eng');
+export class ListManagementComponent {
+	/** Default filter option. */
+	public filterOption = [];
+
+	/** Default sort option. */
+	public sortOption = 'title_eng';
+
+	/** Emitter for sort. */
+	@Output()
+	public sortChange = new EventEmitter();
+
+	/**
+	 * Emits chosen options to its parent component.
+	 * @param event Selected sort value.
+	 */
+	public onSort(event: MatSelectChange): void {
+		this.sortOption = event.value;
+		this.sortChange.emit(event.value);
 	}
 
-	/** Sort and filter form group. */
-	public sortAndFilter = new FormGroup({
-		sortOption: new FormControl(''),
-		filterOption: new FormControl([]),
-	});
-
-	/** Emitter for sort and filter inputs. */
+	/** Emitter for filter. */
 	@Output()
-	public selectionChange = new EventEmitter();
+	public filterChange = new EventEmitter();
 
-	/** Emits chosen options to its parent component. */
-	public onApply(): void {
-		const values = {
-			sort: this.sortAndFilter.value.sortOption,
-			filter: this.sortAndFilter.value.filterOption,
-		};
-		this.selectionChange.emit(values);
+	/**
+	 * Emits chosen filter options.
+	 * @param event Selected sort value.
+	 */
+	public onFilter(event: MatSelectChange): void {
+		this.filterOption = event.value;
+		this.filterChange.emit(event.value);
 	}
 
 	/** Emitter for search input. */
 	@Output()
-	public inputChange = new EventEmitter();
+	public searchChange = new EventEmitter();
 
-	/** Search form group. */
-	public search = new FormGroup({
-		searchValue: new FormControl(''),
-	});
-
-	/** Emits search value to its parent component. */
-	public onSearch(): void {
-		this.inputChange.emit(this.search.value.searchValue?.trim());
+	/**
+	 * Emits search value to its parent component.
+	 * @param event Selected sort value.
+	 */
+	public onSearch(event: MatInput): void {
+		this.searchChange.emit(event.value);
 	}
 }

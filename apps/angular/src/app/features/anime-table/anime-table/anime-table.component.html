@@ -1,8 +1,9 @@
 <h2 id="anime-table" class="anime-table-title">All anime</h2>
 
 <camp-list-management
-  (selectionChange)="manageTable($event)"
-  (inputChange)="searchValue($event)"
+  (sortChange)="sortList($event)"
+  (filterChange)="filterList($event)"
+  (searchChange)="searchValue($event)"
 ></camp-list-management>
 
 <div class="wrapper">
