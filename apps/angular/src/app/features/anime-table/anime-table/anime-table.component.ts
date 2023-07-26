@@ -4,7 +4,7 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { BehaviorSubject, combineLatest, switchMap } from 'rxjs';
+import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 /** Anime table. */
@@ -46,27 +46,56 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	];
 
 	/** Page index subject. */
-	private offset$ = new BehaviorSubject<string>('0');
-
-	/** Search subject. */
-	private search$ = new BehaviorSubject<string>('');
+	private offset$ = new ReplaySubject<string>(1);
 
 	/** Sort subject with default value. */
-	private sort$ = new BehaviorSubject<string>('title_eng');
+	private sort$ = new ReplaySubject<string>(1);
 
 	/** Filters subject. */
-	private filters$ = new BehaviorSubject<string[]>([]);
+	private filters$ = new ReplaySubject<string[]>(1);
+
+	/** Search subject. */
+	private search$ = new ReplaySubject<string>(1);
 
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
-	) {
-		// console.log(activatedRoute.snapshot.queryParams);
-	}
+	) {}
 
-	/** Something.  */
+	/** Component initialization. */
 	public ngOnInit(): void {
+
+		const params = this.activatedRoute.snapshot.queryParams;
+
+		if ('offset' in params) {
+			// TODO configure page index.
+
+			
+			this.offset$.next(params['offset']);
+			this.pageIndex = Number(params['offset']) / this.pageSize;
+		} else {
+			this.offset$.next('0');
+		}
+
+		if ('ordering' in params) {
+			this.sort$.next(params['ordering']);
+		} else {
+			this.sort$.next('title_eng');
+		}
+
+		if ('type_in' in params) {
+			this.filters$.next(params['type_in']);
+		} else {
+			this.filters$.next([]);
+		}
+
+		if ('search' in params) {
+			this.search$.next(params['search']);
+		} else {
+			this.search$.next('');
+		}
+
 		combineLatest([this.offset$, this.search$, this.sort$, this.filters$])
 			.pipe(
 				switchMap(([offset, search, sort, filter]) => {
@@ -75,7 +104,7 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 						queryParams: { limit: this.pageSize, offset, ordering: sort, filter, search },
 					});
 					return this.animeService.getAnimeList(this.pageSize.toString(), offset, { filter, sort }, search);
-				})
+				}),
 			)
 			.subscribe((response) => {
 				this.totalItems = response.count;
@@ -114,6 +143,8 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	 */
 	protected filterList(filterValues: string[]): void {
 		if (filterValues) {
+			this.pageIndex = 0;
+			this.offset$.next('0');
 			this.filters$.next(filterValues);
 		}
 	}
@@ -123,6 +154,8 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	 * @param value Value to search for.
 	 */
 	protected searchValue(value: string): void {
+		this.pageIndex = 0;
+		this.offset$.next('0');
 		this.search$.next(value);
 	}
 

@@ -10,10 +10,10 @@ import { MatSelectChange } from '@angular/material/select';
 })
 export class ListManagementComponent {
 	/** Default filter option. */
-	public filterOption = [];
+	protected filterOption = [];
 
 	/** Default sort option. */
-	public sortOption = 'title_eng';
+	protected sortOption = 'title_eng';
 
 	/** Emitter for sort. */
 	@Output()
