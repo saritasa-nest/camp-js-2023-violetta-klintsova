@@ -4,8 +4,8 @@ import { Anime } from '@js-camp/core/models/anime';
 
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ManagementOptions } from '@js-camp/angular/core/utils/TableManagementOptions';
 import { BehaviorSubject, combineLatest, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /** Anime table. */
 @Component({
@@ -17,14 +17,14 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	/** Paginator. */
 	@ViewChild(MatPaginator) public paginator!: MatPaginator;
 
-	/** Boolean for progress spinner. */
+	/** List of anime. */
+	protected animeList = new MatTableDataSource<Anime>();
+
+	/** Loading state. */
 	protected isLoading = true;
 
 	/** Number of existing items. */
 	protected totalItems = 0;
-
-	/** List of anime. */
-	protected animeList = new MatTableDataSource<Anime>();
 
 	/** Page size. */
 	protected readonly pageSize = 10;
@@ -55,18 +55,27 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	private sort$ = new BehaviorSubject<string>('title_eng');
 
 	/** Filters subject. */
-	private filter$ = new BehaviorSubject<string[]>([]);
+	private filters$ = new BehaviorSubject<string[]>([]);
 
-	public constructor(private readonly animeService: AnimeService) {}
+	public constructor(
+		private readonly animeService: AnimeService,
+		private readonly router: Router,
+		private readonly activatedRoute: ActivatedRoute,
+	) {
+		// console.log(activatedRoute.snapshot.queryParams);
+	}
 
 	/** Something.  */
 	public ngOnInit(): void {
-		combineLatest([this.offset$, this.search$, this.sort$, this.filter$])
+		combineLatest([this.offset$, this.search$, this.sort$, this.filters$])
 			.pipe(
 				switchMap(([offset, search, sort, filter]) => {
 					this.isLoading = true;
+					this.router.navigate(['/anime'], {
+						queryParams: { limit: this.pageSize, offset, ordering: sort, filter, search },
+					});
 					return this.animeService.getAnimeList(this.pageSize.toString(), offset, { filter, sort }, search);
-				}),
+				})
 			)
 			.subscribe((response) => {
 				this.totalItems = response.count;
@@ -81,8 +90,8 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	}
 
 	/**
-	 * Function to change the page.
-	 *  @param e Page event.
+	 * Changes the page.
+	 * @param e Page event.
 	 */
 	protected handlePageChange(e: PageEvent): void {
 		this.pageIndex = e.pageIndex;
@@ -90,26 +99,30 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	}
 
 	/**
-	 * Add.
-	 * @param options Options for table management.
+	 * Pushes new value to sort observable.
+	 * @param sortValue Sort value.
 	 */
-	protected manageTable(options: ManagementOptions): void {
-		if (options.filter) {
-			this.pageIndex = 0;
-			this.filter$.next(options.filter);
-		}
-
-		if (options.sort) {
-			this.sort$.next(options.sort);
+	protected sortList(sortValue: string): void {
+		if (sortValue) {
+			this.sort$.next(sortValue);
 		}
 	}
 
 	/**
-	 * Searches for a certain value entered by the user.
+	 * Pushes new value to filter observable.
+	 * @param filterValues Filter values.
+	 */
+	protected filterList(filterValues: string[]): void {
+		if (filterValues) {
+			this.filters$.next(filterValues);
+		}
+	}
+
+	/**
+	 * Pushes new value to search observable.
 	 * @param value Value to search for.
 	 */
 	protected searchValue(value: string): void {
-		this.pageIndex = 0;
 		this.search$.next(value);
 	}
 
@@ -118,7 +131,7 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	 * @param item Anime item.
 	 * @returns A unique number for each table row.
 	 */
-	public trackById(index: number, item: Anime): number {
+	protected trackById(index: number, item: Anime): number {
 		return item.id;
 	}
 }
