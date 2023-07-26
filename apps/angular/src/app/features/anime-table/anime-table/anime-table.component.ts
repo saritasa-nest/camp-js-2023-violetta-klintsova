@@ -51,8 +51,8 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	/** Search subject. */
 	private search$ = new BehaviorSubject<string>('');
 
-	/** Sort subject. */
-	private sort$ = new BehaviorSubject<string>('');
+	/** Sort subject with default value. */
+	private sort$ = new BehaviorSubject<string>('title_eng');
 
 	/** Filters subject. */
 	private filter$ = new BehaviorSubject<string[]>([]);
@@ -94,7 +94,7 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	 * @param options Options for table management.
 	 */
 	protected manageTable(options: ManagementOptions): void {
-		if (options.filter?.length) {
+		if (options.filter) {
 			this.pageIndex = 0;
 			this.filter$.next(options.filter);
 		}

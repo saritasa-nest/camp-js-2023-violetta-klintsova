@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 /** Table management component. */
@@ -7,25 +7,45 @@ import { FormGroup, FormControl } from '@angular/forms';
 	templateUrl: './table-management.component.html',
 	styleUrls: ['./table-management.component.css'],
 })
-export class TableManagementComponent {
+export class TableManagementComponent implements OnInit {
 
-	/** Selected option for sorting. */
-	public form = new FormGroup({
+	/** Sets a default sort value. */
+	public ngOnInit(): void {
+		this.sortAndFilter.controls.sortOption.setValue('title_eng');
+	}
+
+	/** Sort and filter form group. */
+	public sortAndFilter = new FormGroup({
 		sortOption: new FormControl(''),
 		filterOption: new FormControl([]),
 	});
 
-	/** Push object with filter/sort value to its parent component. */
+	/** Emitter for sort and filter inputs. */
 	@Output()
 	public selectionChange = new EventEmitter();
 
-	/** Happens when the form is sent. */
+	/** Emits chosen options to its parent component. */
 	public onApply(): void {
 		const values = {
-			sort: this.form.value.sortOption,
-			filter: this.form.value.filterOption,
+			sort: this.sortAndFilter.value.sortOption,
+			filter: this.sortAndFilter.value.filterOption,
 		};
 
+		console.log(values);
 		this.selectionChange.emit(values);
+	}
+
+	/** Emitter for search input. */
+	@Output()
+	public inputChange = new EventEmitter();
+
+	/** Search form group. */
+	public search = new FormGroup({
+		searchValue: new FormControl(''),
+	});
+
+	/** Emits search value to its parent component. */
+	public onSearch(): void {
+		this.inputChange.emit(this.search.value.searchValue);
 	}
 }

@@ -15,7 +15,6 @@ import { EmptyValue } from '@js-camp/angular/core/utils/EmptyValuePipe';
 import { TableManagementComponent } from './table-management/table-management.component';
 
 import { AnimeTableComponent } from './anime-table/anime-table.component';
-import { TableSearchComponent } from './table-search/table-search.component';
 
 /** Anime table module. */
 @NgModule({
@@ -31,7 +30,7 @@ import { TableSearchComponent } from './table-search/table-search.component';
 		MatInputModule,
 		MatProgressSpinnerModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, TableManagementComponent, TableSearchComponent],
+	declarations: [AnimeTableComponent, EmptyValue, TableManagementComponent],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}

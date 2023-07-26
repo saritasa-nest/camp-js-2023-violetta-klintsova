@@ -2,9 +2,8 @@
 
 <camp-table-management
   (selectionChange)="manageTable($event)"
+  (inputChange)="searchValue($event)"
 ></camp-table-management>
-
-<camp-table-search (inputChange)="searchValue($event)"></camp-table-search>
 
 <div class="wrapper">
   <div class="spinner-with-shade" *ngIf="isLoading">

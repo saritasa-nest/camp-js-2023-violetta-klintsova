@@ -1,17 +1,17 @@
-<div class="form">
-  <form [formGroup]="form">
+<div class="sort-and-filter">
+  <form [formGroup]="sortAndFilter">
     <mat-form-field>
       <mat-label>Sort by</mat-label>
-      <mat-select formControlName="sortOption">
+      <mat-select formControlName="sortOption" (selectionChange)="onApply()">
         <mat-option value="title_eng">Title (eng)</mat-option>
         <mat-option value="aired__startswith">Airing start date</mat-option>
-        <mat-option value="status">Status</mat-option>
+        <mat-option value="status" >Status</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Filter by</mat-label>
-      <mat-select formControlName="filterOption" multiple>
+      <mat-select formControlName="filterOption" (selectionChange)="onApply()" multiple>
         <mat-option value="TV">TV</mat-option>
         <mat-option value="OVA">Ova</mat-option>
         <mat-option value="MUSIC">Music</mat-option>
@@ -22,8 +22,17 @@
       </mat-select>
     </mat-form-field>
   </form>
+</div>
 
-  <button mat-raised-button color="primary" type="button" (click)="onApply()">
-    Apply
+<div class="search">
+  <form [formGroup]="search">
+    <mat-form-field>
+      <input matInput formControlName="searchValue" placeholder="Search..."/>
+    </mat-form-field>
+  </form>
+
+  <button mat-raised-button color="primary" type="button" (click)="onSearch()">
+    Search
   </button>
 </div>
+
