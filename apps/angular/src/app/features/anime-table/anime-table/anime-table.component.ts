@@ -6,7 +6,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { QueryParameters } from '../QueryParameters';
+import { QueryParameters } from '../../../../../../../libs/core/models/QueryParameters';
 
 /** Anime table. */
 @Component({
@@ -74,9 +74,10 @@ export class AnimeTableComponent implements OnInit {
 			ordering: params['ordering'] || 'title_eng',
 		};
 
-		if (params['filter']?.length) {
-			this.queryParams.filter = params['filter'];
+		if (params['type_in']?.length) {
+			this.queryParams['type_in'] = params['type_in'];
 		}
+
 		if (params['search'] !== '') {
 			this.queryParams.search = params['search'];
 		}
@@ -104,8 +105,11 @@ export class AnimeTableComponent implements OnInit {
 						limit: this.pageSize,
 						offset,
 						ordering: sort,
-						filter,
 					};
+
+					if (filter.length) {
+						this.queryParams.type_in = filter.toString();
+					}
 
 					if (search !== '') {
 						this.queryParams.search = search;

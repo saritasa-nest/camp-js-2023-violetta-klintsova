@@ -1,7 +1,7 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 
-import { QueryParameters } from '../QueryParameters';
+import { QueryParameters } from '../../../../../../../libs/core/models/QueryParameters';
 
 /** List management component. */
 @Component({
@@ -9,7 +9,21 @@ import { QueryParameters } from '../QueryParameters';
 	templateUrl: './list-management.component.html',
 	styleUrls: ['./list-management.component.css'],
 })
-export class ListManagementComponent {
+export class ListManagementComponent implements OnInit {
+	/** Set default value on init. */
+	public ngOnInit(): void {
+		if (this.receivedDefaults.ordering) {
+			this.sortOption = this.receivedDefaults.ordering;
+		}
+
+		if (this.receivedDefaults.type_in) {
+			this.filterOption = this.receivedDefaults.type_in.split(',');
+		}
+
+		if (this.receivedDefaults.search) {
+			this.inputValue = this.receivedDefaults.search;
+		}
+	}
 
 	/** Received default inputs. */
 	@Input()

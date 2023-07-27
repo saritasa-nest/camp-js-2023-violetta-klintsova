@@ -11,7 +11,7 @@ export interface QueryParameters {
 	ordering: string;
 
 	/** Filters. */
-	filter?: string[];
+	type_in?: string;
 
 	/** Search value. */
 	search?: string;
