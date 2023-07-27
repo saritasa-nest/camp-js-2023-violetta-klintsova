@@ -1,5 +1,6 @@
-import { DistributionTypes } from '../utils/distributionTypes';
-import { ProductionStatuses } from '../utils/productionStatuses';
+import { DistributionTypes } from './distributionTypes';
+
+import { ProductionStatuses } from './productionStatuses';
 
 /** Anime. */
 export class Anime {
