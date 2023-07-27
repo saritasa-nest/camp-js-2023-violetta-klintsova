@@ -1,5 +1,5 @@
 <div class="wrapper">
-  <form (ngSubmit)="onSearch($event)" class="management-form">
+  <form (ngSubmit)="onSearch()" class="management-form">
     <mat-form-field class="filter-field">
       <mat-label>Sort by</mat-label>
       <mat-select [(value)]="sortOption" (selectionChange)="onSort($event)">
@@ -27,7 +27,7 @@
     </mat-form-field>
 
     <mat-form-field class="search">
-      <input matInput placeholder="Search..." />
+      <input matInput placeholder="Search..." [(ngModel)]="inputValue" name="Search input"/>
     </mat-form-field>
   </form>
 </div>

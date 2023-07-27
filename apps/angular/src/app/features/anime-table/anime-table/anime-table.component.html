@@ -4,6 +4,7 @@
   (sortChange)="sortList($event)"
   (filterChange)="filterList($event)"
   (searchChange)="searchValue($event)"
+  [receivedDefaults]="this.queryParams"
 ></camp-list-management>
 
 <div class="wrapper">
@@ -14,7 +15,7 @@
   <div class="anime-table">
     <table
       mat-table
-      [dataSource]="animeList"
+      [dataSource]="anime"
       class="mat-elevation-z8 anime-table"
       [trackBy]="trackById"
       aria-describedby="anime-table"

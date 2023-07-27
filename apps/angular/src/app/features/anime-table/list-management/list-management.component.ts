@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { MatInput } from '@angular/material/input';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
+
+import { QueryParameters } from '../QueryParameters';
 
 /** List management component. */
 @Component({
@@ -9,11 +10,19 @@ import { MatSelectChange } from '@angular/material/select';
 	styleUrls: ['./list-management.component.css'],
 })
 export class ListManagementComponent {
+
+	/** Received default inputs. */
+	@Input()
+	public receivedDefaults!: QueryParameters;
+
 	/** Default filter option. */
-	protected filterOption = [];
+	protected filterOption = [''];
 
 	/** Default sort option. */
 	protected sortOption = 'title_eng';
+
+	/** Default input value. */
+	public inputValue = '';
 
 	/** Emitter for sort. */
 	@Output()
@@ -49,7 +58,7 @@ export class ListManagementComponent {
 	 * Emits search value to its parent component.
 	 * @param event Selected sort value.
 	 */
-	public onSearch(event: MatInput): void {
-		this.searchChange.emit(event.value);
+	public onSearch(): void {
+		this.searchChange.emit(this.inputValue);
 	}
 }

@@ -1,11 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
 
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { PageEvent } from '@angular/material/paginator';
 import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { QueryParameters } from '../QueryParameters';
 
 /** Anime table. */
 @Component({
@@ -13,12 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 	templateUrl: './anime-table.component.html',
 	styleUrls: ['./anime-table.component.css'],
 })
-export class AnimeTableComponent implements OnInit, AfterViewInit {
-	/** Paginator. */
-	@ViewChild(MatPaginator) public paginator!: MatPaginator;
-
-	/** List of anime. */
-	protected animeList = new MatTableDataSource<Anime>();
+export class AnimeTableComponent implements OnInit {
+	/** Anime list. */
+	protected anime: Anime[] = [];
 
 	/** Loading state. */
 	protected isLoading = true;
@@ -57,65 +55,71 @@ export class AnimeTableComponent implements OnInit, AfterViewInit {
 	/** Search subject. */
 	private search$ = new ReplaySubject<string>(1);
 
+	/** Empty object for query params. */
+	public queryParams!: QueryParameters;
+
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
-		private readonly activatedRoute: ActivatedRoute,
+		private readonly activatedRoute: ActivatedRoute
 	) {}
 
 	/** Component initialization. */
 	public ngOnInit(): void {
-
 		const params = this.activatedRoute.snapshot.queryParams;
 
-		if ('offset' in params) {
-			// TODO configure page index.
+		this.queryParams = {
+			limit: this.pageSize,
+			offset: params['offset'],
+			ordering: params['ordering'] || 'title_eng',
+		};
 
-			
-			this.offset$.next(params['offset']);
+		if (params['filter']?.length) {
+			this.queryParams.filter = params['filter'];
+		}
+		if (params['search'] !== '') {
+			this.queryParams.search = params['search'];
+		}
+
+		console.log(this.queryParams);
+
+		// Set existing params or defaults
+		if ('offset' in params) {
 			this.pageIndex = Number(params['offset']) / this.pageSize;
+			this.offset$.next(params['offset']);
 		} else {
 			this.offset$.next('0');
 		}
 
-		if ('ordering' in params) {
-			this.sort$.next(params['ordering']);
-		} else {
-			this.sort$.next('title_eng');
-		}
-
-		if ('type_in' in params) {
-			this.filters$.next(params['type_in']);
-		} else {
-			this.filters$.next([]);
-		}
-
-		if ('search' in params) {
-			this.search$.next(params['search']);
-		} else {
-			this.search$.next('');
-		}
+		this.sort$.next(params['ordering'] || 'title_eng');
+		this.filters$.next(params['type_in'] || []);
+		this.search$.next(params['search'] || '');
 
 		combineLatest([this.offset$, this.search$, this.sort$, this.filters$])
 			.pipe(
 				switchMap(([offset, search, sort, filter]) => {
 					this.isLoading = true;
-					this.router.navigate(['/anime'], {
-						queryParams: { limit: this.pageSize, offset, ordering: sort, filter, search },
-					});
+
+					this.queryParams = {
+						limit: this.pageSize,
+						offset,
+						ordering: sort,
+						filter,
+					};
+
+					if (search !== '') {
+						this.queryParams.search = search;
+					}
+
+					this.router.navigate(['/anime'], { queryParams: this.queryParams });
 					return this.animeService.getAnimeList(this.pageSize.toString(), offset, { filter, sort }, search);
-				}),
+				})
 			)
 			.subscribe((response) => {
 				this.totalItems = response.count;
-				this.animeList = new MatTableDataSource<Anime>(response.results);
+				this.anime = response.results;
 				this.isLoading = false;
 			});
-	}
-
-	/** Set paginator to the list. */
-	public ngAfterViewInit(): void {
-		this.animeList.paginator = this.paginator;
 	}
 
 	/**
