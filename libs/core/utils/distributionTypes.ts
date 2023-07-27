@@ -1,5 +1,5 @@
 /** Possible anime types. */
-export enum TypeOptions {
+export enum DistributionTypes {
 	Tv = 'TV',
 	Ova = 'OVA',
 	Movie = 'MUSIC',

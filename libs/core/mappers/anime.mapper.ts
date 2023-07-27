@@ -1,8 +1,8 @@
 import { AnimeDto } from '../dtos/anime.dto';
 import { Anime } from '../models/anime';
 
-import { TypeOptions } from '../utils/typeOptions';
-import { StatusOptions } from '../utils/statusOptions';
+import { DistributionTypes } from '../utils/distributionTypes';
+import { ProductionStatuses } from '../utils/productionStatuses';
 
 export namespace AnimeMapper {
 
@@ -17,8 +17,8 @@ export namespace AnimeMapper {
 			image: dto.image,
 			titleJpn: dto.title_jpn,
 			airedStartDate: new Date(dto.aired.start),
-			type: dto.type as TypeOptions,
-			status: dto.status.replace(/_/g, ' ') as StatusOptions,
+			type: dto.type as DistributionTypes,
+			status: dto.status.replace(/_/g, ' ') as ProductionStatuses,
 		});
 	}
 }
