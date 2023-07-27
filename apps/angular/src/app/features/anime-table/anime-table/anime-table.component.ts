@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
 
 import { PageEvent } from '@angular/material/paginator';
-import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
+import { ReplaySubject, Subject, combineLatest, switchMap, takeUntil } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { QueryParameters } from '../../../../../../../libs/core/models/QueryParameters';
+import { QueryParameters } from '@js-camp/core/models/QueryParameters';
 
 /** Anime table. */
 @Component({
@@ -14,9 +14,13 @@ import { QueryParameters } from '../../../../../../../libs/core/models/QueryPara
 	templateUrl: './anime-table.component.html',
 	styleUrls: ['./anime-table.component.css'],
 })
-export class AnimeTableComponent implements OnInit {
+export class AnimeTableComponent implements OnInit, OnDestroy {
+
+	/** Subject to be unsubscribed from and destroyed. */
+	protected destroy$: Subject<boolean> = new Subject<boolean>();
+
 	/** Anime list. */
-	protected anime: Anime[] = [];
+	protected animeList: Anime[] = [];
 
 	/** Loading state. */
 	protected isLoading = true;
@@ -29,9 +33,6 @@ export class AnimeTableComponent implements OnInit {
 
 	/** Page index. */
 	protected pageIndex = 0;
-
-	/** Enable first anf last buttons. */
-	protected readonly showFirstLastButtons = true;
 
 	/** Columns to be displayed in the table. */
 	protected readonly displayedColumns: readonly string[] = [
@@ -61,12 +62,13 @@ export class AnimeTableComponent implements OnInit {
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
-		private readonly activatedRoute: ActivatedRoute
+		private readonly activatedRoute: ActivatedRoute,
 	) {}
 
 	/** Component initialization. */
 	public ngOnInit(): void {
 		const params = this.activatedRoute.snapshot.queryParams;
+		console.log(params);
 
 		this.queryParams = {
 			limit: this.pageSize,
@@ -82,9 +84,6 @@ export class AnimeTableComponent implements OnInit {
 			this.queryParams.search = params['search'];
 		}
 
-		console.log(this.queryParams);
-
-		// Set existing params or defaults
 		if ('offset' in params) {
 			this.pageIndex = Number(params['offset']) / this.pageSize;
 			this.offset$.next(params['offset']);
@@ -116,14 +115,21 @@ export class AnimeTableComponent implements OnInit {
 					}
 
 					this.router.navigate(['/anime'], { queryParams: this.queryParams });
-					return this.animeService.getAnimeList(this.pageSize.toString(), offset, { filter, sort }, search);
-				})
+					return this.animeService.getAnimeList(this.pageSize.toString(), offset, sort, filter, search);
+				}),
+				takeUntil(this.destroy$),
 			)
-			.subscribe((response) => {
+			.subscribe(response => {
 				this.totalItems = response.count;
-				this.anime = response.results;
+				this.animeList = response.results;
 				this.isLoading = false;
 			});
+	}
+
+	/** Unsubscribe from observables. */
+	public ngOnDestroy(): void {
+		this.destroy$.next(true);
+		this.destroy$.unsubscribe();
 	}
 
 	/**

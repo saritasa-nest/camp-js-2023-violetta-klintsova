@@ -1,16 +1,17 @@
 import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 
-import { QueryParameters } from '../../../../../../../libs/core/models/QueryParameters';
+import { QueryParameters } from '@js-camp/core/models/QueryParameters';
 
-/** List management component. */
+/** List management. */
 @Component({
 	selector: 'camp-list-management',
 	templateUrl: './list-management.component.html',
 	styleUrls: ['./list-management.component.css'],
 })
 export class ListManagementComponent implements OnInit {
-	/** Set default value on init. */
+
+	/** Sets default values on init. */
 	public ngOnInit(): void {
 		if (this.receivedDefaults.ordering) {
 			this.sortOption = this.receivedDefaults.ordering;
@@ -57,7 +58,7 @@ export class ListManagementComponent implements OnInit {
 
 	/**
 	 * Emits chosen filter options.
-	 * @param event Selected sort value.
+	 * @param event Selected filters.
 	 */
 	public onFilter(event: MatSelectChange): void {
 		this.filterOption = event.value;

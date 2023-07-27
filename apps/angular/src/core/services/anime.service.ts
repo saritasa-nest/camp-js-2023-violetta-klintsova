@@ -14,8 +14,6 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 
-import { ManagementOptions } from '../utils/TableManagementOptions';
-
 /** Anime service. */
 @Injectable({
 	providedIn: 'root',
@@ -25,17 +23,20 @@ export class AnimeService {
 
 	public constructor(private readonly http: HttpClient) {}
 
-	/** Gets anime list.
-	 * @param limit Max number of items to get.
-	 * @param offset Offset value.
-	 * @param managementOptions Management options.
-	 * @param searchTerm Term to search for.
+	/**
+	 * Get anime list from the server.
+	 * @param limit Max number of items.
+	 * @param offset Offset.
+	 * @param sort Sort value.
+	 * @param filter Filter values.
+	 * @param search Search value.
 	 */
 	public getAnimeList(
 		limit: string,
 		offset: string,
-		managementOptions: ManagementOptions,
-		searchTerm: string,
+		sort: string,
+		filter: string[],
+		search: string,
 	): Observable<Pagination<Anime>> {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
@@ -43,16 +44,16 @@ export class AnimeService {
 			.set('offset', offset)
 			.set('limit', limit);
 
-		if (managementOptions.sort) {
-			httpParams = httpParams.append('ordering', managementOptions.sort);
+		if (sort) {
+			httpParams = httpParams.append('ordering', sort);
 		}
 
-		if (managementOptions.filter.length) {
-			httpParams = httpParams.append('type__in', managementOptions.filter.toString());
+		if (filter.length) {
+			httpParams = httpParams.append('type__in', filter.toString());
 		}
 
-		if (searchTerm) {
-			httpParams = httpParams.append('search', searchTerm);
+		if (search) {
+			httpParams = httpParams.append('search', search);
 		}
 
 		return this.http

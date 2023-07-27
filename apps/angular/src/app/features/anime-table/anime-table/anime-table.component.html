@@ -15,7 +15,7 @@
   <div class="anime-table">
     <table
       mat-table
-      [dataSource]="anime"
+      [dataSource]="animeList"
       class="mat-elevation-z8 anime-table"
       [trackBy]="trackById"
       aria-describedby="anime-table"
@@ -64,7 +64,7 @@
       [length]="totalItems"
       [pageSize]="pageSize"
       [pageIndex]="pageIndex"
-      [showFirstLastButtons]="showFirstLastButtons"
+      [showFirstLastButtons]="true"
       aria-label="Select page"
     >
     </mat-paginator>
