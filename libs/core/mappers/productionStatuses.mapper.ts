@@ -11,7 +11,7 @@ const FROM_PRODUCTION_STATUS_DTO: Readonly<Record<ProductionStatusesDto, Product
 export namespace ProductionStatusesMapper {
 
 	/**
-	 * Maps data from DTO to Domain model.
+	 * Maps data from dto to model.
 	 * @param data Received data.
 	 */
 	export function fromDto(data: ProductionStatusesDto): ProductionStatuses {
