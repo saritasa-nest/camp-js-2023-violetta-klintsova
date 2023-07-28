@@ -17,13 +17,13 @@ import { QueryParameters } from '@js-camp/core/models/QueryParameters';
 export class AnimeTableComponent implements OnInit, OnDestroy {
 
 	/** Subject to be unsubscribed from and destroyed. */
-	protected destroy$: Subject<boolean> = new Subject<boolean>();
-
-	/** Anime list. */
-	protected animeList: Anime[] = [];
+	private destroy$: Subject<boolean> = new Subject<boolean>();
 
 	/** Loading state. */
 	protected isLoading = true;
+
+	/** Anime list. */
+	protected animeList: Anime[] = [];
 
 	/** Number of existing items. */
 	protected totalItems = 0;
@@ -56,7 +56,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	/** Page index subject. */
 	private page$ = new ReplaySubject<number>(1);
 
-	/** Empty object for query params. */
+	/** Query parameters. */
 	public queryParams: QueryParameters = {
 		page: this.pageIndex,
 		ordering: 'title_eng',
@@ -110,7 +110,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 			});
 	}
 
-	/** Unsubscribe from observables. */
+	/** Unsubscribes from observables. */
 	public ngOnDestroy(): void {
 		this.destroy$.next(true);
 		this.destroy$.unsubscribe();

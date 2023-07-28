@@ -13,6 +13,7 @@ export class ListManagementComponent implements OnInit {
 
 	/** Sets default values on init. */
 	public ngOnInit(): void {
+
 		if (this.receivedDefaults.ordering) {
 			this.sortOption = this.receivedDefaults.ordering;
 		}
@@ -45,7 +46,7 @@ export class ListManagementComponent implements OnInit {
 
 	/**
 	 * Emits chosen options to its parent component.
-	 * @param event Selected sort value.
+	 * @param event Event.
 	 */
 	public onSort(event: MatSelectChange): void {
 		this.sortOption = event.value;
@@ -58,7 +59,7 @@ export class ListManagementComponent implements OnInit {
 
 	/**
 	 * Emits chosen filter options.
-	 * @param event Selected filters.
+	 * @param event Event.
 	 */
 	public onFilter(event: MatSelectChange): void {
 		this.filterOption = event.value;
@@ -71,7 +72,6 @@ export class ListManagementComponent implements OnInit {
 
 	/**
 	 * Emits search value to its parent component.
-	 * @param event Selected sort value.
 	 */
 	public onSearch(): void {
 		this.searchChange.emit(this.inputValue);
