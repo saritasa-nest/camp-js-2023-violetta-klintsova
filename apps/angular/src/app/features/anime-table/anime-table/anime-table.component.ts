@@ -68,21 +68,16 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	/** Component initialization. */
 	public ngOnInit(): void {
 		const params = this.activatedRoute.snapshot.queryParams;
-		console.log(params);
 
 		this.queryParams = {
 			limit: this.pageSize,
 			offset: params['offset'],
 			ordering: params['ordering'] || 'title_eng',
+			...(params['type_in']?.length && {type_in: params['type_in'] }),
+			...(params['search'] !== '' && { search: params['search'] }),
 		};
 
-		if (params['type_in']?.length) {
-			this.queryParams['type_in'] = params['type_in'];
-		}
-
-		if (params['search'] !== '') {
-			this.queryParams.search = params['search'];
-		}
+		console.log(this.queryParams);
 
 		if ('offset' in params) {
 			this.pageIndex = Number(params['offset']) / this.pageSize;
