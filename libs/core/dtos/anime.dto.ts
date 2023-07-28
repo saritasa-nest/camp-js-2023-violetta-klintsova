@@ -1,6 +1,8 @@
-import { DateRange } from '../utils/dateRange';
+import { DateRangeDto } from './dateRange.dto';
+import { DistributionTypesDto } from './distributionTypes.dto';
+import { ProductionStatusesDto } from './productionStatuses.dto';
 
-/** Anime Item DTO. */
+/** Anime DTO. */
 export interface AnimeDto {
 
 	/** ID. */
@@ -22,13 +24,13 @@ export interface AnimeDto {
 	readonly image: string;
 
 	/** Airing period. */
-	readonly aired: DateRange;
+	readonly aired: DateRangeDto;
 
 	/** Type. */
-	readonly type: string;
+	readonly type: DistributionTypesDto;
 
 	/** Status. */
-	readonly status: string;
+	readonly status: ProductionStatusesDto;
 
 	/** General anime rating. */
 	readonly score: number;

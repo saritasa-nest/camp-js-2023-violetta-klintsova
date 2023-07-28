@@ -1,5 +1,5 @@
 /** Date range. */
-export interface DateRange {
+export interface DateRangeDto {
 
 	/** Start date. */
 	readonly start: string;

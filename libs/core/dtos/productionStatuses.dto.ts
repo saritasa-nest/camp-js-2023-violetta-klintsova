@@ -1,6 +1,6 @@
 /** Possible anime statuses. */
-export enum StatusOptions {
+export enum ProductionStatusesDto {
 	Airing = 'AIRING',
 	Finished = 'FINISHED',
-	NotYetAired = 'NOT YET AIRED',
+	NotYetAired = 'NOT_YET_AIRED',
 }
