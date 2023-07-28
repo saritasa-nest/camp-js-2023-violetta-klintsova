@@ -99,7 +99,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 					};
 
 					this.router.navigate(['/anime'], { queryParams: routerParams });
-					return this.animeService.getAnimeList(this.pageSize, page, sort, filters, search);
+					return this.animeService.getAnimeList({ limit: this.pageSize, page, sort, filters, search });
 				}),
 				takeUntil(this.destroy$),
 			)
