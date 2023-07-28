@@ -1,17 +1,14 @@
 /** Query parameters interface. */
 export interface QueryParameters {
 
-	/** Max items. */
-	limit: number;
-
-	/** Offset. */
-	offset: string;
+	/** Page. */
+	page: string;
 
 	/** Ordering. */
 	ordering: string;
 
 	/** Filters. */
-	type_in?: string;
+	filters?: string;
 
 	/** Search value. */
 	search?: string;

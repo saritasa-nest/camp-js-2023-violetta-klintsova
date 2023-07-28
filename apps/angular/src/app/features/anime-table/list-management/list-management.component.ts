@@ -17,8 +17,8 @@ export class ListManagementComponent implements OnInit {
 			this.sortOption = this.receivedDefaults.ordering;
 		}
 
-		if (this.receivedDefaults.type_in) {
-			this.filterOption = this.receivedDefaults.type_in.split(',');
+		if (this.receivedDefaults.filters) {
+			this.filterOption = this.receivedDefaults.filters.split(',');
 		}
 
 		if (this.receivedDefaults.search) {

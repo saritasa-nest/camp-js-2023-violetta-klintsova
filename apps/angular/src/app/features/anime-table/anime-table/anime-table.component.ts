@@ -71,10 +71,12 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	public ngOnInit(): void {
 		const params = this.activatedRoute.snapshot.queryParams;
 
+		console.log(params);
+
 		this.queryParams = {
 			page: params['page'],
 			ordering: params['ordering'] || 'title_eng',
-			...(params['type_in']?.length && {type_in: params['type_in'] }),
+			...(params['filters']?.length && { filters: params['filters'] }),
 			...(params['search'] !== '' && { search: params['search'] }),
 		};
 
@@ -88,25 +90,25 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 		}
 
 		this.sort$.next(params['ordering'] || 'title_eng');
-		this.filters$.next(params['type_in'] || []);
+		this.filters$.next(params['filters'] || []);
 		this.search$.next(params['search'] || '');
 
 		combineLatest([this.offset$, this.search$, this.sort$, this.filters$])
 			.pipe(
-				switchMap(([offset, search, sort, filter]) => {
+				switchMap(([offset, search, sort, filters]) => {
 					this.isLoading = true;
 
 					const routerParams = {
 						page: this.pageIndex,
 						ordering: sort,
-						...(filter.length && { filter: filter.toString() }),
+						...(filters.length && { filters: filters.toString() }),
 						...(search !== '' && { search }),
 					};
 
 					console.log(routerParams);
 
 					this.router.navigate(['/anime'], { queryParams: routerParams });
-					return this.animeService.getAnimeList(this.pageSize.toString(), offset, sort, filter, search);
+					return this.animeService.getAnimeList(this.pageSize.toString(), offset, sort, filters, search);
 				}),
 				takeUntil(this.destroy$),
 			)
