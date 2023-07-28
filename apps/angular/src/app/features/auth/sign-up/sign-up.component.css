@@ -1,0 +1,19 @@
+.wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.heading {
+  padding: 30px 0;
+}
+
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sign-up-button {
+  display: block;
+  margin: 20px 0 auto;
+}
