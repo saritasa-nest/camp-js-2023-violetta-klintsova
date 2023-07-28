@@ -44,10 +44,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 		'status',
 	];
 
-	/** Page index subject. */
-	private offset$ = new ReplaySubject<string>(1);
-
-	/** Sort subject with default value. */
+	/** Sort subject. */
 	private sort$ = new ReplaySubject<string>(1);
 
 	/** Filters subject. */
@@ -56,10 +53,14 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	/** Search subject. */
 	private search$ = new ReplaySubject<string>(1);
 
-	private pageIndex$ = new ReplaySubject<number>(1);
+	/** Page index subject. */
+	private page$ = new ReplaySubject<number>(1);
 
 	/** Empty object for query params. */
-	public queryParams!: QueryParameters;
+	public queryParams: QueryParameters = {
+		page: this.pageIndex,
+		ordering: 'title_eng',
+	};
 
 	public constructor(
 		private readonly animeService: AnimeService,
@@ -71,31 +72,23 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	public ngOnInit(): void {
 		const params = this.activatedRoute.snapshot.queryParams;
 
-		console.log(params);
-
 		this.queryParams = {
-			page: params['page'],
+			page: Number(params['page']),
 			ordering: params['ordering'] || 'title_eng',
 			...(params['filters']?.length && { filters: params['filters'] }),
-			...(params['search'] !== '' && { search: params['search'] }),
+			...(params['search'] && { search: params['search'] }),
 		};
 
-		console.log(this.queryParams);
+		this.pageIndex = this.queryParams.page;
 
-		if ('offset' in params) {
-			this.pageIndex = Number(params['offset']) / this.pageSize;
-			this.offset$.next(params['offset']);
-		} else {
-			this.offset$.next('0');
-		}
-
+		this.page$.next(params['page']);
 		this.sort$.next(params['ordering'] || 'title_eng');
 		this.filters$.next(params['filters'] || []);
 		this.search$.next(params['search'] || '');
 
-		combineLatest([this.offset$, this.search$, this.sort$, this.filters$])
+		combineLatest([this.page$, this.search$, this.sort$, this.filters$])
 			.pipe(
-				switchMap(([offset, search, sort, filters]) => {
+				switchMap(([page, search, sort, filters]) => {
 					this.isLoading = true;
 
 					const routerParams = {
@@ -105,10 +98,8 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 						...(search !== '' && { search }),
 					};
 
-					console.log(routerParams);
-
 					this.router.navigate(['/anime'], { queryParams: routerParams });
-					return this.animeService.getAnimeList(this.pageSize.toString(), offset, sort, filters, search);
+					return this.animeService.getAnimeList(this.pageSize, page, sort, filters, search);
 				}),
 				takeUntil(this.destroy$),
 			)
@@ -131,8 +122,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	 */
 	protected handlePageChange(e: PageEvent): void {
 		this.pageIndex = e.pageIndex;
-		this.pageIndex$.next(this.pageIndex);
-		this.offset$.next((this.pageSize * this.pageIndex).toString());
+		this.page$.next(this.pageIndex);
 	}
 
 	/**
@@ -146,31 +136,31 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	}
 
 	/**
-	 * Pushes new value to filter observable.
+	 * Pushes new value to filter observable and updates the page.
 	 * @param filterValues Filter values.
 	 */
 	protected filterList(filterValues: string[]): void {
 		if (filterValues) {
 			this.pageIndex = 0;
-			this.offset$.next('0');
+			this.page$.next(this.pageIndex);
 			this.filters$.next(filterValues);
 		}
 	}
 
 	/**
-	 * Pushes new value to search observable.
+	 * Pushes new value to search observable and updates the pages.
 	 * @param value Value to search for.
 	 */
 	protected searchValue(value: string): void {
 		this.pageIndex = 0;
-		this.offset$.next('0');
+		this.page$.next(this.pageIndex);
 		this.search$.next(value);
 	}
 
 	/**
 	 * @param index Iteration index.
 	 * @param item Anime item.
-	 * @returns A unique number for each table row.
+	 * @returns Unique number for each table row.
 	 */
 	protected trackById(index: number, item: Anime): number {
 		return item.id;

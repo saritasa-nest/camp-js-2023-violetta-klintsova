@@ -26,14 +26,14 @@ export class AnimeService {
 	/**
 	 * Get anime list from the server.
 	 * @param limit Max number of items.
-	 * @param offset Offset.
+	 * @param page Page index.
 	 * @param sort Sort value.
 	 * @param filter Filter values.
 	 * @param search Search value.
 	 */
 	public getAnimeList(
-		limit: string,
-		offset: string,
+		limit: number,
+		page: number,
 		sort: string,
 		filter: string[],
 		search: string,
@@ -41,7 +41,7 @@ export class AnimeService {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
 		let httpParams = new HttpParams()
-			.set('offset', offset)
+			.set('offset', `${limit * page}`)
 			.set('limit', limit);
 
 		if (sort) {
