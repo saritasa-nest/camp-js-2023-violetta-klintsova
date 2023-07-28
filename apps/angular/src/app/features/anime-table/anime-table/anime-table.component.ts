@@ -56,6 +56,8 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	/** Search subject. */
 	private search$ = new ReplaySubject<string>(1);
 
+	private pageIndex$ = new ReplaySubject<number>(1);
+
 	/** Empty object for query params. */
 	public queryParams!: QueryParameters;
 
@@ -70,8 +72,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 		const params = this.activatedRoute.snapshot.queryParams;
 
 		this.queryParams = {
-			limit: this.pageSize,
-			offset: params['offset'],
+			page: params['page'],
 			ordering: params['ordering'] || 'title_eng',
 			...(params['type_in']?.length && {type_in: params['type_in'] }),
 			...(params['search'] !== '' && { search: params['search'] }),
@@ -95,21 +96,16 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 				switchMap(([offset, search, sort, filter]) => {
 					this.isLoading = true;
 
-					this.queryParams = {
-						limit: this.pageSize,
-						offset,
+					const routerParams = {
+						page: this.pageIndex,
 						ordering: sort,
+						...(filter.length && { filter: filter.toString() }),
+						...(search !== '' && { search }),
 					};
 
-					if (filter.length) {
-						this.queryParams.type_in = filter.toString();
-					}
+					console.log(routerParams);
 
-					if (search !== '') {
-						this.queryParams.search = search;
-					}
-
-					this.router.navigate(['/anime'], { queryParams: this.queryParams });
+					this.router.navigate(['/anime'], { queryParams: routerParams });
 					return this.animeService.getAnimeList(this.pageSize.toString(), offset, sort, filter, search);
 				}),
 				takeUntil(this.destroy$),
@@ -133,6 +129,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	 */
 	protected handlePageChange(e: PageEvent): void {
 		this.pageIndex = e.pageIndex;
+		this.pageIndex$.next(this.pageIndex);
 		this.offset$.next((this.pageSize * this.pageIndex).toString());
 	}
 
