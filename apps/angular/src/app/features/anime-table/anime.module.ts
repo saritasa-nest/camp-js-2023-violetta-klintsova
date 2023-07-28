@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -25,7 +25,6 @@ import { AnimeTableComponent } from './anime-table/anime-table.component';
 		MatFormFieldModule,
 		MatSelectModule,
 		FormsModule,
-		ReactiveFormsModule,
 		MatButtonModule,
 		MatInputModule,
 		MatProgressSpinnerModule,
