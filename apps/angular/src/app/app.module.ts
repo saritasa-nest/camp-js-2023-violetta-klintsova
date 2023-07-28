@@ -9,13 +9,15 @@ import { httpInterceptorProviders } from '../core/interceptors/httpInterceptors'
 import { SharedModule } from './../shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AnimeModule } from './features/anime-table/anime.module';
 import { HeaderComponent } from './header/header.component';
+
+import { AnimeModule } from './features/anime-table/anime.module';
+import { AuthModule } from './features/auth/auth.module';
 
 /** App module. */
 @NgModule({
 	declarations: [AppComponent, HeaderComponent],
-	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, AnimeModule, BrowserAnimationsModule],
+	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, AnimeModule, AuthModule],
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],
 })
