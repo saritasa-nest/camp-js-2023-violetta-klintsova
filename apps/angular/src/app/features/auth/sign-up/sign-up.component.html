@@ -45,6 +45,9 @@
       <mat-error *ngIf="signUpForm.get('password')?.hasError('required')"
         >Password is required</mat-error
       >
+      <!-- <mat-error *ngIf="signUpForm.get('password')?.hasError('pattern')"
+        >Password must be at least 8 chars long and contain numbers, uppercase and lowercase letters</mat-error
+      > -->
     </mat-form-field>
 
     <mat-form-field>
@@ -64,7 +67,13 @@
       >
     </mat-form-field>
   </form>
-  <button type="submit" mat-raised-button color="accent" class="sign-up-button">
+  <button
+    type="submit"
+    mat-raised-button
+    color="accent"
+    class="sign-up-button"
+    (click)="onSubmit()"
+  >
     Sign up
   </button>
 </div>

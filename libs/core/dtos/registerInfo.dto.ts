@@ -11,7 +11,7 @@ export interface RegisterInfoDto {
 	readonly last_name: string;
 
 	/** Avatar. */
-	readonly avatar: string;
+	readonly avatar: string | null;
 
 	/** Password. */
 	readonly password: string;

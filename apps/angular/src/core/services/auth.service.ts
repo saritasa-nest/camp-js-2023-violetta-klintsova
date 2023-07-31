@@ -32,10 +32,11 @@ export class AuthService {
 	 * User registration.
 	 * @param registerInfo Info required for registration.
 	 */
-	public register(registerInfo: RegisterInfo): Observable<Auth> {
+	public register(registerInfo: RegisterInfo): Observable<string> {
 		const path = 'auth/register/';
 		const url = new URL(path, this.apiUrl);
 		const mappedRegisterData = RegisterInfoMapper.toDto(registerInfo);
-		return this.http.post<AuthDto>(url.toString(), mappedRegisterData).pipe(map(el => AuthMapper.fromDto(el)));
+		return this.http.post<AuthDto>(url.toString(), mappedRegisterData).pipe(map(el => AuthMapper.fromDto(el)))
+			.pipe(map(el => el.refresh));
 	}
 }
