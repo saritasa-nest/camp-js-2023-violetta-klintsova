@@ -30,11 +30,9 @@
 .spinner-with-shade {
   position: absolute;
   height: 100%;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
   z-index: 1;
-  background: var(--shade-color);
+  background-color: var(--shade-color);
   display: flex;
   align-items: center;
   justify-content: center;

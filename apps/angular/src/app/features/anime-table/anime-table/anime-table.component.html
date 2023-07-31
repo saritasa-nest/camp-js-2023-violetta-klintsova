@@ -5,11 +5,11 @@
   (filterChange)="filterList($event)"
   (searchChange)="searchValue($event)"
   [receivedDefaults]="this.queryParams"
-></camp-list-management>
+/>
 
 <div class="wrapper">
   <div class="spinner-with-shade" *ngIf="isLoading">
-    <mat-spinner></mat-spinner>
+    <mat-spinner/>
   </div>
 
   <div class="anime-table">
