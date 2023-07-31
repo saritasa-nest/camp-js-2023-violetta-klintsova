@@ -9,8 +9,7 @@ import { UserLogIn } from './UserLogIn';
 	templateUrl: './log-in.component.html',
 	styleUrls: ['./log-in.component.css'],
 })
-export class LogInComponent implements OnInit {
-
+export class LoginComponent implements OnInit {
 	/** Log in form. */
 	protected logInForm!: FormGroup;
 
@@ -27,5 +26,4 @@ export class LogInComponent implements OnInit {
 			password: new FormControl('', Validators.required),
 		});
 	}
-
 }
