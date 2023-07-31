@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
 
 import { PageEvent } from '@angular/material/paginator';
-import { ReplaySubject, Subject, combineLatest, switchMap, takeUntil } from 'rxjs';
+import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { QueryParameters } from '@js-camp/core/models/QueryParameters';
@@ -14,10 +15,7 @@ import { QueryParameters } from '@js-camp/core/models/QueryParameters';
 	templateUrl: './anime-table.component.html',
 	styleUrls: ['./anime-table.component.css'],
 })
-export class AnimeTableComponent implements OnInit, OnDestroy {
-
-	/** Subject to be unsubscribed from and destroyed. */
-	private destroy$: Subject<boolean> = new Subject<boolean>();
+export class AnimeTableComponent implements OnInit {
 
 	/** Loading state. */
 	protected isLoading = true;
@@ -45,16 +43,16 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 	];
 
 	/** Sort subject. */
-	private sort$ = new ReplaySubject<string>(1);
+	private readonly sort$ = new ReplaySubject<string>(1);
 
 	/** Filters subject. */
-	private filters$ = new ReplaySubject<string[]>(1);
+	private readonly filters$ = new ReplaySubject<string[]>(1);
 
 	/** Search subject. */
-	private search$ = new ReplaySubject<string>(1);
+	private readonly search$ = new ReplaySubject<string>(1);
 
 	/** Page index subject. */
-	private page$ = new ReplaySubject<number>(1);
+	private readonly page$ = new ReplaySubject<number>(1);
 
 	/** Query parameters. */
 	public queryParams: QueryParameters = {
@@ -66,6 +64,7 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
+		private readonly destroyRef: DestroyRef,
 	) {}
 
 	/** Component initialization. */
@@ -99,21 +98,15 @@ export class AnimeTableComponent implements OnInit, OnDestroy {
 					};
 
 					this.router.navigate(['/anime'], { queryParams: routerParams });
-					return this.animeService.getAnimeList(this.pageSize, page, sort, filters, search);
+					return this.animeService.getAnimeList({ limit: this.pageSize, page, sort, filters, search });
 				}),
-				takeUntil(this.destroy$),
+				takeUntilDestroyed(this.destroyRef),
 			)
 			.subscribe(response => {
 				this.totalItems = response.count;
 				this.animeList = response.results;
 				this.isLoading = false;
 			});
-	}
-
-	/** Unsubscribes from observables. */
-	public ngOnDestroy(): void {
-		this.destroy$.next(true);
-		this.destroy$.unsubscribe();
 	}
 
 	/**
