@@ -3,35 +3,26 @@ import { DistributionTypes } from './distributionTypes';
 import { ProductionStatuses } from './productionStatuses';
 
 /** Anime. */
-export class Anime {
+export interface Anime {
+
 	/** ID. */
-	public readonly id: number;
+	id: number;
 
 	/** Title. */
-	public readonly titleEng: string;
+	titleEng: string;
 
 	/** Image. */
-	public readonly image: string;
+	image: string;
 
 	/** Image title. */
-	public readonly titleJpn: string;
+	titleJpn: string;
 
 	/** Release date. */
-	public readonly airedStartDate: Date;
+	airedStartDate: Date;
 
 	/** Type. */
-	public readonly type: DistributionTypes;
+	type: DistributionTypes;
 
 	/** Status. */
-	public readonly status: ProductionStatuses;
-
-	public constructor(data: Anime) {
-		this.id = data.id;
-		this.titleEng = data.titleEng;
-		this.image = data.image;
-		this.titleJpn = data.titleJpn;
-		this.airedStartDate = data.airedStartDate;
-		this.type = data.type;
-		this.status = data.status;
-	}
+	status: ProductionStatuses;
 }
