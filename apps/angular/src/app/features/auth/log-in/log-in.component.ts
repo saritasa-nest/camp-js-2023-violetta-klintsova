@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { UserLogIn } from './UserLogIn';
+import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
+import { AuthService } from '@js-camp/angular/core/services/auth.service';
 
 /** Log in component. */
 @Component({
@@ -10,20 +11,40 @@ import { UserLogIn } from './UserLogIn';
 	styleUrls: ['./log-in.component.css'],
 })
 export class LoginComponent implements OnInit {
-	/** Log in form. */
-	protected logInForm!: FormGroup;
+	public constructor(
+		private readonly auth: AuthService,
+		private readonly storage: StorageService,
+		private readonly destroyRef: DestroyRef,
+	) {}
 
-	/** User log in data. */
-	protected user: UserLogIn = {
-		email: '',
-		password: '',
-	};
+	/** Log in form. */
+	protected loginForm!: FormGroup;
 
 	/** Component initialization. */
 	public ngOnInit(): void {
-		this.logInForm = new FormGroup({
+		this.loginForm = new FormGroup({
 			email: new FormControl('', [Validators.required, Validators.email]),
 			password: new FormControl('', Validators.required),
 		});
+	}
+
+	/** Log in. */
+	public onSubmit(): void {
+		if (this.loginForm.invalid) {
+			return;
+		}
+
+		const user = {
+			email: this.loginForm.value.email,
+			password: this.loginForm.value.email,
+		};
+
+		this.auth
+			.login(user)
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(token => {
+				this.storage.setUser(token);
+				console.log(`User has loggen in.`);
+			});
 	}
 }

@@ -1,10 +1,11 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, OnInit } from '@angular/core';
 
 import { equalPasswordsValidator } from '@js-camp/angular/core/utils/equalPasswordValidator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegisterInfo } from '@js-camp/core/models/registerInfo';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 /** Sign up component. */
 @Component({
@@ -13,8 +14,11 @@ import { StorageService } from '@js-camp/angular/core/services/auth-storage.serv
 	styleUrls: ['./sign-up.component.css'],
 })
 export class SignUpComponent implements OnInit {
-
-	public constructor(private readonly auth: AuthService, private readonly storage: StorageService) {}
+	public constructor(
+		private readonly auth: AuthService,
+		private readonly storage: StorageService,
+		private readonly destroyRef: DestroyRef,
+	) {}
 
 	/** Sign up form. */
 	protected signUpForm!: FormGroup;
@@ -26,10 +30,7 @@ export class SignUpComponent implements OnInit {
 				firstName: new FormControl(null, Validators.required),
 				lastName: new FormControl(null, Validators.required),
 				email: new FormControl(null, [Validators.required, Validators.email]),
-				password: new FormControl(null, [
-					Validators.required,
-					Validators.minLength(8),
-				]),
+				password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
 				confirmedPassword: new FormControl(null, Validators.required),
 			},
 			{ validators: equalPasswordsValidator },
@@ -47,7 +48,6 @@ export class SignUpComponent implements OnInit {
 
 	/** Registers a new user. */
 	public onSubmit(): void {
-
 		if (this.signUpForm.invalid) {
 			return;
 		}
@@ -60,9 +60,12 @@ export class SignUpComponent implements OnInit {
 			password: this.signUpForm.value.password,
 		} as RegisterInfo;
 
-		this.auth.register(user).subscribe(x => {
-			this.storage.setUser(x);
-		});
+		this.auth
+			.register(user)
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(token => {
+				this.storage.setUser(token);
+				console.log(`User has registered.`);
+			});
 	}
-
 }

@@ -4,9 +4,9 @@ import { RegisterInfo } from '@js-camp/core/models/registerInfo';
 import { environment } from '@js-camp/angular/environments/environment';
 import { AuthDto } from '@js-camp/core/dtos/auth.dto';
 import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
-import { Auth } from '@js-camp/core/models/auth';
 import { Observable, map } from 'rxjs';
 import { RegisterInfoMapper } from '@js-camp/core/mappers/registerInfo.mapper';
+import { LoginInfo } from '@js-camp/core/models/loginInfo';
 
 /** Authentification service. */
 @Injectable({
@@ -19,13 +19,13 @@ export class AuthService {
 
 	/**
 	 * User login.
-	 * @param email User's email.
-	 * @param password Password.
+	 * @param loginInfo User login info.
 	 */
-	public login(email: string, password: string): Observable<Auth> {
+	public login(loginInfo: LoginInfo): Observable<string> {
 		const path = 'auth/login/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.post<AuthDto>(url.toString(), { email, password }).pipe(map(el => AuthMapper.fromDto(el)));
+		return this.http.post<AuthDto>(url.toString(), loginInfo).pipe(map(el => AuthMapper.fromDto(el)))
+			.pipe(map(el => el.refresh));
 	}
 
 	/**
