@@ -11,7 +11,7 @@ export namespace AnimeMapper {
 	 * @param dto Anime dto.
 	 */
 	export function fromDto(dto: AnimeDto): Anime {
-		return new Anime({
+		return {
 			id: dto.id,
 			titleEng: dto.title_eng,
 			image: dto.image,
@@ -19,6 +19,6 @@ export namespace AnimeMapper {
 			airedStartDate: new Date(dto.aired.start),
 			type: DistributionTypesMapper.fromDto(dto.type),
 			status: ProductionStatusesMapper.fromDto(dto.status),
-		});
+		};
 	}
 }
