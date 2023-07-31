@@ -15,10 +15,11 @@ import { HeaderComponent } from './header/header.component';
 
 import { AnimeModule } from './features/anime-table/anime.module';
 import { AuthModule } from './features/auth/auth.module';
+import { LandingComponent } from './landing/landing.component';
 
 /** App module. */
 @NgModule({
-	declarations: [AppComponent, HeaderComponent],
+	declarations: [AppComponent, HeaderComponent, LandingComponent],
 	imports: [
 		BrowserModule,
 		SharedModule,
