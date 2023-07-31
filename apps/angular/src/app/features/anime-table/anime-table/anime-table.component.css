@@ -1,0 +1,33 @@
+.anime-table {
+  padding: 40px 0;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.anime-list-caption {
+  text-align: left;
+  font-size: var(--large-font-size);
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.cell-anime-img img {
+  max-width: 150px;
+  max-height: 150px;
+}
+
+.cdk-table {
+  border: 1px solid var(--border-dark-color);
+}
+
+.cdk-row {
+  height: 150px;
+}
+
+.cdk-header-cell {
+  border-bottom: 2px solid var(--border-dark-color);
+}
+
+.cdk-cell {
+  border-bottom: 1px solid var(--border-color);
+}
