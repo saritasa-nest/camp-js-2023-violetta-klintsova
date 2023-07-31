@@ -72,7 +72,7 @@ export class AnimeTableComponent implements OnInit {
 		const params = this.activatedRoute.snapshot.queryParams;
 
 		this.queryParams = {
-			page: Number(params['page']),
+			page: Number(params['page']) || this.pageIndex,
 			ordering: params['ordering'] || 'title_eng',
 			...(params['filters']?.length && { filters: params['filters'] }),
 			...(params['search'] && { search: params['search'] }),
