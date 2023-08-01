@@ -1,5 +1,5 @@
-import { DistributionTypes } from '../models/distributionTypes';
-import { DistributionTypesDto } from '../dtos/distributionTypes.dto';
+import { DistributionTypes } from '../models/distribution-types';
+import { DistributionTypesDto } from '../dtos/distribution-types.dto';
 
 const FROM_DISTRIBUTION_TYPES_DTO: Readonly<Record<DistributionTypesDto, DistributionTypes>> = {
 	[DistributionTypesDto.Tv]: DistributionTypes.Tv,
@@ -13,7 +13,6 @@ const FROM_DISTRIBUTION_TYPES_DTO: Readonly<Record<DistributionTypesDto, Distrib
 
 /** Distribution types mapper. */
 export namespace DistributionTypesMapper {
-
 	/**
 	 * Maps data from dto to model.
 	 * @param data Received data.

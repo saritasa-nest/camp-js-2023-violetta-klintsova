@@ -1,10 +1,9 @@
-import { DistributionTypes } from './distributionTypes';
+import { DistributionTypes } from './distribution-types';
 
-import { ProductionStatuses } from './productionStatuses';
+import { ProductionStatuses } from './production-statuses';
 
 /** Anime. */
 export interface Anime {
-
 	/** ID. */
 	id: number;
 

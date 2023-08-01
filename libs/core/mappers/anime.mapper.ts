@@ -1,8 +1,8 @@
 import { AnimeDto } from '../dtos/anime.dto';
 import { Anime } from '../models/anime';
 
-import { DistributionTypesMapper } from './distributionTypes.mapper';
-import { ProductionStatusesMapper } from './productionStatuses.mapper';
+import { DistributionTypesMapper } from './distribution-types.mapper';
+import { ProductionStatusesMapper } from './production-statuses.mapper';
 
 export namespace AnimeMapper {
 

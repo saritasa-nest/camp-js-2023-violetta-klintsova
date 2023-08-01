@@ -1,10 +1,9 @@
-import { DateRangeDto } from './dateRange.dto';
-import { DistributionTypesDto } from './distributionTypes.dto';
-import { ProductionStatusesDto } from './productionStatuses.dto';
+import { DateRangeDto } from './date-range.dto';
+import { DistributionTypesDto } from './distribution-types.dto';
+import { ProductionStatusesDto } from './production-statuses.dto';
 
 /** Anime DTO. */
 export interface AnimeDto {
-
 	/** ID. */
 	readonly id: number;
 

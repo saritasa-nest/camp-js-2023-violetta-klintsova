@@ -1,5 +1,5 @@
-import { ProductionStatuses } from '../models/productionStatuses';
-import { ProductionStatusesDto } from '../dtos/productionStatuses.dto';
+import { ProductionStatuses } from '../models/production-statuses';
+import { ProductionStatusesDto } from '../dtos/production-statuses.dto';
 
 const FROM_PRODUCTION_STATUS_DTO: Readonly<Record<ProductionStatusesDto, ProductionStatuses>> = {
 	[ProductionStatusesDto.Airing]: ProductionStatuses.Airing,
@@ -9,7 +9,6 @@ const FROM_PRODUCTION_STATUS_DTO: Readonly<Record<ProductionStatusesDto, Product
 
 /** Production status mapper. */
 export namespace ProductionStatusesMapper {
-
 	/**
 	 * Maps data from dto to model.
 	 * @param data Received data.
