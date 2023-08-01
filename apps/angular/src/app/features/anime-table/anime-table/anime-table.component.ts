@@ -7,7 +7,9 @@ import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { QueryParameters } from '@js-camp/core/models/QueryParameters';
+import { MatSelectChange } from '@angular/material/select';
+
+import { DistributionTypes } from '@js-camp/core/models/distributionTypes';
 
 /** Anime table. */
 @Component({
@@ -16,6 +18,17 @@ import { QueryParameters } from '@js-camp/core/models/QueryParameters';
 	styleUrls: ['./anime-table.component.css'],
 })
 export class AnimeTableComponent implements OnInit {
+	/** Sort options. */
+	public sortOptions = Object.values(DistributionTypes);
+
+	/** Default filter option. */
+	protected filterOption = [''];
+
+	/** Default sort option. */
+	protected sortOption = '';
+
+	/** Default input value. */
+	public searchValue = '';
 
 	/** Loading state. */
 	protected isLoading = true;
@@ -54,12 +67,6 @@ export class AnimeTableComponent implements OnInit {
 	/** Page index subject. */
 	private readonly page$ = new ReplaySubject<number>(1);
 
-	/** Query parameters. */
-	public queryParams: QueryParameters = {
-		page: this.pageIndex,
-		ordering: 'title_eng',
-	};
-
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
@@ -71,14 +78,11 @@ export class AnimeTableComponent implements OnInit {
 	public ngOnInit(): void {
 		const params = this.activatedRoute.snapshot.queryParams;
 
-		this.queryParams = {
-			page: Number(params['page']) || this.pageIndex,
-			ordering: params['ordering'] || 'title_eng',
-			...(params['filters']?.length && { filters: params['filters'] }),
-			...(params['search'] && { search: params['search'] }),
-		};
-
-		this.pageIndex = this.queryParams.page;
+		this.pageIndex = Number(params['page']) || this.pageIndex;
+		this.sortOption = params['ordering'] || 'title_eng';
+		this.filterOption = params['filters'].split(',') || [];
+		this.searchValue = params['search'] || '';
+		console.log(params['filters']);
 
 		this.page$.next(params['page']);
 		this.sort$.next(params['ordering'] || 'title_eng');
@@ -100,9 +104,9 @@ export class AnimeTableComponent implements OnInit {
 					this.router.navigate(['/anime'], { queryParams: routerParams });
 					return this.animeService.getAnimeList({ limit: this.pageSize, page, sort, filters, search });
 				}),
-				takeUntilDestroyed(this.destroyRef),
+				takeUntilDestroyed(this.destroyRef)
 			)
-			.subscribe(response => {
+			.subscribe((response) => {
 				this.totalItems = response.count;
 				this.animeList = response.results;
 				this.isLoading = false;
@@ -119,24 +123,27 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/**
-	 * Pushes new value to sort observable.
-	 * @param sortValue Sort value.
+	 * Gets chosen options to its parent component.
+	 * @param event Event.
 	 */
-	protected sortList(sortValue: string): void {
-		if (sortValue) {
-			this.sort$.next(sortValue);
+	public onSort(event: MatSelectChange): void {
+		this.sortOption = event.value;
+		if (this.sortOption) {
+			this.sort$.next(this.sortOption);
 		}
 	}
 
 	/**
 	 * Pushes new value to filter observable and updates the page.
-	 * @param filterValues Filter values.
+	 * @param event Event.
 	 */
-	protected filterList(filterValues: string[]): void {
-		if (filterValues) {
+	public onFilter(event: MatSelectChange): void {
+		this.filterOption = event.value;
+
+		if (this.filterOption) {
 			this.pageIndex = 0;
 			this.page$.next(this.pageIndex);
-			this.filters$.next(filterValues);
+			this.filters$.next(this.filterOption);
 		}
 	}
 
@@ -144,10 +151,10 @@ export class AnimeTableComponent implements OnInit {
 	 * Pushes new value to search observable and updates the pages.
 	 * @param value Value to search for.
 	 */
-	protected searchValue(value: string): void {
+	protected onSearch(): void {
 		this.pageIndex = 0;
 		this.page$.next(this.pageIndex);
-		this.search$.next(value);
+		this.search$.next(this.searchValue);
 	}
 
 	/**

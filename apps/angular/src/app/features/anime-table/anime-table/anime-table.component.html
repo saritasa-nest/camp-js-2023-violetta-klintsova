@@ -1,11 +1,40 @@
 <h2 id="title" class="title">All anime</h2>
 
-<camp-list-management
-  (sortChange)="sortList($event)"
-  (filterChange)="filterList($event)"
-  (searchChange)="searchValue($event)"
-  [receivedDefaults]="this.queryParams"
-/>
+<div class="wrapper">
+  <form class="management-form" (submit)="onSearch()">
+    <mat-form-field class="filter-field">
+      <mat-label>Sort by</mat-label>
+      <mat-select [(value)]="sortOption" (selectionChange)="onSort($event)">
+        <mat-option value="title_eng">Title (eng)</mat-option>
+        <mat-option value="aired__startswith">Airing start date</mat-option>
+        <mat-option value="status">Status</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Filter by</mat-label>
+      <mat-select
+        [(value)]="filterOption"
+        (selectionChange)="onFilter($event)"
+        multiple
+      >
+        <mat-option *ngFor="let option of sortOptions" value="{{ option }}">
+          {{ option | titlecase }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="search">
+      <input
+        matInput
+        placeholder="Search..."
+        [(ngModel)]="searchValue"
+        name="Search input"
+      />
+    </mat-form-field>
+  </form>
+</div>
+
 
 <div class="wrapper">
   <div class="spinner-with-shade" *ngIf="isLoading">
