@@ -3,9 +3,9 @@ import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
 
 import { PageEvent } from '@angular/material/paginator';
-import { Observable, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 
@@ -56,8 +56,6 @@ export class AnimeTableComponent implements OnInit {
 		'status',
 	];
 
-	private parameters$!: Observable<ParamMap>;
-
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
@@ -67,9 +65,7 @@ export class AnimeTableComponent implements OnInit {
 
 	/** Component initialization. */
 	public ngOnInit(): void {
-		this.parameters$ = this.activatedRoute.queryParamMap;
-
-		this.parameters$
+		this.activatedRoute.queryParamMap
 			.pipe(
 				switchMap((params: ParamMap) => {
 					this.isLoading = true;
