@@ -9,6 +9,7 @@ const FROM_PRODUCTION_STATUS_DTO: Readonly<Record<ProductionStatusesDto, Product
 
 /** Production status mapper. */
 export namespace ProductionStatusesMapper {
+
 	/**
 	 * Maps data from dto to model.
 	 * @param data Received data.

@@ -4,6 +4,7 @@ import { ProductionStatusesDto } from './production-statuses.dto';
 
 /** Anime DTO. */
 export interface AnimeDto {
+
 	/** ID. */
 	readonly id: number;
 

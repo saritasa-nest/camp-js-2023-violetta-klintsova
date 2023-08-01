@@ -4,6 +4,7 @@ import { ProductionStatuses } from './production-statuses';
 
 /** Anime. */
 export interface Anime {
+
 	/** ID. */
 	id: number;
 

@@ -13,6 +13,7 @@ const FROM_DISTRIBUTION_TYPES_DTO: Readonly<Record<DistributionTypesDto, Distrib
 
 /** Distribution types mapper. */
 export namespace DistributionTypesMapper {
+
 	/**
 	 * Maps data from dto to model.
 	 * @param data Received data.
