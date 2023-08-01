@@ -80,9 +80,8 @@ export class AnimeTableComponent implements OnInit {
 
 		this.pageIndex = Number(params['page']) || this.pageIndex;
 		this.sortOption = params['ordering'] || 'title_eng';
-		this.filterOption = params['filters'].split(',') || [];
+		this.filterOption = params['filters']?.split(',') || [];
 		this.searchValue = params['search'] || '';
-		console.log(params['filters']);
 
 		this.page$.next(params['page']);
 		this.sort$.next(params['ordering'] || 'title_eng');
@@ -152,6 +151,7 @@ export class AnimeTableComponent implements OnInit {
 	 * @param value Value to search for.
 	 */
 	protected onSearch(): void {
+		console.log(this.searchValue);
 		this.pageIndex = 0;
 		this.page$.next(this.pageIndex);
 		this.search$.next(this.searchValue);
