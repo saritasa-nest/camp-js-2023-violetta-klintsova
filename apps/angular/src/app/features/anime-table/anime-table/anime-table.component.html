@@ -89,7 +89,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <mat-paginator
-      (page)="handlePageChange($event)"
+      (page)="onPageChange($event)"
       [length]="totalItems"
       [pageSize]="pageSize"
       [pageIndex]="pageIndex"

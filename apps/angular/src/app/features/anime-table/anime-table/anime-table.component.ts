@@ -18,7 +18,8 @@ import { QueryParameters } from '@js-camp/core/models/query-parameters';
 	styleUrls: ['./anime-table.component.css'],
 })
 export class AnimeTableComponent implements OnInit {
-	/** Sort options. */
+
+	/** Filter options. */
 	public filterOptions = Object.values(DistributionTypes);
 
 	/** Default filter option. */
@@ -78,15 +79,6 @@ export class AnimeTableComponent implements OnInit {
 					this.filters = params.get('filters')?.split(',') ?? [];
 					this.searchValue = params.get('search') ?? '';
 
-					const routerParams = {
-						page: this.pageIndex,
-						sort: this.sortOption,
-						...(this.filters.length && { filters: this.filters.toString() }),
-						...(this.searchValue !== '' && { search: this.searchValue }),
-					};
-
-					this.router.navigate(['/anime'], { queryParams: routerParams });
-
 					return this.animeService.getAnimeList({
 						limit: this.pageSize,
 						page: this.pageIndex,
@@ -105,10 +97,10 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/**
-	 * Changes the page.
+	 * Updates the page.
 	 * @param e Page event.
 	 */
-	protected handlePageChange(e: PageEvent): void {
+	protected onPageChange(e: PageEvent): void {
 		this.pageIndex = e.pageIndex;
 		this.updateUrl({ ...this.getCurrentQueryParams(), page: this.pageIndex });
 	}
