@@ -144,8 +144,8 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/** Get current URL query parameters. */
-	protected getCurrentQueryParams(): Params {
-		return { ...this.activatedRoute.snapshot.queryParams };
+	protected getCurrentQueryParams(): QueryParameters {
+		return { ...this.activatedRoute.snapshot.queryParams } as QueryParameters;
 	}
 
 	/**

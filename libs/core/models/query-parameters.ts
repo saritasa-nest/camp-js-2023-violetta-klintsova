@@ -2,10 +2,10 @@
 export interface QueryParameters {
 
 	/** Page. */
-	page?: number;
+	page: number;
 
 	/** Ordering. */
-	sort?: string;
+	sort: string;
 
 	/** Filters. */
 	filters?: string;
