@@ -13,8 +13,7 @@ import { AnimeMapper } from '@js-camp/core/mappers/anime.mapper';
 import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
-
-import { ManagementOptions } from '../../app/features/anime-table/list-management/ListManagementOptions';
+import { ManagementOptions } from '@js-camp/core/models/management-options';
 
 /** Anime service. */
 @Injectable({
