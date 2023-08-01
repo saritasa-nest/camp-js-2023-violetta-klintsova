@@ -1,14 +1,11 @@
 import { Component, DestroyRef, OnInit } from '@angular/core';
-import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { Anime } from '@js-camp/core/models/anime';
-
-import { PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-
+import { PageEvent } from '@angular/material/paginator';
+import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+import { Anime } from '@js-camp/core/models/anime';
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
-
 import { QueryParameters } from '@js-camp/core/models/query-parameters';
 
 /** Anime table. */
