@@ -7,7 +7,7 @@ import { Observable, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 
-import { DistributionTypes } from '@js-camp/core/models/distributionTypes';
+import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 
 import { QueryParameters } from '@js-camp/core/models/query-parameters';
 
