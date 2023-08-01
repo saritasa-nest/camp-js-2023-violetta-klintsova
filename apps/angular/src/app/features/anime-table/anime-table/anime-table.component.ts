@@ -74,13 +74,13 @@ export class AnimeTableComponent implements OnInit {
 					this.isLoading = true;
 
 					this.pageIndex = Number(params.get('page')) || this.pageIndex;
-					this.sortOption = params.get('ordering') ?? 'title_eng';
+					this.sortOption = params.get('sort') ?? 'title_eng';
 					this.filters = params.get('filters')?.split(',') ?? [];
 					this.searchValue = params.get('search') ?? '';
 
 					const routerParams = {
 						page: this.pageIndex,
-						ordering: this.sortOption,
+						sort: this.sortOption,
 						...(this.filters.length && { filters: this.filters.toString() }),
 						...(this.searchValue !== '' && { search: this.searchValue }),
 					};
@@ -118,7 +118,7 @@ export class AnimeTableComponent implements OnInit {
 	 * @param event Event.
 	 */
 	public onSort(): void {
-		this.updateUrl({ ...this.getCurrentQueryParams(), ordering: this.sortOption });
+		this.updateUrl({ ...this.getCurrentQueryParams(), sort: this.sortOption });
 	}
 
 	/**

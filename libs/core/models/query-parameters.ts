@@ -5,7 +5,7 @@ export interface QueryParameters {
 	page?: number;
 
 	/** Ordering. */
-	ordering?: string;
+	sort?: string;
 
 	/** Filters. */
 	filters?: string;
