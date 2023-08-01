@@ -90,7 +90,7 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/**
-	 * Updates the page.
+	 * Updates URL with the current page.
 	 * @param e Page event.
 	 */
 	protected onPageChange(e: PageEvent): void {
@@ -99,7 +99,7 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/**
-	 * Updates url with sort options.
+	 * Updates URL with sort options.
 	 * @param event Event.
 	 */
 	public onSort(): void {
@@ -107,7 +107,7 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/**
-	 * Updates url with filter options.
+	 * Updates URL with filter options.
 	 * @param event Event.
 	 */
 	public onFilter(): void {
@@ -129,14 +129,14 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/**
-	 * Updated current URL.
+	 * Updates navigation with supplied query parameters.
 	 * @param params Updated params.
 	 */
 	protected updateUrl(params: QueryParameters): void {
 		this.router.navigate(['/anime'], { queryParams: params });
 	}
 
-	/** Get current URL query parameters. */
+	/** Gets current URL query parameters. */
 	protected getCurrentQueryParams(): QueryParameters {
 		return { ...this.activatedRoute.snapshot.queryParams } as QueryParameters;
 	}
