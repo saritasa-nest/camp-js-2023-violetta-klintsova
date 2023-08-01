@@ -16,13 +16,7 @@
         (selectionChange)="onFilter($event)"
         multiple
       >
-        <mat-option value="TV">TV</mat-option>
-        <mat-option value="OVA">Ova</mat-option>
-        <mat-option value="MUSIC">Music</mat-option>
-        <mat-option value="SPECIAL">Special</mat-option>
-        <mat-option value="ONA">Ona</mat-option>
-        <mat-option value="MOVIE">Movie</mat-option>
-        <mat-option value="UNKNOWN">Unknown</mat-option>
+        <mat-option *ngFor="let option of sortOptions" value="{{option}}"> {{option | titlecase }}</mat-option>
       </mat-select>
     </mat-form-field>
 

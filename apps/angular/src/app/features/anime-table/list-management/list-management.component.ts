@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 
 import { QueryParameters } from '@js-camp/core/models/QueryParameters';
+import { DistributionTypes } from '@js-camp/core/models/distributionTypes';
 
 /** List management. */
 @Component({
@@ -10,6 +11,9 @@ import { QueryParameters } from '@js-camp/core/models/QueryParameters';
 	styleUrls: ['./list-management.component.css'],
 })
 export class ListManagementComponent implements OnInit {
+
+	/** Sort options. */
+	public sortOptions = Object.values(DistributionTypes);
 
 	/** Sets default values on init. */
 	public ngOnInit(): void {
