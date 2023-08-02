@@ -63,8 +63,9 @@ export class SignUpComponent implements OnInit {
 		this.auth
 			.register(user)
 			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe((token) => {
-				this.storage.setUser(token);
+			.subscribe(response => {
+				this.storage.setAccessToken(response.access);
+				this.storage.setRefreshToken(response.refresh);
 				console.log(`User has registered.`);
 			});
 	}
