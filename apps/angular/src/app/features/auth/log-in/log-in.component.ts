@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
+import { Router } from '@angular/router';
 
 /** Log in component. */
 @Component({
@@ -15,6 +16,7 @@ export class LoginComponent implements OnInit {
 		private readonly auth: AuthService,
 		private readonly storage: StorageService,
 		private readonly destroyRef: DestroyRef,
+		private readonly router: Router,
 	) {}
 
 	/** Log in form. */
@@ -46,7 +48,8 @@ export class LoginComponent implements OnInit {
 				this.storage.setAccessToken(response.access);
 				this.storage.setRefreshToken(response.refresh);
 
-				console.log(`User has loggen in.`);
+				this.router.navigate(['/anime']);
+				console.log(`User has logged in.`);
 			});
 	}
 }

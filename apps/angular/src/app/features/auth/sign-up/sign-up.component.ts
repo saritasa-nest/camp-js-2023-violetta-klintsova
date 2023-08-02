@@ -6,6 +6,8 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+
 
 /** Sign up component. */
 @Component({
@@ -17,7 +19,8 @@ export class SignUpComponent implements OnInit {
 	public constructor(
 		private readonly auth: AuthService,
 		private readonly storage: StorageService,
-		private readonly destroyRef: DestroyRef
+		private readonly destroyRef: DestroyRef,
+		private readonly router: Router,
 	) {}
 
 	/** Sign up form. */
@@ -33,7 +36,7 @@ export class SignUpComponent implements OnInit {
 				password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
 				confirmedPassword: new FormControl(null, Validators.required),
 			},
-			{ validators: equalPasswordsValidator }
+			{ validators: equalPasswordsValidator },
 		);
 	}
 
@@ -47,7 +50,7 @@ export class SignUpComponent implements OnInit {
 	}
 
 	/** Registers a new user. */
-	public onSubmit(): void {
+	protected onSubmit(): void {
 		if (this.signUpForm.invalid) {
 			return;
 		}
@@ -66,7 +69,10 @@ export class SignUpComponent implements OnInit {
 			.subscribe(response => {
 				this.storage.setAccessToken(response.access);
 				this.storage.setRefreshToken(response.refresh);
+
+				this.router.navigate(['/anime']);
 				console.log(`User has registered.`);
 			});
 	}
+
 }
