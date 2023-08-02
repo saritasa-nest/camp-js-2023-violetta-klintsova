@@ -114,8 +114,9 @@ export class AnimeTableComponent implements OnInit {
 	 * @param event Event.
 	 */
 	public onFilter(): void {
-		this.pageIndex = 0;
 		const updatedParams: QueryParameters = this.getCurrentQueryParams();
+		this.pageIndex = 0;
+		updatedParams.page = 0;
 		updatedParams.filters = this.filters.length ? this.filters.toString() : undefined;
 		this.updateUrl(updatedParams);
 	}
@@ -125,8 +126,9 @@ export class AnimeTableComponent implements OnInit {
 	 * @param value Value to search for.
 	 */
 	protected onSearch(): void {
-		this.pageIndex = 0;
 		const updatedParams: QueryParameters = this.getCurrentQueryParams();
+		this.pageIndex = 0;
+		updatedParams.page = 0;
 		updatedParams.search = this.searchValue !== '' ? this.searchValue : undefined;
 		this.updateUrl(updatedParams);
 	}
