@@ -7,6 +7,7 @@ import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
 import { Observable, map } from 'rxjs';
 import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
 import { LoginInfo } from '@js-camp/core/models/login-info';
+import { Auth } from '@js-camp/core/models/auth';
 
 /** Authentification service. */
 @Injectable({
@@ -21,26 +22,24 @@ export class AuthService {
 	 * User login.
 	 * @param loginInfo User login info.
 	 */
-	public login(loginInfo: LoginInfo): Observable<string> {
+	public login(loginInfo: LoginInfo): Observable<Auth> {
 		const path = 'auth/login/';
 		const url = new URL(path, this.apiUrl);
 		return this.http
 			.post<AuthDto>(url.toString(), loginInfo)
-			.pipe(map((el) => AuthMapper.fromDto(el)))
-			.pipe(map((el) => el.refresh));
+			.pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
 	/**
 	 * User registration.
 	 * @param registerInfo Info required for registration.
 	 */
-	public register(registerInfo: RegistrationInfo): Observable<string> {
+	public register(registerInfo: RegistrationInfo): Observable<Auth> {
 		const path = 'auth/register/';
 		const url = new URL(path, this.apiUrl);
 		const mappedRegisterData = RegistrationInfoMapper.toDto(registerInfo);
 		return this.http
 			.post<AuthDto>(url.toString(), mappedRegisterData)
-			.pipe(map((el) => AuthMapper.fromDto(el)))
-			.pipe(map((el) => el.refresh));
+			.pipe(map(el => AuthMapper.fromDto(el)));
 	}
 }
