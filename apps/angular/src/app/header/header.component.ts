@@ -9,7 +9,6 @@ import { StorageService } from '@js-camp/angular/core/services/auth-storage.serv
 	styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-
 	/** User authorization status. */
 	protected isLoggedIn = this.storage.isLoggedIn();
 
@@ -17,7 +16,7 @@ export class HeaderComponent {
 
 	/** Logs the user out. */
 	protected onLogOut(): void {
-		this.storage.logOut();
+		this.storage.removeTokens();
 		this.router.navigate(['']);
 	}
 }
