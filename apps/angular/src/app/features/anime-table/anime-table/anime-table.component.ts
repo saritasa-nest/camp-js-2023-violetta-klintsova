@@ -60,7 +60,7 @@ export class AnimeTableComponent implements OnInit {
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
-		private readonly activatedRoute: ActivatedRoute
+		private readonly activatedRoute: ActivatedRoute,
 	) {}
 
 	/** Component initialization. */
@@ -88,7 +88,7 @@ export class AnimeTableComponent implements OnInit {
 			}),
 			tap(() => {
 				this.isLoading = false;
-			})
+			}),
 		);
 	}
 
