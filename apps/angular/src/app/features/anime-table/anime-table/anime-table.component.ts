@@ -7,6 +7,7 @@ import { Anime } from '@js-camp/core/models/anime';
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 import { QueryParameters } from '@js-camp/core/models/query-parameters';
 import { Pagination } from '@js-camp/core/models/pagination';
+import { isEmptyObject } from '@js-camp/angular/core/utils/is-empty-object';
 
 /** Anime table. */
 @Component({
@@ -23,7 +24,7 @@ export class AnimeTableComponent implements OnInit {
 	protected filters = [''];
 
 	/** Default sort option. */
-	protected sortOption = '';
+	protected sortOption = 'title_eng';
 
 	/** Default input value. */
 	protected searchValue = '';
@@ -59,11 +60,14 @@ export class AnimeTableComponent implements OnInit {
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
-		private readonly activatedRoute: ActivatedRoute,
+		private readonly activatedRoute: ActivatedRoute
 	) {}
 
 	/** Component initialization. */
 	public ngOnInit(): void {
+		if (isEmptyObject(this.getCurrentQueryParams())) {
+			this.router.navigate(['/anime'], { queryParams: { page: this.pageIndex, sort: this.sortOption } });
+		}
 		this.response$ = this.activatedRoute.queryParamMap.pipe(
 			tap(() => {
 				this.isLoading = true;
@@ -84,7 +88,7 @@ export class AnimeTableComponent implements OnInit {
 			}),
 			tap(() => {
 				this.isLoading = false;
-			}),
+			})
 		);
 	}
 
