@@ -42,4 +42,27 @@ export class AuthService {
 			.post<AuthDto>(url.toString(), mappedRegisterData)
 			.pipe(map(el => AuthMapper.fromDto(el)));
 	}
+
+	/**
+	 * Requests new access token.
+	 * @param refresh Refresh token.
+	 * @returns Observable with access token.
+	 */
+	public refreshToken(refresh: string): Observable<string> {
+		const path = 'auth/token/refresh/';
+		const url = new URL(path, this.apiUrl);
+		return this.http.post<string>(url.toString(), refresh);
+	}
+
+	/**
+	 * Sends a request to verify a token.
+	 * @param access Access token.
+	 * @returns Observable with access token if it is valid.
+	 */
+	public verifyToken(access: string): Observable<string> {
+		const path = 'auth/token/refresh/';
+		const url = new URL(path, this.apiUrl);
+		return this.http.post<string>(url.toString(), access);
+	}
+
 }
