@@ -1,21 +1,32 @@
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Observable, switchMap, tap } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
-
-import { PageEvent } from '@angular/material/paginator';
-import { ReplaySubject, combineLatest, switchMap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { QueryParameters } from '@js-camp/core/models/QueryParameters';
+import { DistributionTypes } from '@js-camp/core/models/distribution-types';
+import { QueryParameters } from '@js-camp/core/models/query-parameters';
+import { Pagination } from '@js-camp/core/models/pagination';
 
 /** Anime table. */
 @Component({
 	selector: 'camp-anime-table',
 	templateUrl: './anime-table.component.html',
 	styleUrls: ['./anime-table.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeTableComponent implements OnInit {
+	/** Filter options. */
+	protected filterOptions = Object.values(DistributionTypes);
+
+	/** Default filter option. */
+	protected filters = [''];
+
+	/** Default sort option. */
+	protected sortOption = '';
+
+	/** Default input value. */
+	protected searchValue = '';
 
 	/** Loading state. */
 	protected isLoading = true;
@@ -42,112 +53,91 @@ export class AnimeTableComponent implements OnInit {
 		'status',
 	];
 
-	/** Sort subject. */
-	private readonly sort$ = new ReplaySubject<string>(1);
-
-	/** Filters subject. */
-	private readonly filters$ = new ReplaySubject<string[]>(1);
-
-	/** Search subject. */
-	private readonly search$ = new ReplaySubject<string>(1);
-
-	/** Page index subject. */
-	private readonly page$ = new ReplaySubject<number>(1);
-
-	/** Query parameters. */
-	public queryParams: QueryParameters = {
-		page: this.pageIndex,
-		ordering: 'title_eng',
-	};
+	/** Response observable. */
+	protected response$!: Observable<Pagination<Anime>>;
 
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
-		private readonly destroyRef: DestroyRef,
 	) {}
 
 	/** Component initialization. */
 	public ngOnInit(): void {
-		const params = this.activatedRoute.snapshot.queryParams;
+		this.response$ = this.activatedRoute.queryParamMap.pipe(
+			tap(() => {
+				this.isLoading = true;
+			}),
+			switchMap((params: ParamMap) => {
+				this.pageIndex = Number(params.get('page')) || this.pageIndex;
+				this.sortOption = params.get('sort') ?? 'title_eng';
+				this.filters = params.get('filters')?.split(',') ?? [];
+				this.searchValue = params.get('search') ?? '';
 
-		this.queryParams = {
-			page: Number(params['page']),
-			ordering: params['ordering'] || 'title_eng',
-			...(params['filters']?.length && { filters: params['filters'] }),
-			...(params['search'] && { search: params['search'] }),
-		};
-
-		this.pageIndex = this.queryParams.page;
-
-		this.page$.next(params['page']);
-		this.sort$.next(params['ordering'] || 'title_eng');
-		this.filters$.next(params['filters'] || []);
-		this.search$.next(params['search'] || '');
-
-		combineLatest([this.page$, this.search$, this.sort$, this.filters$])
-			.pipe(
-				switchMap(([page, search, sort, filters]) => {
-					this.isLoading = true;
-
-					const routerParams = {
-						page: this.pageIndex,
-						ordering: sort,
-						...(filters.length && { filters: filters.toString() }),
-						...(search !== '' && { search }),
-					};
-
-					this.router.navigate(['/anime'], { queryParams: routerParams });
-					return this.animeService.getAnimeList({ limit: this.pageSize, page, sort, filters, search });
-				}),
-				takeUntilDestroyed(this.destroyRef),
-			)
-			.subscribe(response => {
-				this.totalItems = response.count;
-				this.animeList = response.results;
+				return this.animeService.getAnimeList({
+					limit: this.pageSize,
+					page: this.pageIndex,
+					sort: this.sortOption,
+					filters: this.filters,
+					search: this.searchValue,
+				});
+			}),
+			tap(() => {
 				this.isLoading = false;
-			});
+			}),
+		);
 	}
 
 	/**
-	 * Changes the page.
+	 * Updates URL with the current page.
 	 * @param e Page event.
 	 */
-	protected handlePageChange(e: PageEvent): void {
+	protected onPageChange(e: PageEvent): void {
 		this.pageIndex = e.pageIndex;
-		this.page$.next(this.pageIndex);
+		this.updateUrl({ ...this.getCurrentQueryParams(), page: this.pageIndex });
 	}
 
 	/**
-	 * Pushes new value to sort observable.
-	 * @param sortValue Sort value.
+	 * Updates URL with sort options.
+	 * @param event Event.
 	 */
-	protected sortList(sortValue: string): void {
-		if (sortValue) {
-			this.sort$.next(sortValue);
-		}
+	public onSort(): void {
+		this.updateUrl({ ...this.getCurrentQueryParams(), sort: this.sortOption });
 	}
 
 	/**
-	 * Pushes new value to filter observable and updates the page.
-	 * @param filterValues Filter values.
+	 * Updates URL with filter options.
+	 * @param event Event.
 	 */
-	protected filterList(filterValues: string[]): void {
-		if (filterValues) {
-			this.pageIndex = 0;
-			this.page$.next(this.pageIndex);
-			this.filters$.next(filterValues);
-		}
+	public onFilter(): void {
+		this.pageIndex = 0;
+		const updatedParams: QueryParameters = this.getCurrentQueryParams();
+		updatedParams.filters = this.filters.length ? this.filters.toString() : undefined;
+		this.updateUrl(updatedParams);
 	}
 
 	/**
-	 * Pushes new value to search observable and updates the pages.
+	 * Updates URL with the search value.
 	 * @param value Value to search for.
 	 */
-	protected searchValue(value: string): void {
+	protected onSearch(): void {
 		this.pageIndex = 0;
-		this.page$.next(this.pageIndex);
-		this.search$.next(value);
+		const updatedParams: QueryParameters = this.getCurrentQueryParams();
+		updatedParams.search = this.searchValue !== '' ? this.searchValue : undefined;
+		this.updateUrl(updatedParams);
+	}
+
+	/**
+	 * Updates navigation with supplied query parameters.
+	 * @param params Updated params.
+	 */
+	protected updateUrl(params: QueryParameters): void {
+		this.router.navigate(['/anime'], { queryParams: params });
+	}
+
+	/** Gets current URL query parameters. */
+	protected getCurrentQueryParams(): QueryParameters {
+		return { ...this.activatedRoute.snapshot.queryParams } as QueryParameters;
 	}
 
 	/**

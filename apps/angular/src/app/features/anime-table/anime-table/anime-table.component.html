@@ -1,13 +1,42 @@
 <h2 id="title" class="title">All anime</h2>
 
-<camp-list-management
-  (sortChange)="sortList($event)"
-  (filterChange)="filterList($event)"
-  (searchChange)="searchValue($event)"
-  [receivedDefaults]="this.queryParams"
-/>
-
 <div class="wrapper">
+  <form class="management-form" (submit)="onSearch()">
+    <mat-form-field class="filter-field">
+      <mat-label>Sort by</mat-label>
+      <mat-select [(value)]="sortOption" (selectionChange)="onSort()">
+        <mat-option value="title_eng">Title (eng)</mat-option>
+        <mat-option value="aired__startswith">Airing start date</mat-option>
+        <mat-option value="status">Status</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Filter by</mat-label>
+      <mat-select
+        [(value)]="filters"
+        (selectionChange)="onFilter()"
+        multiple
+      >
+        <mat-option *ngFor="let option of filterOptions" value="{{ option }}">
+          {{ option | titlecase }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="search">
+      <input
+        matInput
+        placeholder="Search..."
+        [(ngModel)]="searchValue"
+        name="Search input"
+      />
+    </mat-form-field>
+  </form>
+</div>
+
+<ng-container *ngIf="response$ | async as response">
+  <div class="wrapper">
   <div class="spinner-with-shade" *ngIf="isLoading">
     <mat-spinner/>
   </div>
@@ -15,7 +44,7 @@
   <div class="anime-table">
     <table
       mat-table
-      [dataSource]="animeList"
+      [dataSource]="response.results"
       class="mat-elevation-z8"
       [trackBy]="trackById"
       aria-describedby="title"
@@ -60,8 +89,8 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
     <mat-paginator
-      (page)="handlePageChange($event)"
-      [length]="totalItems"
+      (page)="onPageChange($event)"
+      [length]="response.count"
       [pageSize]="pageSize"
       [pageIndex]="pageIndex"
       [showFirstLastButtons]="true"
@@ -70,3 +99,5 @@
     </mat-paginator>
   </div>
 </div>
+</ng-container>
+
