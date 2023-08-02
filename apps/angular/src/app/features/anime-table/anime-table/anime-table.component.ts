@@ -1,23 +1,23 @@
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { switchMap } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable, switchMap, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 import { QueryParameters } from '@js-camp/core/models/query-parameters';
+import { Pagination } from '@js-camp/core/models/pagination';
 
 /** Anime table. */
 @Component({
 	selector: 'camp-anime-table',
 	templateUrl: './anime-table.component.html',
 	styleUrls: ['./anime-table.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeTableComponent implements OnInit {
-
 	/** Filter options. */
-	public filterOptions = Object.values(DistributionTypes);
+	protected filterOptions = Object.values(DistributionTypes);
 
 	/** Default filter option. */
 	protected filters = [''];
@@ -26,7 +26,7 @@ export class AnimeTableComponent implements OnInit {
 	protected sortOption = '';
 
 	/** Default input value. */
-	public searchValue = '';
+	protected searchValue = '';
 
 	/** Loading state. */
 	protected isLoading = true;
@@ -53,40 +53,39 @@ export class AnimeTableComponent implements OnInit {
 		'status',
 	];
 
+	/** Response observable. */
+	protected response$!: Observable<Pagination<Anime>>;
+
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
-		private readonly destroyRef: DestroyRef,
 	) {}
 
 	/** Component initialization. */
 	public ngOnInit(): void {
-		this.activatedRoute.queryParamMap
-			.pipe(
-				switchMap((params: ParamMap) => {
-					this.isLoading = true;
+		this.response$ = this.activatedRoute.queryParamMap.pipe(
+			tap(() => {
+				this.isLoading = true;
+			}),
+			switchMap((params: ParamMap) => {
+				this.pageIndex = Number(params.get('page')) || this.pageIndex;
+				this.sortOption = params.get('sort') ?? 'title_eng';
+				this.filters = params.get('filters')?.split(',') ?? [];
+				this.searchValue = params.get('search') ?? '';
 
-					this.pageIndex = Number(params.get('page')) || this.pageIndex;
-					this.sortOption = params.get('sort') ?? 'title_eng';
-					this.filters = params.get('filters')?.split(',') ?? [];
-					this.searchValue = params.get('search') ?? '';
-
-					return this.animeService.getAnimeList({
-						limit: this.pageSize,
-						page: this.pageIndex,
-						sort: this.sortOption,
-						filters: this.filters,
-						search: this.searchValue,
-					});
-				}),
-				takeUntilDestroyed(this.destroyRef),
-			)
-			.subscribe(response => {
-				this.totalItems = response.count;
-				this.animeList = response.results;
+				return this.animeService.getAnimeList({
+					limit: this.pageSize,
+					page: this.pageIndex,
+					sort: this.sortOption,
+					filters: this.filters,
+					search: this.searchValue,
+				});
+			}),
+			tap(() => {
 				this.isLoading = false;
-			});
+			}),
+		);
 	}
 
 	/**
