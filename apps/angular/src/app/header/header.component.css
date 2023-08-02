@@ -18,6 +18,7 @@
   font-size: var(--medium-font-size);
 }
 
-.log-in {
+.log-in,
+.log-out {
   margin-left: auto;
 }
