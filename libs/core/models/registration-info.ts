@@ -1,5 +1,5 @@
 /** User's info required for registration.  */
-export interface RegisterInfo {
+export interface RegistrationInfo {
 
 	/** Email. */
 	readonly email: string;

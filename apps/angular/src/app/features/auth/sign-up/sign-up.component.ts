@@ -1,9 +1,9 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, DestroyRef, OnInit } from '@angular/core';
 
-import { equalPasswordsValidator } from '@js-camp/angular/core/utils/equalPasswordValidator';
+import { equalPasswordsValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
-import { RegisterInfo } from '@js-camp/core/models/registerInfo';
+import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -17,7 +17,7 @@ export class SignUpComponent implements OnInit {
 	public constructor(
 		private readonly auth: AuthService,
 		private readonly storage: StorageService,
-		private readonly destroyRef: DestroyRef,
+		private readonly destroyRef: DestroyRef
 	) {}
 
 	/** Sign up form. */
@@ -33,7 +33,7 @@ export class SignUpComponent implements OnInit {
 				password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
 				confirmedPassword: new FormControl(null, Validators.required),
 			},
-			{ validators: equalPasswordsValidator },
+			{ validators: equalPasswordsValidator }
 		);
 	}
 
@@ -58,12 +58,12 @@ export class SignUpComponent implements OnInit {
 			email: this.signUpForm.value.email,
 			avatar: null,
 			password: this.signUpForm.value.password,
-		} as RegisterInfo;
+		} as RegistrationInfo;
 
 		this.auth
 			.register(user)
 			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe(token => {
+			.subscribe((token) => {
 				this.storage.setUser(token);
 				console.log(`User has registered.`);
 			});

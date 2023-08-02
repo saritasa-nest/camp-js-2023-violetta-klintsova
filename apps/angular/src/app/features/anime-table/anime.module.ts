@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { EmptyValue } from '@js-camp/angular/core/utils/EmptyValuePipe';
+import { EmptyValue } from '@js-camp/angular/core/utils/empty-value-pipe';
 
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 
