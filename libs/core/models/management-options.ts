@@ -2,17 +2,17 @@
 export interface ManagementOptions {
 
 	/** Max items. */
-	limit: number;
+	readonly limit: number;
 
 	/** Page. */
-	page: number;
+	readonly page: number;
 
 	/** Sorting value. */
-	sort: string;
+	readonly sort: string;
 
 	/** Filters. */
-	filters: string[];
+	readonly filters: string[];
 
 	/** Search value. */
-	search: string;
+	readonly search: string;
 }
