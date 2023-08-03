@@ -1,14 +1,17 @@
+.wrapper {
+  position: relative;
+}
+
 .anime-table {
-  padding: 40px 0;
   width: 100%;
   border-collapse: collapse;
 }
 
-.anime-list-caption {
+.title {
   text-align: left;
   font-size: var(--large-font-size);
   font-weight: 700;
-  margin-bottom: 30px;
+  margin: 30px 0 20px;
 }
 
 .cell-anime-img img {
@@ -16,18 +19,32 @@
   max-height: 150px;
 }
 
-.cdk-table {
-  border: 1px solid var(--border-dark-color);
-}
-
 .cdk-row {
   height: 150px;
 }
 
 .cdk-header-cell {
-  border-bottom: 2px solid var(--border-dark-color);
+  font-weight: 700;
 }
 
-.cdk-cell {
-  border-bottom: 1px solid var(--border-color);
+.spinner-with-shade {
+  position: absolute;
+  height: 100%;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--shade-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.management-form {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  gap: 15px;
+}
+
+.search {
+  margin-left: auto;
 }
