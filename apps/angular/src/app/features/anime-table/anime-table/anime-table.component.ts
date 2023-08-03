@@ -7,6 +7,7 @@ import { Anime } from '@js-camp/core/models/anime';
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 import { QueryParameters } from '@js-camp/core/models/query-parameters';
 import { Pagination } from '@js-camp/core/models/pagination';
+import { isEmptyObject } from '@js-camp/angular/core/utils/is-empty-object';
 
 /** Anime table. */
 @Component({
@@ -23,7 +24,7 @@ export class AnimeTableComponent implements OnInit {
 	protected filters = [''];
 
 	/** Default sort option. */
-	protected sortOption = '';
+	protected sortOption = 'title_eng';
 
 	/** Default input value. */
 	protected searchValue = '';
@@ -54,16 +55,13 @@ export class AnimeTableComponent implements OnInit {
 	];
 
 	/** Response observable. */
-	protected response$!: Observable<Pagination<Anime>>;
+	protected response$: Observable<Pagination<Anime>>;
 
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
-	) {}
-
-	/** Component initialization. */
-	public ngOnInit(): void {
+	) {
 		this.response$ = this.activatedRoute.queryParamMap.pipe(
 			tap(() => {
 				this.isLoading = true;
@@ -88,6 +86,13 @@ export class AnimeTableComponent implements OnInit {
 		);
 	}
 
+	/** Component initialization. */
+	public ngOnInit(): void {
+		if (isEmptyObject(this.getCurrentQueryParams())) {
+			this.router.navigate(['/anime'], { queryParams: { page: this.pageIndex, sort: this.sortOption } });
+		}
+	}
+
 	/**
 	 * Updates URL with the current page.
 	 * @param e Page event.
@@ -110,8 +115,9 @@ export class AnimeTableComponent implements OnInit {
 	 * @param event Event.
 	 */
 	public onFilter(): void {
-		this.pageIndex = 0;
 		const updatedParams: QueryParameters = this.getCurrentQueryParams();
+		this.pageIndex = 0;
+		updatedParams.page = 0;
 		updatedParams.filters = this.filters.length ? this.filters.toString() : undefined;
 		this.updateUrl(updatedParams);
 	}
@@ -121,8 +127,9 @@ export class AnimeTableComponent implements OnInit {
 	 * @param value Value to search for.
 	 */
 	protected onSearch(): void {
-		this.pageIndex = 0;
 		const updatedParams: QueryParameters = this.getCurrentQueryParams();
+		this.pageIndex = 0;
+		updatedParams.page = 0;
 		updatedParams.search = this.searchValue !== '' ? this.searchValue : undefined;
 		this.updateUrl(updatedParams);
 	}
