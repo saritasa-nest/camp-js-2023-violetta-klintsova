@@ -47,10 +47,10 @@ export class LoginComponent implements OnInit {
 			.subscribe(response => {
 				this.storage.setAccessToken(response.access);
 				this.storage.setRefreshToken(response.refresh);
-				this.storage.logUserIn();
+
+				this.auth.updateUserState(true);
 
 				this.router.navigate(['/anime']);
-				console.log(`User has logged in.`);
 			});
 	}
 }

@@ -8,7 +8,6 @@ import { StorageService } from '@js-camp/angular/core/services/auth-storage.serv
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 
-
 /** Sign up component. */
 @Component({
 	selector: 'camp-sign-up',
@@ -71,7 +70,6 @@ export class SignUpComponent implements OnInit {
 				this.storage.setRefreshToken(response.refresh);
 
 				this.router.navigate(['/anime']);
-				console.log(`User has registered.`);
 			});
 	}
 
