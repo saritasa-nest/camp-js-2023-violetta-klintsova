@@ -32,22 +32,7 @@ export class StorageService {
 	}
 
 	/** Remove current user. */
-	public logUserOut(): void {
-		window.localStorage.removeItem('access');
-		window.localStorage.removeItem('refresh');
-		window.localStorage.removeItem('isLoggedIn');
-	}
-
-	/**
-	 * Sets current user state.
-	 * @param state User log in state.
-	 */
-	public logUserIn(): void {
-		window.localStorage.setItem('isLoggedIn', 'true');
-	}
-
-	/** Checks if the user is logged in. */
-	public isLoggedIn(): boolean {
-		return Boolean(window.localStorage.getItem('isLoggedIn'));
+	public deleteTokens(): void {
+		window.localStorage.clear();
 	}
 }
