@@ -1,8 +1,7 @@
 import { inject } from '@angular/core';
 import { CanMatchFn } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import { StorageService } from '../services/auth-storage.service';
+import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanMatchFn = (): boolean => {
-	return inject(StorageService).isLoggedIn();
-}
+export const authGuard: CanMatchFn = (): Observable<boolean> => inject(AuthService).userState$;
