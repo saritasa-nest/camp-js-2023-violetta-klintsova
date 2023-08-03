@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 	providedIn: 'root',
 })
 export class StorageService {
-
 	/**
 	 * Save current user.
 	 * @param refresh Refresh token.
@@ -33,18 +32,22 @@ export class StorageService {
 	}
 
 	/** Remove current user. */
-	public removeTokens(): void {
+	public logUserOut(): void {
 		window.localStorage.removeItem('access');
 		window.localStorage.removeItem('refresh');
+		window.localStorage.removeItem('isLoggedIn');
+	}
+
+	/**
+	 * Sets current user state.
+	 * @param state User log in state.
+	 */
+	public logUserIn(): void {
+		window.localStorage.setItem('isLoggedIn', 'true');
 	}
 
 	/** Checks if the user is logged in. */
 	public isLoggedIn(): boolean {
-		const user = window.localStorage.getItem('access');
-		if (user) {
-			return true;
-		}
-		return false;
+		return Boolean(window.localStorage.getItem('isLoggedIn'));
 	}
-
 }

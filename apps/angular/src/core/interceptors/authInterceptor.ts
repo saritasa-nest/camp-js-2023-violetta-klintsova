@@ -11,7 +11,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
 	/** @inheritdoc */
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-		const token = this.storage.getUser();
+		const token = this.storage.getAccessToken();
 
 		if (!token) {
 			return next.handle(request);

@@ -16,7 +16,7 @@ export class HeaderComponent {
 
 	/** Logs the user out. */
 	protected onLogOut(): void {
-		this.storage.removeTokens();
+		this.storage.logUserOut();
 		this.router.navigate(['']);
 	}
 }

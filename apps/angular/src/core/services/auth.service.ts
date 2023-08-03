@@ -51,7 +51,7 @@ export class AuthService {
 	public refreshToken(refresh: string): Observable<string> {
 		const path = 'auth/token/refresh/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.post<string>(url.toString(), refresh);
+		return this.http.post<string>(url.toString(), { refresh });
 	}
 
 	/**
@@ -60,9 +60,9 @@ export class AuthService {
 	 * @returns Observable with access token if it is valid.
 	 */
 	public verifyToken(access: string): Observable<string> {
-		const path = 'auth/token/refresh/';
+		const path = 'auth/token/verify/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.post<string>(url.toString(), access);
+		return this.http.post<string>(url.toString(), { token: access });
 	}
 
 }
