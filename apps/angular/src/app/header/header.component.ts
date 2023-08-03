@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
+import { AuthService } from '@js-camp/angular/core/services/auth.service';
 
 /** Header component. */
 @Component({
@@ -10,13 +11,22 @@ import { StorageService } from '@js-camp/angular/core/services/auth-storage.serv
 })
 export class HeaderComponent {
 	/** User authorization status. */
-	protected isLoggedIn = this.storage.isLoggedIn();
+	protected isLoggedIn!: boolean;
 
-	public constructor(private readonly storage: StorageService, private readonly router: Router) {}
+	public constructor(
+		private readonly storage: StorageService,
+		private readonly router: Router,
+		private readonly auth: AuthService,
+	) {
+		auth.userState$.subscribe(value => {
+			this.isLoggedIn = value;
+		});
+	}
 
 	/** Logs the user out. */
-	protected onLogOut(): void {
-		this.storage.logUserOut();
-		this.router.navigate(['']);
+	public onLogOut(): void {
+		this.storage.deleteTokens();
+		this.router.navigate(['/landing']);
+		window.location.reload();
 	}
 }
