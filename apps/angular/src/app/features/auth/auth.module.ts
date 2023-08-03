@@ -9,9 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { LoginComponent } from './log-in/log-in.component';
 
+import { AuthRoutingModule } from './auth-routing.module';
+
 /** Authentication module. */
 @NgModule({
 	declarations: [SignUpComponent, LoginComponent],
-	imports: [CommonModule, ReactiveFormsModule, FormsModule, MatInputModule, MatFormFieldModule, MatButtonModule],
+	imports: [CommonModule, ReactiveFormsModule, FormsModule, MatInputModule, MatFormFieldModule, MatButtonModule, AuthRoutingModule],
 })
 export class AuthModule {}
