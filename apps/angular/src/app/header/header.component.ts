@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
@@ -17,8 +18,9 @@ export class HeaderComponent {
 		private readonly storage: StorageService,
 		private readonly router: Router,
 		private readonly auth: AuthService,
+		private readonly destroyRef: DestroyRef,
 	) {
-		auth.userState$.subscribe(value => {
+		auth.userState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
 			this.isLoggedIn = value;
 		});
 	}
@@ -27,6 +29,5 @@ export class HeaderComponent {
 	public onLogOut(): void {
 		this.storage.deleteTokens();
 		this.router.navigate(['/landing']);
-		window.location.reload();
 	}
 }
