@@ -13,23 +13,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 
-import { AnimeModule } from './features/anime-table/anime.module';
-import { AuthModule } from './features/auth/auth.module';
 import { LandingComponent } from './landing/landing.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
-import { EmptyLayoutComponent } from './empty-layout/empty-layout.component';
 
 /** App module. */
 @NgModule({
-	declarations: [AppComponent, HeaderComponent, LandingComponent, MainLayoutComponent, EmptyLayoutComponent],
+	declarations: [AppComponent, HeaderComponent, LandingComponent, MainLayoutComponent],
 	imports: [
 		BrowserModule,
 		SharedModule,
 		AppRoutingModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
-		AnimeModule,
-		AuthModule,
 		MatButtonModule,
 	],
 	providers: [httpInterceptorProviders],
