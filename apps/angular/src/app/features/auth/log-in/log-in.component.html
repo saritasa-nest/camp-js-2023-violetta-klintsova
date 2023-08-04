@@ -31,6 +31,7 @@
   </ng-container>
 
   <button
+  *ngIf="!isLoading"
     type="submit"
     mat-raised-button
     color="accent"
@@ -39,4 +40,15 @@
   >
     Log in
   </button>
+  
+  <button
+  *ngIf="isLoading"
+    type="submit"
+    mat-raised-button
+    color="accent"
+    class="log-in-button"
+  >
+    Logging in
+  </button>
+
 </div>

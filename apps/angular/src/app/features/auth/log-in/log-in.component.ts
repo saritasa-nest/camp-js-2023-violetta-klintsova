@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
+import { catchError, throwError, tap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 /** Log in component. */
@@ -24,6 +24,9 @@ export class LoginComponent implements OnInit {
 	/** Log in form. */
 	protected loginForm!: FormGroup;
 
+	/** Form state. */
+	public isLoading = false;
+
 	/** Component initialization. */
 	public ngOnInit(): void {
 		this.loginForm = new FormGroup({
@@ -38,6 +41,8 @@ export class LoginComponent implements OnInit {
 			return;
 		}
 
+		this.isLoading = true;
+
 		const user = {
 			email: this.loginForm.value.email,
 			password: this.loginForm.value.password,
@@ -47,12 +52,14 @@ export class LoginComponent implements OnInit {
 			.login(user)
 			.pipe(
 				catchError((e: HttpErrorResponse) => {
+					this.isLoading = false;
 					this.loginForm.setErrors({ formError: true });
-					return throwError(() => new Error('No account'));
+					return throwError(() => new Error('No active account with given credentials was found.'));
 				}),
 				takeUntilDestroyed(this.destroyRef),
 			)
 			.subscribe(response => {
+				this.isLoading = false;
 				this.storage.setAccessToken(response.access);
 				this.storage.setRefreshToken(response.refresh);
 				this.auth.updateUserState(true);
