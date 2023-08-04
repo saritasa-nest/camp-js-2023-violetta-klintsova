@@ -39,21 +39,7 @@ export class AuthService {
 		private readonly http: HttpClient,
 		private readonly router: Router,
 		private readonly storage: StorageService,
-	) {
-		const accessToken = this.storage.getAccessToken();
-
-		if (accessToken !== null) {
-			this.verifyToken(accessToken).subscribe({
-				next: () => {
-					this.userStateSubject$.next(true);
-				},
-				error() {
-					// TODO Redirect in case of an error
-					throw new Error('Verification error');
-				},
-			});
-		}
-	}
+	) {}
 
 	/**
 	 * User login.
@@ -81,10 +67,10 @@ export class AuthService {
 	 * @param refresh Refresh token.
 	 * @returns Observable with access token.
 	 */
-	public refreshToken(refresh: string): Observable<string> {
+	public refreshToken(refresh: string): Observable<Auth> {
 		const path = 'auth/token/refresh/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.post<string>(url.toString(), { refresh });
+		return this.http.post<AuthDto>(url.toString(), { refresh }).pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
 	/**
@@ -101,7 +87,7 @@ export class AuthService {
 	/** Logs a user out. */
 	public logOut(): void {
 		this.storage.deleteTokens();
-		this.router.navigate(['']);
+		this.router.navigate(['/auth/log-in']);
 		this.userStateSubject$.next(false);
 	}
 }
