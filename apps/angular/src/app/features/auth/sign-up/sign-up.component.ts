@@ -7,6 +7,7 @@ import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 /** Sign up component. */
 @Component({
@@ -64,7 +65,13 @@ export class SignUpComponent implements OnInit {
 
 		this.auth
 			.register(user)
-			.pipe(takeUntilDestroyed(this.destroyRef))
+			.pipe(
+				catchError((e) => {
+					console.log(e);
+					return throwError(() => new Error('Sign up error'));
+				}),
+				takeUntilDestroyed(this.destroyRef),
+			)
 			.subscribe(response => {
 				this.storage.setAccessToken(response.access);
 				this.storage.setRefreshToken(response.refresh);

@@ -12,9 +12,12 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
 	/** @inheritdoc */
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
+
+		// TODO Skip login and register.
+
 		return next.handle(request).pipe(
 
-			// Not sure how to fix it.
+			// Not sure how to fix it yet.
 			// eslint-disable-next-line rxjs/no-implicit-any-catch
 			catchError((e: HttpErrorResponse) => {
 				const refresh = this.storage.getRefreshToken();

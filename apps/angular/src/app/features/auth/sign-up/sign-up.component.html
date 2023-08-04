@@ -45,9 +45,9 @@
       <mat-error *ngIf="signUpForm.get('password')?.hasError('required')"
         >Password is required</mat-error
       >
-      <!-- <mat-error *ngIf="signUpForm.get('password')?.hasError('pattern')"
-        >Password must be at least 8 chars long and contain numbers, uppercase and lowercase letters</mat-error
-      > -->
+      <mat-error *ngIf="signUpForm.get('password')?.hasError('minlength')"
+        >Password must be at least 8 characters long</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
@@ -64,6 +64,14 @@
           !signUpForm.get('confirmedPassword')?.hasError('required')
         "
         >Passwords don't match</mat-error
+      >
+      <mat-error
+        *ngIf="
+          !signUpForm.get('password')?.dirty &&
+          signUpForm.get('confirmedPassword')?.touched &&
+          !signUpForm.get('confirmedPassword')?.dirty
+        "
+        >Required field</mat-error
       >
     </mat-form-field>
   </form>
