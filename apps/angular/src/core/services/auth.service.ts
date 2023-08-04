@@ -43,7 +43,7 @@ export class AuthService {
 
 	/**
 	 * User login.
-	 * @param loginInfo User login info.
+	 * @param loginInfo Info required to log in.
 	 */
 	public login(loginInfo: LoginInfo): Observable<Auth> {
 		const path = 'auth/login/';

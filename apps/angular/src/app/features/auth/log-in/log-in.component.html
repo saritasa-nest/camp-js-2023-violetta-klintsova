@@ -25,7 +25,18 @@
       </mat-error>
     </mat-form-field>
   </form>
-  <button type="submit" mat-raised-button color="accent" class="log-in-button" (click)="onSubmit()">
+
+  <ng-container *ngIf="loginForm.hasError('formError')">
+    <mat-error>No active account with given credentials was found.</mat-error>
+  </ng-container>
+
+  <button
+    type="submit"
+    mat-raised-button
+    color="accent"
+    class="log-in-button"
+    (click)="onSubmit()"
+  >
     Log in
   </button>
 </div>

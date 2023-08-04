@@ -4,6 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /** Log in component. */
 @Component({
@@ -43,13 +45,17 @@ export class LoginComponent implements OnInit {
 
 		this.auth
 			.login(user)
-			.pipe(takeUntilDestroyed(this.destroyRef))
+			.pipe(
+				catchError((e: HttpErrorResponse) => {
+					this.loginForm.setErrors({ formError: true });
+					return throwError(() => new Error('No account'));
+				}),
+				takeUntilDestroyed(this.destroyRef),
+			)
 			.subscribe(response => {
 				this.storage.setAccessToken(response.access);
 				this.storage.setRefreshToken(response.refresh);
-
 				this.auth.updateUserState(true);
-
 				this.router.navigate(['/anime']);
 			});
 	}
