@@ -1,11 +1,9 @@
 import { Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { Router } from '@angular/router';
-import { catchError, throwError, tap } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, throwError } from 'rxjs';
 
 /** Log in component. */
 @Component({
@@ -16,7 +14,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class LoginComponent implements OnInit {
 	public constructor(
 		private readonly auth: AuthService,
-		private readonly storage: StorageService,
 		private readonly destroyRef: DestroyRef,
 		private readonly router: Router,
 	) {}
@@ -51,7 +48,7 @@ export class LoginComponent implements OnInit {
 		this.auth
 			.login(user)
 			.pipe(
-				catchError((e: HttpErrorResponse) => {
+				catchError(() => {
 					this.isLoading = false;
 					this.loginForm.setErrors({ formError: true });
 					return throwError(() => new Error('No active account with given credentials was found.'));
@@ -60,9 +57,7 @@ export class LoginComponent implements OnInit {
 			)
 			.subscribe(response => {
 				this.isLoading = false;
-				this.storage.setAccessToken(response.access);
-				this.storage.setRefreshToken(response.refresh);
-				this.auth.updateUserState(true);
+				this.auth.logIn(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});
 	}

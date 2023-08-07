@@ -27,7 +27,7 @@
         placeholder="user@gmail.com"
       />
       <mat-error *ngIf="signUpForm.get('email')?.hasError('required')">
-        Email is <strong>required</strong>
+        Email is required
       </mat-error>
       <mat-error *ngIf="signUpForm.get('email')?.hasError('email')">
         Please enter a valid email address
@@ -43,12 +43,12 @@
         formControlName="password"
         (input)="onPasswordInput()"
       />
-      <mat-error *ngIf="signUpForm.get('password')?.hasError('required')"
-        >Password is required</mat-error
-      >
-      <mat-error *ngIf="signUpForm.get('password')?.hasError('minlength')"
-        >Password must be at least 8 characters long</mat-error
-      >
+      <mat-error *ngIf="signUpForm.get('password')?.hasError('required')">
+        Password is required
+      </mat-error>
+      <mat-error *ngIf="signUpForm.get('password')?.hasError('minlength')">
+        Password must be at least 8 characters long
+      </mat-error>
       <mat-error *ngIf="signUpForm.get('password')?.hasError('passwordError')">{{validationErrors.password}}</mat-error>
     </mat-form-field>
 
@@ -63,19 +63,16 @@
       <mat-error
         *ngIf="
           signUpForm.get('confirmedPassword')?.invalid &&
-          !signUpForm.get('confirmedPassword')?.hasError('required')
-        "
-        >Passwords don't match</mat-error
-      >
+          !signUpForm.get('confirmedPassword')?.hasError('required')">
+          Passwords don't match
+      </mat-error>
       <mat-error
         *ngIf="
           !signUpForm.get('password')?.dirty &&
           signUpForm.get('confirmedPassword')?.touched &&
-          !signUpForm.get('confirmedPassword')?.dirty
-        "
-        >Required field</mat-error
-      >
-
+          !signUpForm.get('confirmedPassword')?.dirty">
+          Required field
+      </mat-error>
     </mat-form-field>
   </form>
   <button

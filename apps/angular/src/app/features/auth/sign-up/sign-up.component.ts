@@ -10,7 +10,7 @@ import { catchError, throwError } from 'rxjs';
 
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { ValidationError } from './validation-error';
+import { ValidationError } from '../../../../../../../libs/core/models/validation-error';
 
 /** Sign up component. */
 @Component({
@@ -32,11 +32,11 @@ export class SignUpComponent implements OnInit {
 	public ngOnInit(): void {
 		this.signUpForm = new FormGroup(
 			{
-				firstName: new FormControl(null, Validators.required),
-				lastName: new FormControl(null, Validators.required),
-				email: new FormControl(null, [Validators.required, Validators.email]),
-				password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-				confirmedPassword: new FormControl(null, Validators.required),
+				firstName: new FormControl('', Validators.required),
+				lastName: new FormControl('', Validators.required),
+				email: new FormControl('', [Validators.required, Validators.email]),
+				password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+				confirmedPassword: new FormControl('', Validators.required),
 			},
 			{ validators: equalPasswordsValidator },
 		);
@@ -95,7 +95,6 @@ export class SignUpComponent implements OnInit {
 			)
 			.subscribe(response => {
 				this.auth.logIn(response.access, response.refresh);
-
 				this.router.navigate(['/anime']);
 			});
 	}
