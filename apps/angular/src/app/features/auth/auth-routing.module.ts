@@ -8,6 +8,7 @@ const routes: Routes = [
 	{ path: '', redirectTo: 'log-in', pathMatch: 'full' },
 	{ path: 'log-in', component: LoginComponent },
 	{ path: 'sign-up', component: SignUpComponent },
+	{ path: '**', redirectTo: 'log-in', pathMatch: 'full' },
 ];
 
 /** Anime routing. */
