@@ -23,25 +23,26 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 	/** @inheritdoc */
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 		return next.handle(request).pipe(
-
-			// Not sure how to fix this error with types
-			catchError((e: HttpErrorResponse) => {
+			catchError((e: unknown) => {
+				// Check if a request has a bypass flag for this interceptor.
 				if (request.context.get(BYPASS_LOG) === true) {
 					return next.handle(request);
 				}
 
 				const refresh = this.storage.getRefreshToken();
-				if (refresh && e.url !== 'https://api.camp-js.saritasa.rocks/api/v1/auth/token/refresh/') {
-					return this.auth.refreshToken(refresh).pipe(
-						tap(response => {
-							this.auth.logIn(response.access, response.refresh);
-						}),
-						catchError(() => this.onRefreshFailed()),
-						switchMap(() => next.handle(request)),
-					);
+				if (e instanceof HttpErrorResponse) {
+					if (refresh && e.url !== 'https://api.camp-js.saritasa.rocks/api/v1/auth/token/refresh/') {
+						return this.auth.refreshToken(refresh).pipe(
+							tap(response => {
+								this.auth.logIn(response.access, response.refresh);
+							}),
+							catchError(() => this.onRefreshFailed()),
+							switchMap(() => next.handle(request)),
+						);
+					}
 				}
 
-				/** Executes in case no refresh key was found. */
+				// Executes in case no refresh key was found.
 				return throwError(() => {
 					this.auth.logOut();
 				});

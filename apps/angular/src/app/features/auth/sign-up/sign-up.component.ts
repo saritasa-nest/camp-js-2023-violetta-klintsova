@@ -9,8 +9,7 @@ import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 
 import { HttpErrorResponse } from '@angular/common/http';
-
-import { ValidationError } from '../../../../../../../libs/core/models/validation-error';
+import { ValidationError } from '@js-camp/core/models/validation-error';
 
 /** Sign up component. */
 @Component({
@@ -74,21 +73,23 @@ export class SignUpComponent implements OnInit {
 		this.auth
 			.register(user)
 			.pipe(
-				catchError((e: HttpErrorResponse) => {
-					/** Reset errors messages. */
-					this.validationErrors.email = '';
-					this.validationErrors.password = '';
+				catchError((e: unknown) => {
+					if (e instanceof HttpErrorResponse) {
+						/** Reset errors messages. */
+						this.validationErrors.email = '';
+						this.validationErrors.password = '';
 
-					e.error.errors.forEach((element: ValidationError) => {
-						if (element.attr === 'email') {
-							this.validationErrors.email += element.detail;
-							this.signUpForm.get('email')?.setErrors({ emailError: true });
-						}
-						if (element.attr === 'password') {
-							this.validationErrors.password += element.detail;
-							this.signUpForm.get('password')?.setErrors({ passwordError: true });
-						}
-					});
+						e.error.errors.forEach((element: ValidationError) => {
+							if (element.attr === 'email') {
+								this.validationErrors.email += element.detail;
+								this.signUpForm.get('email')?.setErrors({ emailError: true });
+							}
+							if (element.attr === 'password') {
+								this.validationErrors.password += element.detail;
+								this.signUpForm.get('password')?.setErrors({ passwordError: true });
+							}
+						});
+					}
 					return throwError(() => new Error('Sign up error.'));
 				}),
 				takeUntilDestroyed(this.destroyRef),
@@ -98,5 +99,4 @@ export class SignUpComponent implements OnInit {
 				this.router.navigate(['/anime']);
 			});
 	}
-
 }

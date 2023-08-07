@@ -14,14 +14,15 @@ export class AppComponent implements OnInit {
 
 	/** Component initialization. */
 	public ngOnInit(): void {
-		const accessToken = this.storage.getAccessToken();
-		if (accessToken !== null) {
-			const refresh = this.storage.getRefreshToken();
-			if (refresh !== null) {
-				this.auth.verifyToken(accessToken).subscribe(() => {
-					this.auth.logIn(accessToken, refresh);
-				});
-			}
+		const access = this.storage.getAccessToken();
+		const refresh = this.storage.getRefreshToken();
+
+		if (access !== null && refresh !== null) {
+			this.auth.verifyToken(access).subscribe(() => {
+				this.auth.logIn(access, refresh);
+			});
+		} else {
+			this.auth.updateUserState(false);
 		}
 	}
 }
