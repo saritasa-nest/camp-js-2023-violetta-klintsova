@@ -16,7 +16,12 @@ export class AppComponent implements OnInit {
 	public ngOnInit(): void {
 		const accessToken = this.storage.getAccessToken();
 		if (accessToken !== null) {
-			this.auth.verifyToken(accessToken).subscribe();
+			const refresh = this.storage.getRefreshToken();
+			if (refresh !== null) {
+				this.auth.verifyToken(accessToken).subscribe(() => {
+					this.auth.logIn(accessToken, refresh);
+				});
+			}
 		}
 	}
 }
