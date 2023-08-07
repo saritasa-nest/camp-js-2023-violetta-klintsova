@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 
@@ -7,6 +7,7 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 	selector: 'camp-landing',
 	templateUrl: './landing.component.html',
 	styleUrls: ['./landing.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LandingComponent {
 	/** User authorization status. */

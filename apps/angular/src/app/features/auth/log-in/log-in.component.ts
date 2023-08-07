@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
@@ -10,12 +10,14 @@ import { catchError, throwError } from 'rxjs';
 	selector: 'camp-log-in',
 	templateUrl: './log-in.component.html',
 	styleUrls: ['./log-in.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
 	public constructor(
 		private readonly auth: AuthService,
 		private readonly destroyRef: DestroyRef,
 		private readonly router: Router,
+		private readonly changeDetector: ChangeDetectorRef,
 	) {}
 
 	/** Log in form. */
@@ -54,6 +56,7 @@ export class LoginComponent implements OnInit {
 				catchError(() => {
 					this.isLoading = false;
 					this.loginForm.setErrors({ formError: true });
+					this.changeDetector.markForCheck();
 					return throwError(() => new Error('No active account with given credentials was found.'));
 				}),
 				takeUntilDestroyed(this.destroyRef),

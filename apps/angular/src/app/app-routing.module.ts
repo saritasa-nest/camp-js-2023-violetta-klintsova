@@ -16,7 +16,7 @@ const routes: Routes = [
 			{
 				path: 'anime',
 				canMatch: [authGuard],
-				loadChildren: () => import('./features/anime-table/anime.module').then(m => m.AnimeModule),
+				loadChildren: () => import('./features/anime/anime.module').then(m => m.AnimeModule),
 			},
 		],
 	},

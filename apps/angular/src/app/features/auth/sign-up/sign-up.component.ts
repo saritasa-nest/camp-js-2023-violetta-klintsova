@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, DestroyRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 
 import { equalPasswordsValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
@@ -16,12 +16,14 @@ import { ValidationError } from '@js-camp/core/models/validation-error';
 	selector: 'camp-sign-up',
 	templateUrl: './sign-up.component.html',
 	styleUrls: ['./sign-up.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpComponent implements OnInit {
 	public constructor(
 		private readonly auth: AuthService,
 		private readonly destroyRef: DestroyRef,
 		private readonly router: Router,
+		private readonly changeDetector: ChangeDetectorRef,
 	) {}
 
 	/** Sign up form. */
@@ -80,6 +82,7 @@ export class SignUpComponent implements OnInit {
 			.pipe(
 				catchError((e: unknown) => {
 					if (e instanceof HttpErrorResponse) {
+						this.changeDetector.markForCheck();
 						this.isLoading = false;
 
 						/** Reset errors messages. */

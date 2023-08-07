@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+/** Main layout component. */
 @Component({
 	selector: 'camp-main-layout',
 	templateUrl: './main-layout.component.html',
-	styleUrls: ['./main-layout.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayoutComponent {}

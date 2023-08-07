@@ -2,6 +2,7 @@ import { RegisterInfoDto } from '../dtos/registration-info.dto';
 import { RegistrationInfo } from '../models/registration-info';
 
 export namespace RegistrationInfoMapper {
+
 	/**
 	 * Maps data to dto.
 	 * @param model Model for register info.

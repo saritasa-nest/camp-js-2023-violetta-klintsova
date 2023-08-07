@@ -1,4 +1,4 @@
-import { Component, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 
@@ -7,6 +7,7 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 	selector: 'camp-header',
 	templateUrl: './header.component.html',
 	styleUrls: ['./header.component.css'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
 	/** User authorization status. */
