@@ -27,6 +27,15 @@ export class SignUpComponent implements OnInit {
 	/** Sign up form. */
 	protected signUpForm!: FormGroup;
 
+	/** Validation errors. */
+	protected validationErrors = {
+		email: '',
+		password: '',
+	};
+
+	/** Form state. */
+	public isLoading = false;
+
 	/** Component initialization. */
 	public ngOnInit(): void {
 		this.signUpForm = new FormGroup(
@@ -50,17 +59,13 @@ export class SignUpComponent implements OnInit {
 		}
 	}
 
-	/** Validation errors. */
-	protected validationErrors = {
-		email: '',
-		password: '',
-	};
-
 	/** Registers a new user. */
 	protected onSubmit(): void {
 		if (this.signUpForm.invalid) {
 			return;
 		}
+
+		this.isLoading = true;
 
 		const user = {
 			firstName: this.signUpForm.value.firstName,
@@ -95,6 +100,7 @@ export class SignUpComponent implements OnInit {
 				takeUntilDestroyed(this.destroyRef),
 			)
 			.subscribe(response => {
+				this.isLoading = false;
 				this.auth.logIn(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});

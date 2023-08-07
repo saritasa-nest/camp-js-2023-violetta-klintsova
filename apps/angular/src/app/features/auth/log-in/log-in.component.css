@@ -18,3 +18,8 @@
   display: block;
   margin: 20px auto 0;
 }
+
+.log-in-button:disabled {
+  background-color: #ff689a;
+  color: white;
+}

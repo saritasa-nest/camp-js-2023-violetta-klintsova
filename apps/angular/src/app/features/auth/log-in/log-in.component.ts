@@ -24,6 +24,9 @@ export class LoginComponent implements OnInit {
 	/** Form state. */
 	public isLoading = false;
 
+	/** Submit button state. */
+	public isDisabled = false;
+
 	/** Component initialization. */
 	public ngOnInit(): void {
 		this.loginForm = new FormGroup({

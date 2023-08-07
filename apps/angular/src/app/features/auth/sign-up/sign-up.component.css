@@ -18,3 +18,8 @@
   display: block;
   margin: 20px 0 auto;
 }
+
+.sign-up-button:disabled {
+  background-color: #ff689a;
+  color: white;
+}

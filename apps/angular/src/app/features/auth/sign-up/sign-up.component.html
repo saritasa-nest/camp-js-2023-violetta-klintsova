@@ -81,7 +81,8 @@
     color="accent"
     class="sign-up-button"
     (click)="onSubmit()"
+    [disabled]="isLoading"
   >
-    Sign up
+  {{isLoading ? 'Signing up...' : ' Sing up'}}
   </button>
 </div>

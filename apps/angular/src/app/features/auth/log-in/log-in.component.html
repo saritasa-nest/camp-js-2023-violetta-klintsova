@@ -31,23 +31,13 @@
   </ng-container>
 
   <button
-  *ngIf="!isLoading"
     type="submit"
     mat-raised-button
     color="accent"
     class="log-in-button"
     (click)="onSubmit()"
+    [disabled]="isLoading"
   >
-    Log in
-  </button>
-  
-  <button
-  *ngIf="isLoading"
-    type="submit"
-    mat-raised-button
-    color="accent"
-    class="log-in-button"
-  >
-    Logging in
+    {{isLoading ? 'Logging in...' : 'Log in'}}
   </button>
 </div>
