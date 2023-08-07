@@ -1,9 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
+import {
+	HttpEvent,
+	HttpInterceptor,
+	HttpHandler,
+	HttpRequest,
+	HttpErrorResponse,
+	HttpContextToken,
+} from '@angular/common/http';
 import { Observable, catchError, switchMap, tap, throwError } from 'rxjs';
 
 import { StorageService } from '../services/auth-storage.service';
 import { AuthService } from '../services/auth.service';
+
+/** Context for request to skip certain interceptors. */
+export const BYPASS_LOG = new HttpContextToken<boolean>(() => false);
 
 /** Interceptor to handle auth tokens. */
 @Injectable()
@@ -12,20 +22,20 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
 	/** @inheritdoc */
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-
-		// TODO Skip login and register.
-
 		return next.handle(request).pipe(
 
 			// Not sure how to fix it yet.
 			// eslint-disable-next-line rxjs/no-implicit-any-catch
 			catchError((e: HttpErrorResponse) => {
+				if (request.context.get(BYPASS_LOG) === true) {
+					return next.handle(request);
+				}
+
 				const refresh = this.storage.getRefreshToken();
 				if (refresh && e.url !== 'https://api.camp-js.saritasa.rocks/api/v1/auth/token/refresh/') {
 					return this.auth.refreshToken(refresh).pipe(
 						tap(response => {
-							this.storage.setAccessToken(response.access);
-							this.storage.setRefreshToken(response.refresh);
+							this.auth.logIn(response.access, response.refresh);
 						}),
 						catchError(() => this.onRefreshFailed()),
 						switchMap(() => next.handle(request)),

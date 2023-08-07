@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { environment } from '@js-camp/angular/environments/environment';
@@ -10,6 +10,8 @@ import { LoginInfo } from '@js-camp/core/models/login-info';
 import { Auth } from '@js-camp/core/models/auth';
 import { Router } from '@angular/router';
 
+import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
+
 import { StorageService } from './auth-storage.service';
 
 /** Authentification service. */
@@ -17,6 +19,7 @@ import { StorageService } from './auth-storage.service';
 	providedIn: 'root',
 })
 export class AuthService {
+
 	private readonly apiUrl = environment.apiUrl;
 
 	/** User log in state. */
@@ -48,7 +51,9 @@ export class AuthService {
 	public login(loginInfo: LoginInfo): Observable<Auth> {
 		const path = 'auth/login/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.post<AuthDto>(url.toString(), loginInfo).pipe(map(el => AuthMapper.fromDto(el)));
+		return this.http
+			.post<AuthDto>(url.toString(), loginInfo, { context: new HttpContext().set(BYPASS_LOG, true) })
+			.pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
 	/**
@@ -59,7 +64,9 @@ export class AuthService {
 		const path = 'auth/register/';
 		const url = new URL(path, this.apiUrl);
 		const mappedRegisterData = RegistrationInfoMapper.toDto(registerInfo);
-		return this.http.post<AuthDto>(url.toString(), mappedRegisterData).pipe(map(el => AuthMapper.fromDto(el)));
+		return this.http
+			.post<AuthDto>(url.toString(), mappedRegisterData, { context: new HttpContext().set(BYPASS_LOG, true) })
+			.pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
 	/**
@@ -70,7 +77,9 @@ export class AuthService {
 	public refreshToken(refresh: string): Observable<Auth> {
 		const path = 'auth/token/refresh/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.post<AuthDto>(url.toString(), { refresh }).pipe(map(el => AuthMapper.fromDto(el)));
+		return this.http
+			.post<AuthDto>(url.toString(), { refresh })
+			.pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
 	/**
@@ -84,10 +93,23 @@ export class AuthService {
 		return this.http.post<string>(url.toString(), { token: access });
 	}
 
+	/**
+	 * Logs user in.
+	 * @param access Access key.
+	 * @param refresh Refresh key.
+	 * @param value Subject value.
+	 */
+	public logIn(access: string, refresh: string): void {
+		this.storage.setAccessToken(access);
+		this.storage.setRefreshToken(refresh);
+		this.updateUserState(true);
+	}
+
 	/** Logs a user out. */
 	public logOut(): void {
 		this.storage.deleteTokens();
 		this.router.navigate(['/auth/log-in']);
-		this.userStateSubject$.next(false);
+		this.updateUserState(false);
 	}
+
 }
