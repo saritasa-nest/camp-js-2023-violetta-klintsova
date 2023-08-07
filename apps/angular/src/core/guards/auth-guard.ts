@@ -4,4 +4,4 @@ import { Observable } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanMatchFn = (): Observable<boolean> => inject(AuthService).userState$;
+export const authGuard: CanMatchFn = (): Observable<boolean> => inject(AuthService).userState$();

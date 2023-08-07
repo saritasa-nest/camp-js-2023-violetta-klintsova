@@ -4,7 +4,7 @@ import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { environment } from '@js-camp/angular/environments/environment';
 import { AuthDto } from '@js-camp/core/dtos/auth.dto';
 import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { Observable, ReplaySubject, map } from 'rxjs';
 import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
 import { LoginInfo } from '@js-camp/core/models/login-info';
 import { Auth } from '@js-camp/core/models/auth';
@@ -23,10 +23,10 @@ export class AuthService {
 	private readonly apiUrl = environment.apiUrl;
 
 	/** User log in state. */
-	private userStateSubject$ = new BehaviorSubject<boolean>(false);
+	private userStateSubject$ = new ReplaySubject<boolean>(1);
 
 	/** Returns the state subject as an observable. */
-	public get userState$(): Observable<boolean> {
+	public userState$(): Observable<boolean> {
 		return this.userStateSubject$.asObservable();
 	}
 
@@ -108,8 +108,7 @@ export class AuthService {
 	/** Logs a user out. */
 	public logOut(): void {
 		this.storage.deleteTokens();
-		this.router.navigate(['/auth/log-in']);
+		this.router.navigate(['/']);
 		this.updateUserState(false);
 	}
-
 }

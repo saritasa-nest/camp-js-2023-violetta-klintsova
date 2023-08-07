@@ -24,8 +24,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 		return next.handle(request).pipe(
 
-			// Not sure how to fix it yet.
-			// eslint-disable-next-line rxjs/no-implicit-any-catch
+			// Not sure how to fix this error with types
 			catchError((e: HttpErrorResponse) => {
 				if (request.context.get(BYPASS_LOG) === true) {
 					return next.handle(request);

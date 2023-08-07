@@ -20,7 +20,7 @@ export class HeaderComponent {
 		private readonly auth: AuthService,
 		private readonly destroyRef: DestroyRef,
 	) {
-		auth.userState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+		auth.userState$().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
 			this.isLoggedIn = value;
 		});
 	}
