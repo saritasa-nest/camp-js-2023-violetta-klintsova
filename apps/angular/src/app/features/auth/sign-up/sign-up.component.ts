@@ -80,6 +80,8 @@ export class SignUpComponent implements OnInit {
 			.pipe(
 				catchError((e: unknown) => {
 					if (e instanceof HttpErrorResponse) {
+						this.isLoading = false;
+
 						/** Reset errors messages. */
 						this.validationErrors.email = '';
 						this.validationErrors.password = '';
