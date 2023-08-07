@@ -19,6 +19,26 @@
 }
 
 .log-in,
-.log-out {
+.all-anime {
   margin-left: auto;
+}
+
+.log-out {
+  margin-left: 7px;
+}
+
+.all-anime {
+  cursor: pointer;
+  align-self: center;
+  color: var(--primary-color);
+}
+
+.all-anime,
+.all-anime:visited,
+.all-anime:hover {
+  text-decoration: none;
+}
+
+.all-anime:hover {
+  color: var(--primary-dark-color);
 }
