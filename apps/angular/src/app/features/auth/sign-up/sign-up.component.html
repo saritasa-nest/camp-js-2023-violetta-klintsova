@@ -32,6 +32,7 @@
       <mat-error *ngIf="signUpForm.get('email')?.hasError('email')">
         Please enter a valid email address
       </mat-error>
+      <mat-error *ngIf="signUpForm.get('email')?.hasError('emailError')">{{validationErrors.email}}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -48,6 +49,7 @@
       <mat-error *ngIf="signUpForm.get('password')?.hasError('minlength')"
         >Password must be at least 8 characters long</mat-error
       >
+      <mat-error *ngIf="signUpForm.get('password')?.hasError('passwordError')">{{validationErrors.password}}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
@@ -73,6 +75,7 @@
         "
         >Required field</mat-error
       >
+
     </mat-form-field>
   </form>
   <button

@@ -4,10 +4,13 @@ import { Component, DestroyRef, OnInit } from '@angular/core';
 import { equalPasswordsValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
-import { StorageService } from '@js-camp/angular/core/services/auth-storage.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { ValidationError } from './validation-error';
 
 /** Sign up component. */
 @Component({
@@ -18,7 +21,6 @@ import { catchError, throwError } from 'rxjs';
 export class SignUpComponent implements OnInit {
 	public constructor(
 		private readonly auth: AuthService,
-		private readonly storage: StorageService,
 		private readonly destroyRef: DestroyRef,
 		private readonly router: Router,
 	) {}
@@ -40,7 +42,7 @@ export class SignUpComponent implements OnInit {
 		);
 	}
 
-	/** Sets error if password are not equal. */
+	/** Sets an error if passwords are not equal. */
 	protected onPasswordInput(): void {
 		if (this.signUpForm.hasError('matchError')) {
 			this.signUpForm.get('confirmedPassword')?.setErrors([{ matchError: true }]);
@@ -48,6 +50,12 @@ export class SignUpComponent implements OnInit {
 			this.signUpForm.get('confirmedPassword')?.setErrors(null);
 		}
 	}
+
+	/** Validation errors. */
+	protected validationErrors = {
+		email: '',
+		password: '',
+	};
 
 	/** Registers a new user. */
 	protected onSubmit(): void {
@@ -66,15 +74,27 @@ export class SignUpComponent implements OnInit {
 		this.auth
 			.register(user)
 			.pipe(
-				catchError((e) => {
-					console.log(e);
-					return throwError(() => new Error('Sign up error'));
+				catchError((e: HttpErrorResponse) => {
+					/** Reset errors messages. */
+					this.validationErrors.email = '';
+					this.validationErrors.password = '';
+
+					e.error.errors.forEach((element: ValidationError) => {
+						if (element.attr === 'email') {
+							this.validationErrors.email += element.detail;
+							this.signUpForm.get('email')?.setErrors({ emailError: true });
+						}
+						if (element.attr === 'password') {
+							this.validationErrors.password += element.detail;
+							this.signUpForm.get('password')?.setErrors({ passwordError: true });
+						}
+					});
+					return throwError(() => new Error('Sign up error.'));
 				}),
 				takeUntilDestroyed(this.destroyRef),
 			)
 			.subscribe(response => {
-				this.storage.setAccessToken(response.access);
-				this.storage.setRefreshToken(response.refresh);
+				this.auth.logIn(response.access, response.refresh);
 
 				this.router.navigate(['/anime']);
 			});
