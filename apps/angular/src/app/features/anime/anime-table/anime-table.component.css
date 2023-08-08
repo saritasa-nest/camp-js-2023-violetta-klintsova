@@ -24,7 +24,7 @@
 }
 
 tr.selected-row:hover {
-  background-color: var(--light-grey-color);
+  background-color: var(--selected-light-color);
 }
 
 .cdk-header-cell {

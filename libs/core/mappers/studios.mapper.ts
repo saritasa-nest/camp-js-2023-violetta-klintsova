@@ -10,7 +10,7 @@ export namespace StudiosMapper {
 	export function fromDto(dto: StudioDto): Studio {
 		return new Studio({
 			id: dto.id,
-			name: stop.name,
+			name: dto.name,
 		});
 	}
 }

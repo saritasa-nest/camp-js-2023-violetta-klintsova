@@ -1,1 +1,63 @@
-<p>anime-details works!</p>
+<ng-container *ngIf="response$ | async as details">
+  <main class="main">
+    <section class="details-text">
+      <h2 class="title-jpn">
+        {{ details.titleJpn }}
+        <span class="airing-period"
+          >({{ details.airingStartDate | date : "YYYY" }}-{{
+            details.airingEndDate | date : "YYYY"
+          }})</span
+        >
+      </h2>
+      <h3 class="title-eng">{{ details.titleEng }}</h3>
+      <div class="about">
+        <h4 class="title">About</h4>
+
+        <div class="detail">
+          <div>Type</div>
+          <div>{{ details.type }}</div>
+        </div>
+        <div class="detail">
+          <div>Status</div>
+          <div>{{ details.status }}</div>
+        </div>
+        <div class="detail">
+          <div>Rating</div>
+          <div>{{ details.rating }}</div>
+        </div>
+        <div class="detail">
+          <div>Source</div>
+          <div>{{ details.source }}</div>
+        </div>
+        <div class="detail">
+          <div>Season</div>
+          <div>{{ details.season }}</div>
+        </div>
+        <div class="detail">
+          <div>Airing</div>
+          <div>{{ details.airing }}</div>
+        </div>
+
+        <div class="detail">
+          <div>Studios</div>
+					<div>
+						<span *ngFor="let studio of details.studios">{{ studio.name }}</span>
+					</div>
+        </div>
+        <div class="detail">
+          <div>Genres</div>
+					<div>
+						<span *ngFor="let genre of details.genres">{{ genre.name }} </span>
+					</div>
+        </div>
+      </div>
+      <button (click)="goBack()" type="button" mat-raised-button class="go-back-button">Back to all anime</button>
+    </section>
+    <section class="details-view">
+      <div class="image">
+        <img src="{{ details.image }}" alt="Anime cover" />
+      </div>
+      <div class="trailer">{{ details.trailer }}</div>
+    </section>
+  </main>
+</ng-container>

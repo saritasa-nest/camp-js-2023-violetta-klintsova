@@ -1,0 +1,48 @@
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.main {
+  padding: 40px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.details-text {
+  max-width: 500px;
+}
+
+.title-jpn {
+  margin-bottom: 12px;
+  font-size: var(--large-font-size);
+}
+
+.title-eng {
+  font-weight: 300;
+}
+
+.about {
+  margin-top: 50px;
+}
+
+.title {
+  margin-bottom: 20px;
+  font-size: var(--big-font-size);
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 20px;
+  margin-bottom: 10px;
+  font-size: var(--medium-font-size);
+}
+
+.detail > :first-child {
+  color: var(--text-light-color);
+}
+
+.go-back-button {
+  margin-top: 100px;
+}

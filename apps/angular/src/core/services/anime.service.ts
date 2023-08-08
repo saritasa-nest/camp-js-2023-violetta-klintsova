@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '@js-camp/angular/environments/environment';
 
 import { Anime } from '@js-camp/core/models/anime';
@@ -14,6 +14,9 @@ import { PaginationDto } from '@js-camp/core/dtos/pagination.dto';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { PaginationMapper } from '@js-camp/core/mappers/pagination.mapper';
 import { ManagementOptions } from '@js-camp/core/models/management-options';
+import { AnimeDetails } from '@js-camp/core/models/anime-details';
+import { AnimeDetailsMapper } from '@js-camp/core/mappers/anime-details.mapper';
+import { AnimeDetailsDto } from '@js-camp/core/dtos/anime-details.dto';
 
 /** Anime service. */
 @Injectable({
@@ -52,10 +55,17 @@ export class AnimeService {
 			.pipe(map(el => PaginationMapper.fromDto(el, AnimeMapper.fromDto)));
 	}
 
-	// public getAnimeDetails(id: number): void {
-	// 	const path = `anime/anime/${id}`;
-	// 	const url = new URL(path, this.apiUrl);
+	/**
+	 * Gets selected anime details.
+	 * @param id Anime id.
+	 */
+	public getAnimeDetails(id: string): Observable<AnimeDetails> {
+		const path = `anime/anime/${id}/`;
+		const url = new URL(path, this.apiUrl);
 
-	// 	return this.http.get(url.toString()).pipe(map())
-	// }
+		return this.http.get<AnimeDetailsDto>(url.toString()).pipe(
+			tap(x => console.log(x)),
+			map(el => AnimeDetailsMapper.fromDto(el)),
+		);
+	}
 }
