@@ -16,7 +16,7 @@
 
 .sign-up-button {
   display: block;
-  margin: 20px 0 auto;
+  margin: 20px auto 0;
 }
 
 .sign-up-button:disabled {
