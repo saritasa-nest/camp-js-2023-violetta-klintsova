@@ -1,8 +1,8 @@
 /** Seasons. */
-export enum SeasonDto {
+export enum Season {
 	Summer = 'SUMMER',
 	Winter = 'WINTER',
 	Spring = 'SPRING',
 	Fall = 'FALL',
-	NonSeasonal = 'NON_SEASONAL',
+	NonSeasonal = 'NON SEASONAL',
 }

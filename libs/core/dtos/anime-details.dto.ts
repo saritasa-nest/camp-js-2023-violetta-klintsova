@@ -9,8 +9,7 @@ import { SourceDto } from './source.dto';
 import { StudioDto } from './studio.dto';
 
 /** Anime details DTO. */
-export interface AnimeDetails {
-
+export interface AnimeDetailsDto {
 	/** ID. */
 	readonly id: number;
 

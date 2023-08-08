@@ -1,0 +1,20 @@
+/** Source. */
+export enum Source {
+	FourKomaManga = 'FOUR KOMA MANGA',
+	Book = 'BOOK',
+	CardGame = 'CARD GAME',
+	Game = 'GAME',
+	LightNovel = 'LIGHT NOVEL',
+	Manga = 'MANGA',
+	MixedMedia = 'MIXED MEDIA',
+	Music = 'MUSIC',
+	Novel = 'Novel',
+	Original = 'ORIGINAL',
+	PictureBook = 'PICTURE BOOK',
+	Radio = 'RADIO',
+	VisualNovel = 'VISUAL NOVEL',
+	WebManga = 'WEB MANGA',
+	WebNovel = 'WEB NOVEL',
+	Other = 'OTHER',
+	Unknown = 'UNKNOWN',
+}

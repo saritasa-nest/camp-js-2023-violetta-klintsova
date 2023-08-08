@@ -51,4 +51,11 @@ export class AnimeService {
 			.get<PaginationDto<AnimeDto[]>>(url.toString(), { params: httpParams })
 			.pipe(map(el => PaginationMapper.fromDto(el, AnimeMapper.fromDto)));
 	}
+
+	// public getAnimeDetails(id: number): void {
+	// 	const path = `anime/anime/${id}`;
+	// 	const url = new URL(path, this.apiUrl);
+
+	// 	return this.http.get(url.toString()).pipe(map())
+	// }
 }

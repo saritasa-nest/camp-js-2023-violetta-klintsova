@@ -8,7 +8,7 @@ export enum SourceDto {
 	Manga = 'MANGA',
 	MixedMedia = 'MIXED_MEDIA',
 	Music = 'MUSIC',
-	Novel = 'Novel',
+	Novel = 'NOVEL',
 	Original = 'ORIGINAL',
 	PictureBook = 'PICTURE_BOOK',
 	Radio = 'RADIO',
