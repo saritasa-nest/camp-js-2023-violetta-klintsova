@@ -1,4 +1,4 @@
-/** Login dto. */
+/** Login DTO. */
 export interface AuthDto {
 
 	/** Refresh token. */

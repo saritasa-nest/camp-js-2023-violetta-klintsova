@@ -1,5 +1,5 @@
-/** Genre DTO. */
-export interface GenreDto {
+/** Studio. */
+export interface StudioDto {
 
 	/** ID. */
 	readonly id: number;
@@ -12,7 +12,4 @@ export interface GenreDto {
 
 	/** Name. */
 	readonly name: string;
-
-	/** Type. */
-	readonly type: 'GENRES' | 'EXPLICIT_GENRES' | ' THEMES' | 'DEMOGRAPHICS';
 }

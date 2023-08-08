@@ -14,10 +14,10 @@ export interface AnimeDto {
 	/** Modification date. */
 	readonly modified: string;
 
-	/** Title. */
+	/** Title (ENG). */
 	readonly title_eng: string;
 
-	/** Image title. */
+	/** Title (JPN). */
 	readonly title_jpn: string;
 
 	/** Image URL. */
