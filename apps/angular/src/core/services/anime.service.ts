@@ -31,7 +31,7 @@ export class AnimeService {
 	 * Get anime list from the server.
 	 * @param options Options which specify what kind of data to request.
 	 */
-	public getAnimeList(options: ManagementOptions): Observable<Pagination<Anime>> {
+	public fetchAnimeList(options: ManagementOptions): Observable<Pagination<Anime>> {
 		const path = 'anime/anime/';
 		const url = new URL(path, this.apiUrl);
 		let httpParams = new HttpParams()
@@ -59,7 +59,7 @@ export class AnimeService {
 	 * Gets selected anime details.
 	 * @param id Anime id.
 	 */
-	public getAnimeDetails(id: string): Observable<AnimeDetails> {
+	public fetchAnimeDetails(id: Anime['id']): Observable<AnimeDetails> {
 		const path = `anime/anime/${id}/`;
 		const url = new URL(path, this.apiUrl);
 		return this.http.get<AnimeDetailsDto>(url.toString()).pipe(map(el => AnimeDetailsMapper.fromDto(el)));

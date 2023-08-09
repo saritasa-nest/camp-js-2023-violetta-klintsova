@@ -72,7 +72,7 @@ export class AnimeTableComponent implements OnInit {
 				this.filters = params.get('filters')?.split(',') ?? [];
 				this.searchValue = params.get('search') ?? '';
 
-				return this.animeService.getAnimeList({
+				return this.animeService.fetchAnimeList({
 					limit: this.pageSize,
 					page: this.pageIndex,
 					sort: this.sortOption,
