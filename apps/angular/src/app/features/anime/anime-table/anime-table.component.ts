@@ -62,7 +62,19 @@ export class AnimeTableComponent implements OnInit {
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
 	) {
-		this.anime$ = this.activatedRoute.queryParamMap.pipe(
+		this.anime$ = this.createAnimePaginationStream();
+	}
+
+	/** Component initialization. */
+	public ngOnInit(): void {
+		if (isEmptyObject(this.getCurrentQueryParams())) {
+			this.router.navigate(['/anime'], { queryParams: { page: this.pageIndex, sort: this.sortOption } });
+		}
+	}
+
+	/** Creates a stream with anime. */
+	private createAnimePaginationStream(): Observable<Pagination<Anime>> {
+		return this.activatedRoute.queryParamMap.pipe(
 			tap(() => {
 				this.isLoading = true;
 			}),
@@ -84,13 +96,6 @@ export class AnimeTableComponent implements OnInit {
 				this.isLoading = false;
 			}),
 		);
-	}
-
-	/** Component initialization. */
-	public ngOnInit(): void {
-		if (isEmptyObject(this.getCurrentQueryParams())) {
-			this.router.navigate(['/anime'], { queryParams: { page: this.pageIndex, sort: this.sortOption } });
-		}
 	}
 
 	/**

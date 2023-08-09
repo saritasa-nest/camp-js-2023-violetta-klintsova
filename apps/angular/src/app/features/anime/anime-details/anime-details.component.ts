@@ -27,7 +27,22 @@ export class AnimeDetailsComponent implements OnInit {
 		private readonly animeService: AnimeService,
 		private readonly location: Location,
 	) {
-		this.animeDetails$ = this.activatedRoute.paramMap.pipe(
+		this.animeDetails$ = this.createAnimeDetailsStream();
+	}
+
+	/** Component initialization. */
+	public ngOnInit(): void {
+		if (!youtubeApiLoaded) {
+			const script = document.createElement('script');
+			script.src = 'https://www.youtube.com/iframe_api';
+			document.body.appendChild(script);
+			youtubeApiLoaded = true;
+		}
+	}
+
+	/** Creates a stream with anime details. */
+	private createAnimeDetailsStream(): Observable<AnimeDetails> {
+		return this.activatedRoute.paramMap.pipe(
 			switchMap(params => {
 				const id = Number(params.get('id'));
 				if (id !== null && !isNaN(id)) {
@@ -42,16 +57,6 @@ export class AnimeDetailsComponent implements OnInit {
 				return EMPTY;
 			}),
 		);
-	}
-
-	/** Component initialization. */
-	public ngOnInit(): void {
-		if (!youtubeApiLoaded) {
-			const script = document.createElement('script');
-			script.src = 'https://www.youtube.com/iframe_api';
-			document.body.appendChild(script);
-			youtubeApiLoaded = true;
-		}
 	}
 
 	/** Changes state of the pop up. */
