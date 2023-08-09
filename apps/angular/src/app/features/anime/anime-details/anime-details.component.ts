@@ -1,9 +1,11 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { AnimeDetails } from '@js-camp/core/models/anime-details';
 import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
+
+let youtubeApiLoaded = false;
 
 /** Anime details component. */
 @Component({
@@ -12,8 +14,7 @@ import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
 	styleUrls: ['./anime-details.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeDetailsComponent {
-
+export class AnimeDetailsComponent implements OnInit {
 	/** Image popup state. */
 	protected isPopupOpened = false;
 
@@ -41,6 +42,16 @@ export class AnimeDetailsComponent {
 				return EMPTY;
 			}),
 		);
+	}
+
+	/** Component initialization. */
+	public ngOnInit(): void {
+		if (!youtubeApiLoaded) {
+			const script = document.createElement('script');
+			script.src = 'https://www.youtube.com/iframe_api';
+			document.body.appendChild(script);
+			youtubeApiLoaded = true;
+		}
 	}
 
 	/** Changes state of the pop up. */
