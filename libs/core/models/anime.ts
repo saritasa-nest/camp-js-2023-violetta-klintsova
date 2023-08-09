@@ -6,23 +6,23 @@ import { ProductionStatuses } from './production-statuses';
 export interface Anime {
 
 	/** ID. */
-	id: number;
+	readonly id: number;
 
 	/** Title (ENG). */
-	titleEng: string;
+	readonly titleEng: string;
 
 	/** Image. */
-	image: string;
+	readonly image: string;
 
 	/** Title (JPN). */
-	titleJpn: string;
+	readonly titleJpn: string;
 
 	/** Release date. */
-	airedStartDate: Date;
+	readonly airedStartDate: Date;
 
 	/** Type. */
-	type: DistributionTypes;
+	readonly type: DistributionTypes;
 
 	/** Status. */
-	status: ProductionStatuses;
+	readonly status: ProductionStatuses;
 }

@@ -9,29 +9,29 @@ import { Studio } from './studio';
 export interface AnimeDetails extends Anime {
 
 	/** Airing. */
-	airing: boolean;
+	readonly airing: boolean;
 
 	/** Airing end date. */
-	airedEndDate: Date;
+	readonly airedEndDate: Date;
 
 	/** List of studios. */
-	studios: Studio[];
+	readonly studios: readonly Studio[];
 
 	/** List of genres. */
-	genres: Genre[];
+	readonly genres: readonly Genre[];
 
 	/** Rating. */
-	rating: Rating;
+	readonly rating: Rating;
 
 	/** Source. */
-	source: Source;
+	readonly source: Source;
 
 	/** Season. */
-	season: Season;
+	readonly season: Season;
 
 	/** Synopsis. */
-	synopsis: string;
+	readonly synopsis: string;
 
 	/** Youtube trailer. */
-	trailer: string;
+	readonly trailer: string;
 }
