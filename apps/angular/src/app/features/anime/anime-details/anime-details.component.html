@@ -37,9 +37,7 @@
           <span class="airing-period">
             (
             <span>{{ details.airingStartDate | date : "YYYY" }}</span>
-            <span *ngIf="details.airingEndDate !== null"
-              >-{{ details.airingEndDate | date : "YYYY" }}</span
-            >
+            <span *ngIf="details.airingEndDate !== null">-{{ details.airingEndDate | date : "YYYY" }}</span>
             )
           </span>
         </h2>
@@ -73,17 +71,16 @@
           <div class="detail">
             <div>Studios</div>
             <div class="genre-list">
-              <span *ngFor="let studio of details.studios" class="studio">{{
-                studio.name
-              }}</span>
+              <span *ngFor="let studio of details.studios" class="studio">
+                {{ studio.name }}
+              </span>
             </div>
           </div>
           <div class="detail">
             <div>Genres</div>
             <div class="genres-list">
-              <span *ngFor="let genre of details.genres" class="genre">{{
-                genre.name
-              }}</span>
+              <span *ngFor="let genre of details.genres" class="genre">
+                {{ genre.name }}</span>
             </div>
           </div>
         </div>

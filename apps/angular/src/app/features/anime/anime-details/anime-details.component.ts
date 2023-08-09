@@ -18,7 +18,7 @@ export class AnimeDetailsComponent {
 	protected isPopupOpened = false;
 
 	/** Response observable. */
-	protected response$!: Observable<AnimeDetails>;
+	protected response$: Observable<AnimeDetails>;
 
 	public constructor(
 		private readonly activatedRoute: ActivatedRoute,

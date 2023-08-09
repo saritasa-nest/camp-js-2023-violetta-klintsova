@@ -6,6 +6,7 @@ img {
 .main {
   padding: 10px 0;
 }
+
 .content {
   display: flex;
   gap: 60px;
@@ -93,7 +94,6 @@ img {
   margin: 5px;
   border-radius: 3px;
   cursor: pointer;
-
   display: flex;
   justify-content: center;
   align-items: center;

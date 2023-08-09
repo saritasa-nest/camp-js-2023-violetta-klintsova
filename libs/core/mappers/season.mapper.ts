@@ -11,6 +11,7 @@ const FROM_SEASONS_DTO: Readonly<Record<SeasonDto, Season>> = {
 
 /** Seasons mapper. */
 export namespace SeasonMapper {
+
 	/**
 	 * Maps data from dto to model.
 	 * @param data Received data.

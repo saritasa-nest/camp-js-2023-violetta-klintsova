@@ -62,7 +62,6 @@ export class AnimeService {
 	public getAnimeDetails(id: string): Observable<AnimeDetails> {
 		const path = `anime/anime/${id}/`;
 		const url = new URL(path, this.apiUrl);
-
 		return this.http.get<AnimeDetailsDto>(url.toString()).pipe(map(el => AnimeDetailsMapper.fromDto(el)));
 	}
 }

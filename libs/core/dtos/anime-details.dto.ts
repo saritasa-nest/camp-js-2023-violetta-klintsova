@@ -10,6 +10,7 @@ import { StudioDto } from './studio.dto';
 
 /** Anime details DTO. */
 export interface AnimeDetailsDto {
+
 	/** ID. */
 	readonly id: number;
 
