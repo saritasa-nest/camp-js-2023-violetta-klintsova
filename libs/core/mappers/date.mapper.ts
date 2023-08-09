@@ -3,9 +3,12 @@ export namespace DateMapper {
 
 	/**
 	 * Maps a string to Date object.
-	 * @param data Date as a string.
+	 * @param date Date as a string.
 	 */
-	export function fromDto(data: string): Date {
-		return data === null ? data : new Date(data);
+	export function fromDto(date: string | null): Date | null {
+		if (date === null) {
+			return null;
+		}
+		return new Date(date);
 	}
 }

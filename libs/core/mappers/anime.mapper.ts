@@ -1,6 +1,8 @@
 import { AnimeDto } from '../dtos/anime.dto';
 import { Anime } from '../models/anime';
 
+import { DateMapper } from './date.mapper';
+
 import { DistributionTypesMapper } from './distribution-types.mapper';
 import { ProductionStatusesMapper } from './production-statuses.mapper';
 
@@ -16,7 +18,7 @@ export namespace AnimeMapper {
 			titleEng: dto.title_eng,
 			image: dto.image,
 			titleJpn: dto.title_jpn,
-			airedStartDate: new Date(dto.aired.start),
+			airedStartDate: DateMapper.fromDto(dto.aired.start),
 			type: DistributionTypesMapper.fromDto(dto.type),
 			status: ProductionStatusesMapper.fromDto(dto.status),
 		};

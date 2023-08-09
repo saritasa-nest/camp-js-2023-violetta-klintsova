@@ -18,7 +18,7 @@ export interface Anime {
 	readonly titleJpn: string;
 
 	/** Release date. */
-	readonly airedStartDate: Date;
+	readonly airedStartDate: Date | null;
 
 	/** Type. */
 	readonly type: DistributionTypes;

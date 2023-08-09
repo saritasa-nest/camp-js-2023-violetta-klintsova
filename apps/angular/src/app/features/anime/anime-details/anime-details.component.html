@@ -36,7 +36,7 @@
           {{ details.titleJpn }}
           <span class="airing-period">
             (
-            <span>{{ details.airedStartDate | date : "YYYY" }}</span>
+            <span *ngIf="details.airedStartDate !== null">{{ details.airedStartDate | date : "YYYY" }}</span>
             <span *ngIf="details.airedEndDate !== null">-{{ details.airedEndDate | date : "YYYY" }}</span>
             )
           </span>
