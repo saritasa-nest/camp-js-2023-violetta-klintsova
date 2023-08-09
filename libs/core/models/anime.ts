@@ -8,13 +8,13 @@ export interface Anime {
 	/** ID. */
 	id: number;
 
-	/** Title. */
+	/** Title (ENG). */
 	titleEng: string;
 
 	/** Image. */
 	image: string;
 
-	/** Image title. */
+	/** Title (JPN). */
 	titleJpn: string;
 
 	/** Release date. */
