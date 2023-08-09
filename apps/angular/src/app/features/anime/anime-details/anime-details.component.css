@@ -5,12 +5,19 @@ img {
 
 .main {
   padding: 40px 0;
+}
+
+.content {
   display: flex;
-  gap: 50px;
+  gap: 60px;
 }
 
 .details-view {
-  max-width: 400px;
+  width: 400px;
+}
+
+.trailer {
+  margin-top: 30px;
 }
 
 .title-jpn {
@@ -60,4 +67,10 @@ img {
 
 .go-back-button {
   margin-top: 100px;
+}
+
+@media (max-width: 870px) {
+  .content {
+    flex-direction: column-reverse;
+  }
 }
