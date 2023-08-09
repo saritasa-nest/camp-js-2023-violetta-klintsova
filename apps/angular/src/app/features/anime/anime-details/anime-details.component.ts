@@ -29,9 +29,9 @@ export class AnimeDetailsComponent implements OnInit {
 	) {
 		this.response$ = this.activatedRoute.paramMap.pipe(
 			switchMap(params => {
-				const id = params.get('id');
-				if (id !== null) {
-					return this.animeService.getAnimeDetails(id).pipe(
+				const id = Number(params.get('id'));
+				if (id !== null && !isNaN(id)) {
+					return this.animeService.fetchAnimeDetails(id).pipe(
 						catchError(() => {
 							this.router.navigate(['/not-found']);
 							return EMPTY;
