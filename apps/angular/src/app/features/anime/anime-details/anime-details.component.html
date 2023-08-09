@@ -4,6 +4,19 @@
       <section class="details-view">
         <div class="image">
           <img src="{{ details.image }}" alt="Anime cover" />
+          <div class="open-full-size" (click)="changePopupState()">
+            <img src="../../../../assets/open-full-size-icon.png" alt="" />
+          </div>
+        </div>
+        <div class="pop-up" [ngClass]="isPopupOpened ? 'open-pop-up' : 'close-pop-up' ">
+          <div class="overlay">
+            <div class="pop-up-image">
+              <img src="{{ details.image }}" alt="Anime cover" />
+            </div>
+            <div class="close-full-size" (click)="changePopupState()">
+              <img src="../../../../assets/cross-icon.png" alt="" />
+            </div>
+          </div>
         </div>
       </section>
       <section class="details-text">
@@ -12,7 +25,9 @@
           <span class="airing-period">
             (
             <span>{{ details.airingStartDate | date : "YYYY" }}</span>
-            <span *ngIf="details.airingEndDate !== null">-{{ details.airingEndDate | date : "YYYY" }}</span>
+            <span *ngIf="details.airingEndDate !== null"
+              >-{{ details.airingEndDate | date : "YYYY" }}</span
+            >
             )
           </span>
         </h2>

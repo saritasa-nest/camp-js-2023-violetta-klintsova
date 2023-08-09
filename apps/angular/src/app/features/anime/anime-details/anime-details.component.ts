@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
@@ -14,6 +13,9 @@ import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeDetailsComponent {
+
+	/** Image popup state. */
+	protected isPopupOpened = false;
 
 	/** Response observable. */
 	protected response$!: Observable<AnimeDetails>;
@@ -39,6 +41,11 @@ export class AnimeDetailsComponent {
 				return EMPTY;
 			}),
 		);
+	}
+
+	/** Changes state of the pop up. */
+	protected changePopupState(): void {
+		this.isPopupOpened = !this.isPopupOpened;
 	}
 
 	/** Returns the user to the previous page. */
