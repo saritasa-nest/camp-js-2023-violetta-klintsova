@@ -2,11 +2,11 @@
 export interface ValidationError {
 
 	/** Code. */
-	code: string;
+	readonly code: string;
 
 	/** Detail. */
-	detail: string;
+	readonly detail: string;
 
 	/** Attribute. */
-	attr: string;
+	readonly attr: string;
 }

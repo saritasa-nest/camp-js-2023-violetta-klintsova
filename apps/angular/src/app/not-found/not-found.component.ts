@@ -12,6 +12,9 @@ export class NotFoundComponent {
 
 	/** Returns the user to the previous page. */
 	protected goBack(): void {
-		this.location.historyGo(-2);
+		// Pages is '-2' because the user was redirected to the 'not found' page
+		// after an attempt to access non-existing page (which would be -1)
+		const pagesBack = -2;
+		this.location.historyGo(pagesBack);
 	}
 }
