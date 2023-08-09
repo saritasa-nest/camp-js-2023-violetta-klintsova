@@ -8,6 +8,7 @@ import { ProductionStatusesMapper } from './production-statuses.mapper';
 import { StudiosMapper } from './studios.mapper';
 import { SeasonMapper } from './season.mapper';
 import { RatingMapper } from './rating.mapper';
+import { DateMapper } from './date.mapper';
 
 export namespace AnimeDetailsMapper {
 
@@ -22,8 +23,8 @@ export namespace AnimeDetailsMapper {
 			titleJpn: dto.title_jpn,
 			image: dto.image,
 			airing: dto.airing,
-			airingStartDate: new Date(dto.aired.start),
-			airingEndDate: new Date(dto.aired.end),
+			airingStartDate: DateMapper.fromDto(dto.aired.start),
+			airingEndDate: DateMapper.fromDto(dto.aired.end),
 			type: DistributionTypesMapper.fromDto(dto.type),
 			status: ProductionStatusesMapper.fromDto(dto.status),
 			studios: dto.studios_data.map(el => StudiosMapper.fromDto(el)),
