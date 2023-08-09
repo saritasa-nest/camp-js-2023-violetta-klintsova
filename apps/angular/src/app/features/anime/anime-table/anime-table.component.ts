@@ -55,14 +55,14 @@ export class AnimeTableComponent implements OnInit {
 	];
 
 	/** Response observable. */
-	protected response$: Observable<Pagination<Anime>>;
+	protected anime$: Observable<Pagination<Anime>>;
 
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
 	) {
-		this.response$ = this.activatedRoute.queryParamMap.pipe(
+		this.anime$ = this.activatedRoute.queryParamMap.pipe(
 			tap(() => {
 				this.isLoading = true;
 			}),

@@ -30,7 +30,7 @@
   </form>
 </div>
 
-<ng-container *ngIf="response$ | async as response">
+<ng-container *ngIf="anime$ | async as anime">
   <div class="wrapper">
     <div class="spinner-with-shade" *ngIf="isLoading">
       <mat-spinner />
@@ -39,7 +39,7 @@
     <div class="anime-table">
       <table
         mat-table
-        [dataSource]="response.results"
+        [dataSource]="anime.results"
         class="mat-elevation-z8"
         [trackBy]="trackById"
         aria-describedby="title"
@@ -85,7 +85,7 @@
       </table>
       <mat-paginator
         (page)="onPageChange($event)"
-        [length]="response.count"
+        [length]="anime.count"
         [pageSize]="pageSize"
         [pageIndex]="pageIndex"
         [showFirstLastButtons]="true"

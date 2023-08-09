@@ -19,7 +19,7 @@ export class AnimeDetailsComponent implements OnInit {
 	protected isPopupOpened = false;
 
 	/** Response observable. */
-	protected response$: Observable<AnimeDetails>;
+	protected animeDetails$: Observable<AnimeDetails>;
 
 	public constructor(
 		private readonly activatedRoute: ActivatedRoute,
@@ -27,7 +27,7 @@ export class AnimeDetailsComponent implements OnInit {
 		private readonly animeService: AnimeService,
 		private readonly location: Location,
 	) {
-		this.response$ = this.activatedRoute.paramMap.pipe(
+		this.animeDetails$ = this.activatedRoute.paramMap.pipe(
 			switchMap(params => {
 				const id = Number(params.get('id'));
 				if (id !== null && !isNaN(id)) {
