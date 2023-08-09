@@ -9,6 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 
 import { EmptyValue } from '@js-camp/angular/core/utils/empty-value-pipe';
 import { RouterModule } from '@angular/router';
@@ -32,6 +33,7 @@ import { AnimeDetailsComponent } from './anime-details/anime-details.component';
 		MatProgressSpinnerModule,
 		AnimeRoutingModule,
 		RouterModule,
+		MatIconModule,
 		YouTubePlayerModule,
 	],
 	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent],

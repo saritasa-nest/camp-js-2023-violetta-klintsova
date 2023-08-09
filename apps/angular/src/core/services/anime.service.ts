@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { environment } from '@js-camp/angular/environments/environment';
 
 import { Anime } from '@js-camp/core/models/anime';
@@ -63,9 +63,6 @@ export class AnimeService {
 		const path = `anime/anime/${id}/`;
 		const url = new URL(path, this.apiUrl);
 
-		return this.http.get<AnimeDetailsDto>(url.toString()).pipe(
-			tap(x => console.log(x)),
-			map(el => AnimeDetailsMapper.fromDto(el)),
-		);
+		return this.http.get<AnimeDetailsDto>(url.toString()).pipe(map(el => AnimeDetailsMapper.fromDto(el)));
 	}
 }

@@ -148,14 +148,6 @@ export class AnimeTableComponent implements OnInit {
 	}
 
 	/**
-	 * Logs ID to the console (for debugging).
-	 * @param id Id.
-	 */
-	protected logId(id: number): void {
-		console.log(id);
-	}
-
-	/**
 	 * @param index Iteration index.
 	 * @param item Anime item.
 	 * @returns Unique number for each table row.

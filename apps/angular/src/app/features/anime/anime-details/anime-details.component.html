@@ -1,20 +1,32 @@
 <ng-container *ngIf="response$ | async as details">
   <main class="main">
+    <button
+      (click)="goBack()"
+      type="button"
+      mat-icon-button
+      color="primary"
+      class="go-back-button"
+    >
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <div class="content">
       <section class="details-view">
         <div class="image">
           <img src="{{ details.image }}" alt="Anime cover" />
           <div class="open-full-size" (click)="changePopupState()">
-            <img src="../../../../assets/open-full-size-icon.png" alt="" />
+            <mat-icon>close</mat-icon>
           </div>
         </div>
-        <div class="pop-up" [ngClass]="isPopupOpened ? 'open-pop-up' : 'close-pop-up' ">
+        <div
+          class="pop-up"
+          [ngClass]="isPopupOpened ? 'open-pop-up' : 'close-pop-up'"
+        >
           <div class="overlay">
             <div class="pop-up-image">
               <img src="{{ details.image }}" alt="Anime cover" />
             </div>
             <div class="close-full-size" (click)="changePopupState()">
-              <img src="../../../../assets/cross-icon.png" alt="" />
+              <mat-icon>open_in_full</mat-icon>
             </div>
           </div>
         </div>
@@ -75,14 +87,6 @@
             </div>
           </div>
         </div>
-        <!-- <button
-          (click)="goBack()"
-          type="button"
-          mat-raised-button
-          class="go-back-button"
-        >
-          Back to all anime
-        </button> -->
       </section>
     </div>
     <div class="trailer">

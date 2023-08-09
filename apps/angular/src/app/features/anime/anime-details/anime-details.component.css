@@ -4,9 +4,8 @@ img {
 }
 
 .main {
-  padding: 40px 0;
+  padding: 10px 0;
 }
-
 .content {
   display: flex;
   gap: 60px;
@@ -66,11 +65,10 @@ img {
 }
 
 .go-back-button {
-  margin-top: 100px;
+  margin: 10px 0;
 }
 
 /** Pop-up styles */
-
 .open-pop-up {
   display: block;
 }
@@ -95,6 +93,10 @@ img {
   margin: 5px;
   border-radius: 3px;
   cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pop-up {
