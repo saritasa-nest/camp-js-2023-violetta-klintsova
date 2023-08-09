@@ -15,18 +15,12 @@ import { HeaderComponent } from './header/header.component';
 
 import { LandingComponent } from './landing/landing.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 /** App module. */
 @NgModule({
-	declarations: [AppComponent, HeaderComponent, LandingComponent, MainLayoutComponent],
-	imports: [
-		BrowserModule,
-		SharedModule,
-		AppRoutingModule,
-		HttpClientModule,
-		BrowserAnimationsModule,
-		MatButtonModule,
-	],
+	declarations: [AppComponent, HeaderComponent, LandingComponent, MainLayoutComponent, NotFoundComponent],
+	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, MatButtonModule],
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],
 })

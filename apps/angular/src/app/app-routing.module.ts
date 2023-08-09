@@ -6,6 +6,7 @@ import { authGuard } from '../core/guards/auth-guard';
 
 import { LandingComponent } from './landing/landing.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
 	{
@@ -24,6 +25,7 @@ const routes: Routes = [
 		path: 'auth',
 		loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
 	},
+	{ path: 'not-found', component: NotFoundComponent },
 	{ path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

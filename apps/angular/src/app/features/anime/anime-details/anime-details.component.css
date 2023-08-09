@@ -6,11 +6,11 @@ img {
 .main {
   padding: 40px 0;
   display: flex;
-  justify-content: space-between;
+  gap: 50px;
 }
 
-.details-text {
-  max-width: 500px;
+.details-view {
+  max-width: 400px;
 }
 
 .title-jpn {
@@ -19,6 +19,7 @@ img {
 }
 
 .title-eng {
+  font-size: var(--big-font-size);
   font-weight: 300;
 }
 
@@ -34,13 +35,27 @@ img {
 .detail {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  gap: 20px;
-  margin-bottom: 10px;
+  gap: 30px;
+  margin-bottom: 18px;
   font-size: var(--medium-font-size);
 }
 
 .detail > :first-child {
   color: var(--text-light-color);
+}
+
+.genre,
+.studio {
+  padding: 3px;
+  border: 1px solid var(--border-dark-color);
+  border-radius: 3px;
+}
+
+.genres-list,
+.studio-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .go-back-button {
