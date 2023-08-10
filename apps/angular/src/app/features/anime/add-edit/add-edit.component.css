@@ -1,0 +1,36 @@
+.flex {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.form {
+  margin-bottom: 40px;
+}
+
+/* .flex > * {
+  width: 100%;
+} */
+
+.wrapper {
+  padding: 20px 0;
+}
+
+.heading {
+  padding: 10px 0 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.date-range {
+  margin-bottom: 10px;
+}
+
+.mat-mdc-form-field {
+  max-width: 400px;
+}

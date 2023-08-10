@@ -10,6 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { EmptyValue } from '@js-camp/angular/core/utils/empty-value-pipe';
 import { RouterModule } from '@angular/router';
@@ -18,7 +22,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { AnimeDetailsComponent } from './anime-details/anime-details.component';
-import { CreateAnimeComponent } from './create-anime/create-anime.component';
+import { AddEditComponent } from './add-edit/add-edit.component';
 
 /** Anime table module. */
 @NgModule({
@@ -36,8 +40,12 @@ import { CreateAnimeComponent } from './create-anime/create-anime.component';
 		RouterModule,
 		MatIconModule,
 		YouTubePlayerModule,
+		MatDatepickerModule,
+		MatNativeDateModule,
+		MatRadioModule,
+		MatCheckboxModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent, CreateAnimeComponent],
+	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent, AddEditComponent],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}

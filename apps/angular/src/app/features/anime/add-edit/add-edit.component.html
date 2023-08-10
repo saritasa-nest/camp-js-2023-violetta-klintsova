@@ -1,0 +1,135 @@
+<div class="wrapper">
+  <h2 class="heading">Add new anime</h2>
+
+  <form class="form">
+    <mat-form-field>
+      <mat-label>Title (eng)</mat-label>
+      <input matInput type="text" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Title (jpn)</mat-label>
+      <input matInput type="text" />
+    </mat-form-field>
+
+    <div class="flex">
+      <mat-form-field>
+        <mat-label>Type</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let option of options.type" value="{{ option }}">
+            {{ option | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Rating</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let option of options.rating"
+            value="{{ option }}"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Source</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let option of options.source"
+            value="{{ option }}"
+          >
+            {{ option | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="flex">
+      <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let option of options.status"
+            value="{{ option }}"
+          >
+            {{ option | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Season</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let option of options.season"
+            value="{{ option }}"
+          >
+            {{ option | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field>
+      <mat-label>Synopsis</mat-label>
+      <textarea matInput name="" id="" cols="30" rows="2"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Youtube trailer ID</mat-label>
+      <input matInput type="text" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Genres</mat-label>
+      <mat-select></mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Studios</mat-label>
+      <mat-select></mat-select>
+    </mat-form-field>
+
+    <div class="date-range flex">
+      <mat-form-field>
+        <mat-label>Anime start date</mat-label>
+        <input matInput [matDatepicker]="picker1" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker1"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Anime end date</mat-label>
+        <input matInput [matDatepicker]="picker2" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker2"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="airing">
+      <label class="example-margin">Airing</label>
+      <mat-radio-group>
+        <mat-radio-button value="true">Yes</mat-radio-button>
+        <mat-radio-button value="false">No</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="file-upload flex">
+      <label>Upload anime image</label>
+      <button type="button" mat-mini-fab color="primary" class="upload-btn">
+        <mat-icon>attach_file</mat-icon>
+      </button>
+    </div>
+  </form>
+
+  <button mat-raised-button color="primary" type="button">Submit</button>
+</div>
