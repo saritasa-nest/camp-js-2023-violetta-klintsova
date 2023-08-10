@@ -134,7 +134,9 @@ img {
   width: 600px;
 }
 
+/* Delete pop-up */
 .delete-dialog {
+  width: 450px;
   top: 40%;
   background-color: var(--background-color);
   padding: 40px 50px;
@@ -154,8 +156,16 @@ img {
   gap: 20px;
 }
 
+.spinner {
+  margin: 40px auto 0;
+}
+
 @media (max-width: 870px) {
   .content {
     flex-direction: column-reverse;
+  }
+
+  .delete-dialog {
+    width: 70%;
   }
 }

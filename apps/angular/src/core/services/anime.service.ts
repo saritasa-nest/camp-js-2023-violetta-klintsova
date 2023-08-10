@@ -64,4 +64,14 @@ export class AnimeService {
 		const url = new URL(path, this.apiUrl);
 		return this.http.get<AnimeDetailsDto>(url.toString()).pipe(map(el => AnimeDetailsMapper.fromDto(el)));
 	}
+
+	/**
+	 * Deletes an anime.
+	 * @param id Anime id.
+	 */
+	public deleteAnime(id: Anime['id']): Observable<null> {
+		const path = `anime/anime/${id}/`;
+		const url = new URL(path, this.apiUrl);
+		return this.http.delete<null>(url.toString());
+	}
 }
