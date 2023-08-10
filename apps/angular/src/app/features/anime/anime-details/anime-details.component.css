@@ -7,6 +7,17 @@ img {
   padding: 10px 0;
 }
 
+.management {
+  margin: 10px 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-btn {
+  margin-left: auto;
+}
+
 .content {
   display: flex;
   gap: 60px;
@@ -55,7 +66,7 @@ img {
 .studio {
   padding: 3px;
   border: 1px solid var(--border-dark-color);
-  border-radius: 3px;
+  border-radius: var(--border-radius-small);
 }
 
 .genres-list,
@@ -63,10 +74,6 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-}
-
-.go-back-button {
-  margin: 10px 0;
 }
 
 /** Pop-up styles */
@@ -85,6 +92,8 @@ img {
 
 .open-full-size,
 .close-full-size {
+  border: none;
+  padding: 0;
   width: 35px;
   height: 35px;
   background-color: #ececec;
@@ -92,8 +101,7 @@ img {
   top: 0;
   right: 0;
   margin: 5px;
-  border-radius: 3px;
-  cursor: pointer;
+  border-radius: var(--border-radius-small);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -113,13 +121,37 @@ img {
   left: 0;
 }
 
-.pop-up-image {
-  width: 600px;
+.pop-up-image,
+.delete-dialog {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   overflow: hidden;
+}
+
+.pop-up-image {
+  width: 600px;
+}
+
+.delete-dialog {
+  top: 40%;
+  background-color: var(--background-color);
+  padding: 40px 50px;
+  border-radius: var(--border-radius-medium);
+  text-align: center;
+}
+
+.delete-message {
+  font-size: var(--big-font-size);
+  margin-top: 0;
+}
+
+.delete-dialog > .buttons {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 @media (max-width: 870px) {

@@ -1,33 +1,71 @@
 <ng-container *ngIf="animeDetails$ | async as details">
   <main class="main">
-    <button
-      (click)="goBack()"
-      type="button"
-      mat-icon-button
-      color="primary"
-      class="go-back-button"
-    >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
+    <div class="management">
+      <button
+        (click)="onClickGoBack()"
+        type="button"
+        mat-icon-button
+        color="primary"
+        class="go-back-btn"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <button type="button" mat-raised-button color="primary" class="edit-btn">
+        Edit
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        color="accent"
+        (click)="toggleDeletePopup()"
+      >
+        Delete
+      </button>
+      <div
+        class="pop-up"
+        [ngClass]="isDeleteDialogOpened ? 'open-pop-up' : 'close-pop-up'"
+      >
+        <div class="overlay">
+          <div class="delete-dialog">
+            <p class="delete-message">Are you sure you want to delete the anime?</p>
+            <p>You cannot undo this action.</p>
+            <div class="buttons">
+              <button type="button" mat-raised-button color="accent" class="onClickDeleteAnime()">Yes, delete</button>
+              <button type="button" mat-raised-button (click)="toggleDeletePopup()">Cancel</button>
+            </div>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+
     <div class="content">
       <section class="details-view">
         <div class="image">
           <img src="{{ details.image }}" alt="Anime cover" />
-          <div class="open-full-size" (click)="changePopupState()">
+          <button
+            type="button"
+            class="open-full-size"
+            (click)="toggleImagePopup()"
+          >
             <mat-icon>open_in_full</mat-icon>
-          </div>
+          </button>
         </div>
         <div
           class="pop-up"
-          [ngClass]="isPopupOpened ? 'open-pop-up' : 'close-pop-up'"
+          [ngClass]="isImageOpened ? 'open-pop-up' : 'close-pop-up'"
         >
           <div class="overlay">
             <div class="pop-up-image">
               <img src="{{ details.image }}" alt="Anime cover" />
             </div>
-            <div class="close-full-size" (click)="changePopupState()">
+            <button
+              type="button"
+              class="close-full-size"
+              (click)="toggleImagePopup()"
+            >
               <mat-icon>close</mat-icon>
-            </div>
+            </button>
           </div>
         </div>
       </section>
@@ -36,8 +74,12 @@
           {{ details.titleJpn }}
           <span class="airing-period">
             (
-            <span *ngIf="details.airedStartDate !== null">{{ details.airedStartDate | date : "YYYY" }}</span>
-            <span *ngIf="details.airedEndDate !== null">-{{ details.airedEndDate | date : "YYYY" }}</span>
+            <span *ngIf="details.airedStartDate !== null">{{
+              details.airedStartDate | date : "YYYY"
+            }}</span>
+            <span *ngIf="details.airedEndDate !== null"
+              >-{{ details.airedEndDate | date : "YYYY" }}</span
+            >
             )
           </span>
         </h2>
@@ -80,7 +122,8 @@
             <div>Genres</div>
             <div class="genres-list">
               <span *ngFor="let genre of details.genres" class="genre">
-                {{ genre.name }}</span>
+                {{ genre.name }}</span
+              >
             </div>
           </div>
         </div>

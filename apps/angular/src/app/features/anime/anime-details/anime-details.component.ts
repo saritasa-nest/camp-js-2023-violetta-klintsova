@@ -16,7 +16,10 @@ let youtubeApiLoaded = false;
 })
 export class AnimeDetailsComponent implements OnInit {
 	/** Image popup state. */
-	protected isPopupOpened = false;
+	protected isImageOpened = false;
+
+	/** Delete dialog state. */
+	protected isDeleteDialogOpened = false;
 
 	/** Response observable. */
 	protected animeDetails$: Observable<AnimeDetails>;
@@ -59,13 +62,23 @@ export class AnimeDetailsComponent implements OnInit {
 		);
 	}
 
-	/** Changes state of the pop up. */
-	protected changePopupState(): void {
-		this.isPopupOpened = !this.isPopupOpened;
+	/** Toggles state of the image popup. */
+	protected toggleImagePopup(): void {
+		this.isImageOpened = !this.isImageOpened;
+	}
+
+	/** Toggles state of the delete dialog popup. */
+	protected toggleDeletePopup(): void {
+		this.isDeleteDialogOpened = !this.isDeleteDialogOpened;
 	}
 
 	/** Returns the user to the previous page. */
-	protected goBack(): void {
+	protected onClickGoBack(): void {
 		this.location.back();
+	}
+
+	/** Deletes an anime. */
+	protected onClickDeleteAnime(): void {
+		
 	}
 }
