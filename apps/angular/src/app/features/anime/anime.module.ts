@@ -18,6 +18,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { AnimeDetailsComponent } from './anime-details/anime-details.component';
+import { CreateAnimeComponent } from './create-anime/create-anime.component';
 
 /** Anime table module. */
 @NgModule({
@@ -36,7 +37,7 @@ import { AnimeDetailsComponent } from './anime-details/anime-details.component';
 		MatIconModule,
 		YouTubePlayerModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent],
+	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent, CreateAnimeComponent],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}

@@ -1,6 +1,10 @@
-<h2 id="title" class="title">All anime</h2>
 
 <div class="wrapper">
+  <div class="flex">
+    <h2 id="title" class="title">All anime</h2>
+    <button type="button" mat-raised-button color="accent" class="create-anime-btn" routerLink="create-anime"><mat-icon>add</mat-icon>Create new anime</button>
+  </div>
+
   <form class="management-form" (submit)="onSearch()">
     <mat-form-field class="filter-field">
       <mat-label>Sort by</mat-label>
