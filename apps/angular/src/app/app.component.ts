@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { catchError, throwError } from 'rxjs';
 
 import { AuthService } from '../core/services/auth.service';
-import { StorageService } from '../core/services/auth-storage.service';
 
 /** App component. */
 @Component({
@@ -10,19 +10,18 @@ import { StorageService } from '../core/services/auth-storage.service';
 	styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-	public constructor(private readonly auth: AuthService, private readonly storage: StorageService) {}
+	public constructor(private readonly auth: AuthService) {}
 
 	/** Component initialization. */
 	public ngOnInit(): void {
-		const access = this.storage.getAccessToken();
-		const refresh = this.storage.getRefreshToken();
-
-		if (access !== null && refresh !== null) {
-			this.auth.verifyToken(access).subscribe(() => {
-				this.auth.logIn(access, refresh);
-			});
-		} else {
-			this.auth.updateUserState(false);
-		}
+		this.auth
+			.fetchUserProfile()
+			.pipe(
+				catchError(() => {
+					this.auth.logOut();
+					return throwError(() => new Error('Could not fetch user profile.'));
+				}),
+			)
+			.subscribe(() => this.auth.updateUserState(true));
 	}
 }
