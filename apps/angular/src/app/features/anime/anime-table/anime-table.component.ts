@@ -78,7 +78,7 @@ export class AnimeTableComponent implements OnInit {
 			tap(() => {
 				this.isLoading = true;
 			}),
-			switchMap((params: ParamMap) => {
+			switchMap(params => {
 				this.pageIndex = Number(params.get('page')) || this.pageIndex;
 				this.sortOption = params.get('sort') ?? 'title_eng';
 				this.filters = params.get('filters')?.split(',') ?? [];
