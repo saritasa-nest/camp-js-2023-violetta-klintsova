@@ -70,11 +70,11 @@ img {
 }
 
 /** Pop-up styles */
-.open-pop-up {
+.opened-pop-up {
   display: block;
 }
 
-.close-pop-up {
+.closed-pop-up {
   display: none;
 }
 

@@ -19,7 +19,7 @@ export class AnimeDetailsComponent implements OnInit {
 	protected isPopupOpened = false;
 
 	/** Response observable. */
-	protected animeDetails$: Observable<AnimeDetails>;
+	protected readonly animeDetails$: Observable<AnimeDetails>;
 
 	public constructor(
 		private readonly activatedRoute: ActivatedRoute,
@@ -30,7 +30,7 @@ export class AnimeDetailsComponent implements OnInit {
 		this.animeDetails$ = this.createAnimeDetailsStream();
 	}
 
-	/** Component initialization. */
+	/** @inheritdoc */
 	public ngOnInit(): void {
 		if (!youtubeApiLoaded) {
 			const script = document.createElement('script');
@@ -45,7 +45,7 @@ export class AnimeDetailsComponent implements OnInit {
 		return this.activatedRoute.paramMap.pipe(
 			switchMap(params => {
 				const id = Number(params.get('id'));
-				if (id !== null && !isNaN(id)) {
+				if (!isNaN(id)) {
 					return this.animeService.fetchAnimeDetails(id).pipe(
 						catchError(() => {
 							this.router.navigate(['/not-found']);

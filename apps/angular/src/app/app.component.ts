@@ -12,7 +12,7 @@ import { StorageService } from '../core/services/auth-storage.service';
 export class AppComponent implements OnInit {
 	public constructor(private readonly auth: AuthService, private readonly storage: StorageService) {}
 
-	/** Component initialization. */
+	/** @inheritdoc */
 	public ngOnInit(): void {
 		const access = this.storage.getAccessToken();
 		const refresh = this.storage.getRefreshToken();

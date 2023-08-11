@@ -74,13 +74,13 @@ export interface AnimeDetailsDto {
 	/** Broadcast timezone. */
 	readonly broadcast_timezone: string;
 
-	/** Studios. */
+	/** Array of studio IDs. */
 	readonly studios: readonly number[];
 
 	/** Studios data. */
 	readonly studios_data: readonly StudioDto[];
 
-	/** Genres. */
+	/** Array of genre IDs. */
 	readonly genres: readonly number[];
 
 	/** Genres data. */

@@ -55,7 +55,7 @@ export class AnimeTableComponent implements OnInit {
 	];
 
 	/** Response observable. */
-	protected anime$: Observable<Pagination<Anime>>;
+	protected readonly anime$: Observable<Pagination<Anime>>;
 
 	public constructor(
 		private readonly animeService: AnimeService,
@@ -65,7 +65,7 @@ export class AnimeTableComponent implements OnInit {
 		this.anime$ = this.createAnimePaginationStream();
 	}
 
-	/** Component initialization. */
+	/** @inheritdoc */
 	public ngOnInit(): void {
 		if (isEmptyObject(this.getCurrentQueryParams())) {
 			this.router.navigate(['/anime'], { queryParams: { page: this.pageIndex, sort: this.sortOption } });

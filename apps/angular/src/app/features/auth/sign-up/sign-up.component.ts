@@ -38,7 +38,7 @@ export class SignUpComponent implements OnInit {
 	/** Form state. */
 	public isLoading = false;
 
-	/** Component initialization. */
+	/** @inheritdoc */
 	public ngOnInit(): void {
 		this.signUpForm = new FormGroup(
 			{

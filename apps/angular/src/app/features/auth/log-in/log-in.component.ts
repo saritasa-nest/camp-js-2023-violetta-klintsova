@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 	/** Submit button state. */
 	public isDisabled = false;
 
-	/** Component initialization. */
+	/** @inheritdoc */
 	public ngOnInit(): void {
 		this.loginForm = new FormGroup({
 			email: new FormControl('', [Validators.required, Validators.email]),
