@@ -1,12 +1,22 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 /**
- * Checks whether the password and confirmed password are equal.
- * @param control Form which validator is assigned to.
+ * Checks whether two strings in a form are equal.
+ * @param controlOne First field.
+ * @param controlTwo Second field.
+ * @returns
  */
-export const equalPasswordsValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-	const password = control.get('password');
-	const confirmedPassword = control.get('confirmedPassword');
+export function equalityValidator(controlOne: string, controlTwo: string): ValidatorFn {
+	return (control: AbstractControl): ValidationErrors | null => {
+		const valueOne = control.get(controlOne);
+		const valueTwo = control.get(controlTwo);
 
-	return password && confirmedPassword && (password.value !== confirmedPassword.value) ? { matchError: true } : null;
-};
+		if (valueOne !== null && valueTwo !== null && valueOne.value !== valueTwo.value) {
+			control.get('confirmedPassword')?.setErrors({ matchError: true });
+		} else {
+			control.get('confirmedPassword')?.setErrors(null);
+		}
+
+		return null;
+	};
+}
