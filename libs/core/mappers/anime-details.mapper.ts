@@ -33,7 +33,7 @@ export namespace AnimeDetailsMapper {
 			source: SourceMapper.fromDto(dto.source),
 			season: SeasonMapper.fromDto(dto.season),
 			synopsis: dto.synopsis,
-			trailer: dto.trailer_youtube_id,
+			youtubeTrailerId: dto.trailer_youtube_id,
 		};
 	}
 }
