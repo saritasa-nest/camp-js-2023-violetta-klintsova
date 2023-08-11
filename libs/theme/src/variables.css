@@ -34,4 +34,6 @@
   --text-dark-text: #0f0f0f;
   --text-light-color: #4b4b4b;
   --overlay-bg-color: #00000056;
+  --accent-color-dimmed: #ff689a;
+  --border-radius-medium: 5px;
 }

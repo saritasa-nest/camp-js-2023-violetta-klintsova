@@ -1,14 +1,17 @@
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RegistrationInfo } from '@js-camp/core/models/registration-info';
-import { environment } from '@js-camp/angular/environments/environment';
-import { AuthDto } from '@js-camp/core/dtos/auth.dto';
 import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
 import { Observable, ReplaySubject, map } from 'rxjs';
-import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
-import { LoginInfo } from '@js-camp/core/models/login-info';
-import { Auth } from '@js-camp/core/models/auth';
 import { Router } from '@angular/router';
+import { environment } from '@js-camp/angular/environments/environment';
+import { LoginInfo } from '@js-camp/core/models/login-info';
+import { AuthDto } from '@js-camp/core/dtos/auth.dto';
+import { RegistrationInfo } from '@js-camp/core/models/registration-info';
+import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
+import { Auth } from '@js-camp/core/models/auth';
+import { UserProfileDto } from '@js-camp/core/dtos/user-profile.dto';
+import { UserProfileMapper } from '@js-camp/core/mappers/user-profile.mapper';
+import { UserProfile } from '@js-camp/core/models/user-profile';
 
 import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
 
@@ -82,15 +85,11 @@ export class AuthService {
 			.pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
-	/**
-	 * Sends a request to verify a token.
-	 * @param access Access token.
-	 * @returns Observable with access token if it is valid.
-	 */
-	public verifyToken(access: string): Observable<string> {
-		const path = 'auth/token/verify/';
+	/** Fetches user profile. */
+	public fetchUserProfile(): Observable<UserProfile> {
+		const path = 'users/profile/';
 		const url = new URL(path, this.apiUrl);
-		return this.http.post<string>(url.toString(), { token: access });
+		return this.http.get<UserProfileDto>(url.toString()).pipe(map(el => UserProfileMapper.fromDto(el)));
 	}
 
 	/**

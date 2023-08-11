@@ -1,7 +1,7 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 
-import { equalPasswordsValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
+import { equalityValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -48,21 +48,14 @@ export class SignUpComponent implements OnInit {
 				password: new FormControl('', [Validators.required, Validators.minLength(8)]),
 				confirmedPassword: new FormControl('', Validators.required),
 			},
-			{ validators: equalPasswordsValidator },
+			{ validators: equalityValidator('password', 'confirmedPassword') },
 		);
-	}
-
-	/** Sets an error if passwords are not equal. */
-	protected onPasswordInput(): void {
-		if (this.signUpForm.hasError('matchError')) {
-			this.signUpForm.get('confirmedPassword')?.setErrors([{ matchError: true }]);
-		} else {
-			this.signUpForm.get('confirmedPassword')?.setErrors(null);
-		}
 	}
 
 	/** Registers a new user. */
 	protected onSubmit(): void {
+		this.signUpForm.markAllAsTouched();
+
 		if (this.signUpForm.invalid) {
 			return;
 		}

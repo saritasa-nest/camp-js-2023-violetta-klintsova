@@ -8,6 +8,7 @@ import {
 	HttpContextToken,
 } from '@angular/common/http';
 import { Observable, catchError, switchMap, tap, throwError } from 'rxjs';
+import { environment } from '@js-camp/angular/environments/environment';
 
 import { StorageService } from '../services/auth-storage.service';
 import { AuthService } from '../services/auth.service';
@@ -31,7 +32,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
 				const refresh = this.storage.getRefreshToken();
 				if (e instanceof HttpErrorResponse) {
-					if (refresh && e.url !== 'https://api.camp-js.saritasa.rocks/api/v1/auth/token/refresh/') {
+					if (refresh && e.url !== `${environment.apiUrl}/auth/token/refresh/`) {
 						return this.auth.refreshToken(refresh).pipe(
 							tap(response => {
 								this.auth.logIn(response.access, response.refresh);

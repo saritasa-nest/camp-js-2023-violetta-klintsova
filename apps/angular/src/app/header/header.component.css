@@ -7,8 +7,11 @@
 }
 
 .logo {
+  font-size: 32px;
+  font-weight: bold;
   margin-left: 7px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .logo-accent {
@@ -29,13 +32,11 @@
 }
 
 .all-anime {
-  cursor: pointer;
   color: var(--primary-color);
 }
 
 .all-anime,
-.all-anime:visited,
-.all-anime:hover {
+.all-anime:visited {
   text-decoration: none;
 }
 

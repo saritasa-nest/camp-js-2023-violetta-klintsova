@@ -27,8 +27,13 @@ img {
   font-weight: 400;
 }
 
-.button {
+.all-anime-link {
+  display: block;
+  width: max-content;
+  padding: 15px 25px;
   margin-top: 30px;
-  font-size: var(--medium-font-size);
-  padding: 20px 25px;
+  color: var(--primary-contrast-color);
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius-medium);
+  text-decoration: none;
 }

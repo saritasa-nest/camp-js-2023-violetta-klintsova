@@ -2,9 +2,9 @@
   <div class="text">
 		<h2 class="heading">Welcome to Animated</h2>
 		<h3 class="description">Here you will find all anime existing in the world</h3>
-		<button type="button" mat-raised-button color="accent" class="button" [routerLink]="isLoggedIn ? ['/anime'] : ['/auth/log-in']">All anime</button>
+		<a class="all-anime-link" [routerLink]="isLoggedIn ? ['/anime'] : ['/auth/log-in']">All anime</a>
 	</div>
   <div class="image">
-    <img src="../../assets/spirited-away.jpg" alt="" />
+    <img src="../../assets/spirited-away.jpg" alt="Spirited away anime" />
   </div>
 </div>
