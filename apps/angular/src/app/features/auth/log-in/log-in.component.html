@@ -26,9 +26,7 @@
     </mat-form-field>
   </form>
 
-  <ng-container *ngIf="loginForm.hasError('formError')">
-    <mat-error>No active account with given credentials was found.</mat-error>
-  </ng-container>
+  <mat-error *ngIf="loginForm.hasError('formError')">No active account with given credentials was found.</mat-error>
 
   <button
     type="submit"
@@ -38,6 +36,6 @@
     (click)="onSubmit()"
     [disabled]="isLoading"
   >
-    {{isLoading ? 'Logging in...' : 'Log in'}}
+    {{ isLoading ? "Logging in..." : "Log in" }}
   </button>
 </div>
