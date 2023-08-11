@@ -29,4 +29,6 @@
   /* Other custom variable */
   --border-color: #bebebe;
   --border-dark-color: #7e7e7e;
+  --accent-color-dimmed: #ff689a;
+  --border-radius-medium: 5px;
 }

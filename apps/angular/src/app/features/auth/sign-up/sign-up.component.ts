@@ -54,8 +54,10 @@ export class SignUpComponent implements OnInit {
 
 	/** Sets an error if passwords are not equal. */
 	protected onPasswordInput(): void {
+		// console.log(this.signUpForm.errors);
+		// console.log(this.signUpForm.get('confirmedPassword')?.errors);
 		if (this.signUpForm.hasError('matchError')) {
-			this.signUpForm.get('confirmedPassword')?.setErrors([{ matchError: true }]);
+			this.signUpForm.get('confirmedPassword')?.setErrors([{ invalid: true }]);
 		} else {
 			this.signUpForm.get('confirmedPassword')?.setErrors(null);
 		}
@@ -63,6 +65,8 @@ export class SignUpComponent implements OnInit {
 
 	/** Registers a new user. */
 	protected onSubmit(): void {
+		this.signUpForm.markAllAsTouched();
+
 		if (this.signUpForm.invalid) {
 			return;
 		}

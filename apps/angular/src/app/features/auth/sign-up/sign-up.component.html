@@ -27,7 +27,7 @@
         placeholder="user@gmail.com"
       />
       <mat-error *ngIf="signUpForm.get('email')?.hasError('required')">
-        Email is required
+        Required field
       </mat-error>
       <mat-error *ngIf="signUpForm.get('email')?.hasError('email')">
         Please enter a valid email address
@@ -44,7 +44,7 @@
         (input)="onPasswordInput()"
       />
       <mat-error *ngIf="signUpForm.get('password')?.hasError('required')">
-        Password is required
+        Required field
       </mat-error>
       <mat-error *ngIf="signUpForm.get('password')?.hasError('minlength')">
         Password must be at least 8 characters long
@@ -62,7 +62,7 @@
       />
       <mat-error
         *ngIf="
-          signUpForm.get('confirmedPassword')?.invalid &&
+          signUpForm.errors?.['matchError'] &&
           !signUpForm.get('confirmedPassword')?.hasError('required')">
           Passwords don't match
       </mat-error>
