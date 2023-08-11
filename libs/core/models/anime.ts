@@ -12,7 +12,7 @@ export interface Anime {
 	readonly titleEng: string;
 
 	/** Image. */
-	readonly image: string;
+	readonly thumbnailUrl: string;
 
 	/** Title (JPN). */
 	readonly titleJpn: string;
