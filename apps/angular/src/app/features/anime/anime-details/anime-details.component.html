@@ -35,10 +35,7 @@
         <h2 class="title-jpn">
           {{ details.titleJpn }}
           <span class="airing-period">
-            (
-            <span *ngIf="details.airedStartDate !== null">{{ details.airedStartDate | date : "YYYY" }}</span>
-            <span *ngIf="details.airedEndDate !== null">-{{ details.airedEndDate | date : "YYYY" }}</span>
-            )
+            <span>{{ getDateRange(details.airedStartDate, details.airedEndDate)}}</span>
           </span>
         </h2>
         <h3 class="title-eng">{{ details.titleEng }}</h3>

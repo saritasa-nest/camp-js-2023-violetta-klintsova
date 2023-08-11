@@ -64,6 +64,20 @@ export class AnimeDetailsComponent implements OnInit {
 		this.isPopupOpened = !this.isPopupOpened;
 	}
 
+	/**
+	 * Returns a date or a date range.
+	 * @param startDate Start date.
+	 * @param endDate End date.
+	 */
+	protected getDateRange(startDate: Date | null, endDate: Date | null): string {
+		const start = startDate ? startDate.getFullYear() : null;
+		const end = endDate ? endDate.getFullYear() : null;
+
+		const date = (start ? start.toString() : '') + (end ? `- ${end.toString()}` : '');
+
+		return `(${date})`;
+	}
+
 	/** Returns the user to the previous page. */
 	protected goBack(): void {
 		this.location.back();
