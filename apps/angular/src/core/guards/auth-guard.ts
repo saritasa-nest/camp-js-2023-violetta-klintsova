@@ -1,7 +1,14 @@
 import { inject } from '@angular/core';
-import { CanMatchFn } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanMatchFn, Router, UrlTree } from '@angular/router';
+import { Observable, map } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanMatchFn = (): Observable<boolean> => inject(AuthService).userState$();
+export const authGuard: CanMatchFn = (): Observable<boolean | UrlTree> => {
+	const router = inject(Router);
+	return inject(AuthService)
+		.userState$()
+		.pipe(
+			map(isLoggedIn => isLoggedIn || router.createUrlTree(['/auth/log-in'])),
+		);
+};
