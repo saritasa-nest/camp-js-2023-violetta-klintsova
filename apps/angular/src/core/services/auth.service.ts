@@ -16,7 +16,7 @@ import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
 
 import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
 
-import { StorageService } from './auth-storage.service';
+import { TokenService } from './token-service.service';
 
 /** Authentification service. */
 @Injectable({
@@ -44,7 +44,7 @@ export class AuthService {
 	public constructor(
 		private readonly http: HttpClient,
 		private readonly router: Router,
-		private readonly storage: StorageService,
+		private readonly tokenService: TokenService,
 	) {}
 
 	/**
@@ -105,14 +105,15 @@ export class AuthService {
 	 * @param value Subject value.
 	 */
 	public setUser(access: string, refresh: string): void {
-		this.storage.setAccessToken(access);
-		this.storage.setRefreshToken(refresh);
+		this.tokenService.setToken('access', access);
+		this.tokenService.setToken('refresh', refresh);
 		this.updateUserState(true);
 	}
 
 	/** Logs a user out. */
 	public logOut(): void {
-		this.storage.deleteTokens();
+		this.tokenService.deleteTokens('access');
+		this.tokenService.deleteTokens('refresh');
 		this.router.navigate(['/']);
 		this.updateUserState(false);
 	}
