@@ -1,7 +1,7 @@
 <div class="wrapper">
   <h1 class="heading">Create your account</h1>
 
-  <form [formGroup]="signUpForm" class="sign-up-form">
+  <form [formGroup]="signUpForm" class="sign-up-form" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>First name</mat-label>
       <input matInput type="text" formControlName="firstName" />
@@ -39,11 +39,7 @@
 
     <mat-form-field>
       <mat-label>Password</mat-label>
-      <input
-        matInput
-        type="password"
-        formControlName="password"
-      />
+      <input matInput type="password" formControlName="password" />
       <mat-error *ngIf="signUpForm.get('password')?.hasError('required')">
         Required field
       </mat-error>
@@ -58,28 +54,21 @@
 
     <mat-form-field>
       <mat-label>Confirm password</mat-label>
-      <input
-        matInput
-        type="password"
-        formControlName="confirmedPassword"
-      />
+      <input matInput type="password" formControlName="confirmedPassword" />
       <mat-error
-        *ngIf="
-          signUpForm.get('confirmedPassword')?.hasError('matchError')
-        "
+        *ngIf="signUpForm.get('confirmedPassword')?.hasError('matchError')"
       >
         Passwords don't match
       </mat-error>
     </mat-form-field>
+    <button
+      type="submit"
+      mat-raised-button
+      color="accent"
+      class="sign-up-button"
+      [disabled]="isLoading"
+    >
+      {{ isLoading ? "Signing up..." : " Sing up" }}
+    </button>
   </form>
-  <button
-    type="submit"
-    mat-raised-button
-    color="accent"
-    class="sign-up-button"
-    (click)="onSubmit()"
-    [disabled]="isLoading"
-  >
-    {{ isLoading ? "Signing up..." : " Sing up" }}
-  </button>
 </div>

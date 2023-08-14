@@ -27,13 +27,6 @@ img {
   font-weight: 400;
 }
 
-.all-anime-link {
-  display: block;
-  width: max-content;
-  padding: 15px 25px;
+.all-anime {
   margin-top: 30px;
-  color: var(--primary-contrast-color);
-  background-color: var(--primary-color);
-  border-radius: var(--border-radius-medium);
-  text-decoration: none;
 }

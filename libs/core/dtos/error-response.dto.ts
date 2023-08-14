@@ -1,7 +1,7 @@
 import { IErrorDto } from './error.dto';
 
 /** Error response dto. */
-export interface ErrorResponse {
+export interface ErrorResponseDto {
 
 	/** Error type. */
 	readonly type?: string;

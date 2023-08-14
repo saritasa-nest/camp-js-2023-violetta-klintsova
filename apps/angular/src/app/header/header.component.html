@@ -1,7 +1,7 @@
 <header class="header">
   <a routerLink="/" class="logo"><span class="logo-accent">Anime</span>ted</a>
   <ng-container *ngIf="!isLoggedIn">
-    <button
+    <a
       routerLink="/auth/log-in"
       mat-button
       color="primary"
@@ -9,8 +9,8 @@
       class="log-in button"
     >
       Log in
-    </button>
-    <button
+    </a>
+    <a
       routerLink="/auth/sign-up"
       mat-raised-button
       color="primary"
@@ -18,7 +18,7 @@
       class="button"
     >
       Sign up
-    </button>
+    </a>
   </ng-container>
 
   <ng-container *ngIf="isLoggedIn">

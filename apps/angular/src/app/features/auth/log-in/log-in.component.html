@@ -1,6 +1,6 @@
 <div class="wrapper">
   <h1 class="heading">Welcome back, friend</h1>
-  <form [formGroup]="loginForm" class="log-in-form">
+  <form [formGroup]="loginForm" class="log-in-form" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input
@@ -24,18 +24,17 @@
         Password is required
       </mat-error>
     </mat-form-field>
+
+    <mat-error *ngIf="loginForm.hasError('formError')">No active account with given credentials was found.</mat-error>
+
+    <button
+      type="submit"
+      mat-raised-button
+      color="accent"
+      class="log-in-button"
+      [disabled]="isLoading"
+    >
+      {{ isLoading ? "Logging in..." : "Log in" }}
+    </button>
   </form>
-
-  <mat-error *ngIf="loginForm.hasError('formError')">No active account with given credentials was found.</mat-error>
-
-  <button
-    type="submit"
-    mat-raised-button
-    color="accent"
-    class="log-in-button"
-    (click)="onSubmit()"
-    [disabled]="isLoading"
-  >
-    {{ isLoading ? "Logging in..." : "Log in" }}
-  </button>
 </div>

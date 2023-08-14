@@ -10,8 +10,6 @@ import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
 import { Auth } from '@js-camp/core/models/auth';
 import { UserProfileDto } from '@js-camp/core/dtos/user-profile.dto';
-import { UserProfileMapper } from '@js-camp/core/mappers/user-profile.mapper';
-import { UserProfile } from '@js-camp/core/models/user-profile';
 import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
 
 import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
@@ -52,8 +50,7 @@ export class AuthService {
 	 * @param loginInfo Info required to log in.
 	 */
 	public login(loginInfo: LoginInfo): Observable<Auth> {
-		const path = 'auth/login/';
-		const url = new URL(path, this.apiUrl);
+		const url = new URL('auth/login/', this.apiUrl);
 		return this.http
 			.post<AuthDto>(url.toString(), loginInfo, { context: new HttpContext().set(BYPASS_LOG, true) })
 			.pipe(map(el => AuthMapper.fromDto(el)));
@@ -64,11 +61,10 @@ export class AuthService {
 	 * @param registerInfo Info required for registration.
 	 */
 	public register(registerInfo: RegistrationInfo): Observable<Auth> {
-		const path = 'auth/register/';
-		const url = new URL(path, this.apiUrl);
-		const mappedRegisterData = RegistrationInfoMapper.toDto(registerInfo);
+		const url = new URL('auth/register/', this.apiUrl);
+		const mappedRegister = RegistrationInfoMapper.toDto(registerInfo);
 		return this.http
-			.post<AuthDto>(url.toString(), mappedRegisterData, { context: new HttpContext().set(BYPASS_LOG, true) })
+			.post<AuthDto>(url.toString(), mappedRegister, { context: new HttpContext().set(BYPASS_LOG, true) })
 			.pipe(
 				map(el => AuthMapper.fromDto(el)),
 				catchError((e: unknown) => {
@@ -86,16 +82,14 @@ export class AuthService {
 	 * @returns Observable with access token.
 	 */
 	public refreshToken(refresh: string): Observable<Auth> {
-		const path = 'auth/token/refresh/';
-		const url = new URL(path, this.apiUrl);
+		const url = new URL('auth/token/refresh/', this.apiUrl);
 		return this.http.post<AuthDto>(url.toString(), { refresh }).pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
 	/** Fetches user profile. */
-	public fetchUserProfile(): Observable<UserProfile> {
-		const path = 'users/profile/';
-		const url = new URL(path, this.apiUrl);
-		return this.http.get<UserProfileDto>(url.toString()).pipe(map(el => UserProfileMapper.fromDto(el)));
+	public fetchUserProfile(): Observable<UserProfileDto> {
+		const url = new URL('users/profile/', this.apiUrl);
+		return this.http.get<UserProfileDto>(url.toString());
 	}
 
 	/**
