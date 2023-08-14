@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { EmptyValue } from '@js-camp/angular/core/utils/empty-value-pipe';
 import { RouterModule } from '@angular/router';
@@ -18,6 +19,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { AnimeDetailsComponent } from './anime-details/anime-details.component';
+import { ImageDialogComponent } from './anime-details/image-dialog/image-dialog.component';
 
 /** Anime table module. */
 @NgModule({
@@ -35,8 +37,9 @@ import { AnimeDetailsComponent } from './anime-details/anime-details.component';
 		RouterModule,
 		MatIconModule,
 		YouTubePlayerModule,
+		MatDialogModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent],
+	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent, ImageDialogComponent],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}

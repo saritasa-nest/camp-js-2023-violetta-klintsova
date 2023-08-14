@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { AnimeDetails } from '@js-camp/core/models/anime-details';
 import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
+
+import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 
 /** Anime details component. */
 @Component({
@@ -22,6 +25,7 @@ export class AnimeDetailsComponent {
 		private readonly activatedRoute: ActivatedRoute,
 		private readonly router: Router,
 		private readonly animeService: AnimeService,
+		public readonly dialog: MatDialog,
 	) {
 		this.animeDetails$ = this.createAnimeDetailsStream();
 	}
@@ -45,9 +49,14 @@ export class AnimeDetailsComponent {
 		);
 	}
 
-	/** Changes state of the pop up. */
-	protected changePopupState(): void {
-		this.isPopupOpened = !this.isPopupOpened;
+	/**
+	 * Opens a dialog with an image.
+	 * @param thumbnailUrl Image URL.
+	 */
+	protected openImage(thumbnailUrl: string): void {
+		this.dialog.open(ImageDialogComponent, {
+			data: { imageUrl: thumbnailUrl },
+		});
 	}
 
 	/**

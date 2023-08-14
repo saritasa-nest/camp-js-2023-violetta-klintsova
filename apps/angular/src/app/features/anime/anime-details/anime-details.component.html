@@ -4,21 +4,8 @@
       <section class="details-view">
         <div class="image">
           <img src="{{ details.thumbnailUrl }}" alt="Anime cover" />
-          <div class="open-full-size" (click)="changePopupState()">
+          <div class="grey-icon-button" (click)="openImage(details.thumbnailUrl)">
             <mat-icon>open_in_full</mat-icon>
-          </div>
-        </div>
-        <div
-          class="pop-up"
-          [ngClass]="isPopupOpened ? 'opened-pop-up' : 'closed-pop-up'"
-        >
-          <div class="overlay">
-            <div class="pop-up-image">
-              <img src="{{ details.thumbnailUrl }}" alt="Anime cover" />
-            </div>
-            <div class="close-full-size" (click)="changePopupState()">
-              <mat-icon>close</mat-icon>
-            </div>
           </div>
         </div>
       </section>
