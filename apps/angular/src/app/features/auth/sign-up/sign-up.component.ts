@@ -93,7 +93,7 @@ export class SignUpComponent {
 			)
 			.subscribe(response => {
 				this.isLoading = false;
-				this.auth.logIn(response.access, response.refresh);
+				this.auth.setUser(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});
 	}

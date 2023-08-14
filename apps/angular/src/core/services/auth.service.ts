@@ -104,7 +104,7 @@ export class AuthService {
 	 * @param refresh Refresh key.
 	 * @param value Subject value.
 	 */
-	public logIn(access: string, refresh: string): void {
+	public setUser(access: string, refresh: string): void {
 		this.storage.setAccessToken(access);
 		this.storage.setRefreshToken(refresh);
 		this.updateUserState(true);

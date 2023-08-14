@@ -35,7 +35,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 					if (refresh && e.url !== `${environment.apiUrl}/auth/token/refresh/`) {
 						return this.auth.refreshToken(refresh).pipe(
 							tap(response => {
-								this.auth.logIn(response.access, response.refresh);
+								this.auth.setUser(response.access, response.refresh);
 							}),
 							catchError(() => this.onRefreshFailed()),
 							switchMap(() => next.handle(request)),
