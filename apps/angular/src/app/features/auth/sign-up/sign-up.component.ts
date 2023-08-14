@@ -1,5 +1,5 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
 
 import { equalityValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
@@ -18,13 +18,24 @@ import { ValidationError } from '@js-camp/core/models/validation-error';
 	styleUrls: ['./sign-up.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
 	public constructor(
 		private readonly auth: AuthService,
 		private readonly destroyRef: DestroyRef,
 		private readonly router: Router,
 		private readonly changeDetector: ChangeDetectorRef,
-	) {}
+	) {
+		this.signUpForm = new FormGroup(
+			{
+				firstName: new FormControl('', Validators.required),
+				lastName: new FormControl('', Validators.required),
+				email: new FormControl('', [Validators.required, Validators.email]),
+				password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+				confirmedPassword: new FormControl('', Validators.required),
+			},
+			{ validators: equalityValidator('password', 'confirmedPassword') },
+		);
+	}
 
 	/** Sign up form. */
 	protected signUpForm!: FormGroup;
@@ -38,20 +49,6 @@ export class SignUpComponent implements OnInit {
 	/** Form state. */
 	public isLoading = false;
 
-	/** Component initialization. */
-	public ngOnInit(): void {
-		this.signUpForm = new FormGroup(
-			{
-				firstName: new FormControl('', Validators.required),
-				lastName: new FormControl('', Validators.required),
-				email: new FormControl('', [Validators.required, Validators.email]),
-				password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-				confirmedPassword: new FormControl('', Validators.required),
-			},
-			{ validators: equalityValidator('password', 'confirmedPassword') },
-		);
-	}
-
 	/** Registers a new user. */
 	protected onSubmit(): void {
 		this.signUpForm.markAllAsTouched();
@@ -62,13 +59,10 @@ export class SignUpComponent implements OnInit {
 
 		this.isLoading = true;
 
-		const user = {
-			firstName: this.signUpForm.value.firstName,
-			lastName: this.signUpForm.value.lastName,
-			email: this.signUpForm.value.email,
+		const user: RegistrationInfo = {
 			avatar: null,
-			password: this.signUpForm.value.password,
-		} as RegistrationInfo;
+			...this.signUpForm.getRawValue(),
+		};
 
 		this.auth
 			.register(user)
