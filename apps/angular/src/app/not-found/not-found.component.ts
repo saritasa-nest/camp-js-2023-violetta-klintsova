@@ -1,5 +1,5 @@
-import { Location } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 /** Not found component. */
 @Component({
@@ -8,13 +8,10 @@ import { Component } from '@angular/core';
 	styleUrls: ['./not-found.component.css'],
 })
 export class NotFoundComponent {
-	public constructor(private readonly location: Location) {}
+	public constructor(private readonly router: Router) {}
 
 	/** Returns the user to the previous page. */
 	protected onClickGoBack(): void {
-		// Pages is '-2' because the user was redirected to the 'not found' page
-		// after an attempt to access non-existing page (which would be -1)
-		const pagesBack = -2;
-		this.location.historyGo(pagesBack);
+		this.router.navigate(['/']);
 	}
 }
