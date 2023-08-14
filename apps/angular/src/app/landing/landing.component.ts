@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 
@@ -9,7 +9,7 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 	styleUrls: ['./landing.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LandingComponent {
+export class LandingComponent implements OnInit {
 	/** User authorization status. */
 	protected isLoggedIn!: boolean;
 
@@ -17,8 +17,11 @@ export class LandingComponent {
 		private readonly auth: AuthService,
 		private readonly destroyRef: DestroyRef,
 		private readonly changeDetector: ChangeDetectorRef,
-	) {
-		auth
+	) {}
+
+	/** @inheritdoc */
+	public ngOnInit(): void {
+		this.auth
 			.userState$()
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(value => {
