@@ -1,11 +1,8 @@
-import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { AnimeDetails } from '@js-camp/core/models/anime-details';
 import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
-
-let youtubeApiLoaded = false;
 
 /** Anime details component. */
 @Component({
@@ -14,7 +11,7 @@ let youtubeApiLoaded = false;
 	styleUrls: ['./anime-details.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeDetailsComponent implements OnInit {
+export class AnimeDetailsComponent {
 	/** Image popup state. */
 	protected isPopupOpened = false;
 
@@ -25,19 +22,8 @@ export class AnimeDetailsComponent implements OnInit {
 		private readonly activatedRoute: ActivatedRoute,
 		private readonly router: Router,
 		private readonly animeService: AnimeService,
-		private readonly location: Location,
 	) {
 		this.animeDetails$ = this.createAnimeDetailsStream();
-	}
-
-	/** @inheritdoc */
-	public ngOnInit(): void {
-		if (!youtubeApiLoaded) {
-			const script = document.createElement('script');
-			script.src = 'https://www.youtube.com/iframe_api';
-			document.body.appendChild(script);
-			youtubeApiLoaded = true;
-		}
 	}
 
 	/** Creates a stream with anime details. */
@@ -76,10 +62,5 @@ export class AnimeDetailsComponent implements OnInit {
 		const date = (start ? start.toString() : '') + (end ? `- ${end.toString()}` : '');
 
 		return `(${date})`;
-	}
-
-	/** Returns the user to the previous page. */
-	protected goBack(): void {
-		this.location.back();
 	}
 }
