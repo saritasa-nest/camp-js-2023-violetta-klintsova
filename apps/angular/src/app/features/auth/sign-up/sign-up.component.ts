@@ -6,10 +6,9 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
-
-import { HttpErrorResponse } from '@angular/common/http';
+import { EMPTY, catchError } from 'rxjs';
 import { ValidationError } from '@js-camp/core/models/validation-error';
+import { IError } from '@js-camp/core/models/error';
 
 /** Sign up component. */
 @Component({
@@ -68,7 +67,7 @@ export class SignUpComponent {
 			.register(user)
 			.pipe(
 				catchError((e: unknown) => {
-					if (e instanceof HttpErrorResponse) {
+					if (e instanceof ValidationError) {
 						this.changeDetector.markForCheck();
 						this.isLoading = false;
 
@@ -76,7 +75,7 @@ export class SignUpComponent {
 						this.validationErrors.email = '';
 						this.validationErrors.password = '';
 
-						e.error.errors.forEach((element: ValidationError) => {
+						e.errors.forEach((element: IError) => {
 							if (element.attr === 'email') {
 								this.validationErrors.email += element.detail;
 								this.signUpForm.get('email')?.setErrors({ emailError: true });
@@ -87,7 +86,8 @@ export class SignUpComponent {
 							}
 						});
 					}
-					return throwError(() => new Error('Sign up error.'));
+
+					return EMPTY;
 				}),
 				takeUntilDestroyed(this.destroyRef),
 			)

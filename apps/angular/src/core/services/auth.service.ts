@@ -1,7 +1,7 @@
-import { HttpClient, HttpContext } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
-import { Observable, ReplaySubject, map } from 'rxjs';
+import { EMPTY, Observable, ReplaySubject, catchError, map, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '@js-camp/angular/environments/environment';
 import { LoginInfo } from '@js-camp/core/models/login-info';
@@ -12,6 +12,7 @@ import { Auth } from '@js-camp/core/models/auth';
 import { UserProfileDto } from '@js-camp/core/dtos/user-profile.dto';
 import { UserProfileMapper } from '@js-camp/core/mappers/user-profile.mapper';
 import { UserProfile } from '@js-camp/core/models/user-profile';
+import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
 
 import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
 
@@ -22,7 +23,6 @@ import { StorageService } from './auth-storage.service';
 	providedIn: 'root',
 })
 export class AuthService {
-
 	private readonly apiUrl = environment.apiUrl;
 
 	/** User log in state. */
@@ -69,7 +69,15 @@ export class AuthService {
 		const mappedRegisterData = RegistrationInfoMapper.toDto(registerInfo);
 		return this.http
 			.post<AuthDto>(url.toString(), mappedRegisterData, { context: new HttpContext().set(BYPASS_LOG, true) })
-			.pipe(map(el => AuthMapper.fromDto(el)));
+			.pipe(
+				map(el => AuthMapper.fromDto(el)),
+				catchError((e: unknown) => {
+					if (e instanceof HttpErrorResponse && e.status === 400) {
+						return throwError(() => ErrorMapper.fromDto(e.error));
+					}
+					return EMPTY;
+				}),
+			);
 	}
 
 	/**
@@ -80,9 +88,7 @@ export class AuthService {
 	public refreshToken(refresh: string): Observable<Auth> {
 		const path = 'auth/token/refresh/';
 		const url = new URL(path, this.apiUrl);
-		return this.http
-			.post<AuthDto>(url.toString(), { refresh })
-			.pipe(map(el => AuthMapper.fromDto(el)));
+		return this.http.post<AuthDto>(url.toString(), { refresh }).pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
 	/** Fetches user profile. */
