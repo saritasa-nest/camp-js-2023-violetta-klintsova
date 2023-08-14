@@ -13,6 +13,15 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent {
+	/** Log in form. */
+	protected loginForm: FormGroup;
+
+	/** Form state. */
+	public isLoading = false;
+
+	/** Submit button state. */
+	public isDisabled = false;
+
 	public constructor(
 		private readonly auth: AuthService,
 		private readonly destroyRef: DestroyRef,
@@ -24,15 +33,6 @@ export class LoginComponent {
 			password: new FormControl('', Validators.required),
 		});
 	}
-
-	/** Log in form. */
-	protected loginForm!: FormGroup;
-
-	/** Form state. */
-	public isLoading = false;
-
-	/** Submit button state. */
-	public isDisabled = false;
 
 	/** Log in. */
 	public onSubmit(): void {
@@ -60,7 +60,7 @@ export class LoginComponent {
 			)
 			.subscribe(response => {
 				this.isLoading = false;
-				this.auth.logIn(response.access, response.refresh);
+				this.auth.setUser(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});
 	}

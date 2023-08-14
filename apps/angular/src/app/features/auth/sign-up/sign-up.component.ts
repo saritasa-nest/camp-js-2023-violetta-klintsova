@@ -1,15 +1,14 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
 
 import { equalityValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
-
-import { HttpErrorResponse } from '@angular/common/http';
+import { EMPTY, catchError } from 'rxjs';
 import { ValidationError } from '@js-camp/core/models/validation-error';
+import { IError } from '@js-camp/core/models/error';
 
 /** Sign up component. */
 @Component({
@@ -18,16 +17,9 @@ import { ValidationError } from '@js-camp/core/models/validation-error';
 	styleUrls: ['./sign-up.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignUpComponent implements OnInit {
-	public constructor(
-		private readonly auth: AuthService,
-		private readonly destroyRef: DestroyRef,
-		private readonly router: Router,
-		private readonly changeDetector: ChangeDetectorRef,
-	) {}
-
+export class SignUpComponent {
 	/** Sign up form. */
-	protected signUpForm!: FormGroup;
+	protected signUpForm: FormGroup;
 
 	/** Validation errors. */
 	protected validationErrors = {
@@ -38,8 +30,12 @@ export class SignUpComponent implements OnInit {
 	/** Form state. */
 	public isLoading = false;
 
-	/** @inheritdoc */
-	public ngOnInit(): void {
+	public constructor(
+		private readonly auth: AuthService,
+		private readonly router: Router,
+		private readonly destroyRef: DestroyRef,
+		private readonly changeDetector: ChangeDetectorRef,
+	) {
 		this.signUpForm = new FormGroup(
 			{
 				firstName: new FormControl('', Validators.required),
@@ -62,19 +58,16 @@ export class SignUpComponent implements OnInit {
 
 		this.isLoading = true;
 
-		const user = {
-			firstName: this.signUpForm.value.firstName,
-			lastName: this.signUpForm.value.lastName,
-			email: this.signUpForm.value.email,
+		const user: RegistrationInfo = {
 			avatar: null,
-			password: this.signUpForm.value.password,
-		} as RegistrationInfo;
+			...this.signUpForm.getRawValue(),
+		};
 
 		this.auth
 			.register(user)
 			.pipe(
 				catchError((e: unknown) => {
-					if (e instanceof HttpErrorResponse) {
+					if (e instanceof ValidationError) {
 						this.changeDetector.markForCheck();
 						this.isLoading = false;
 
@@ -82,7 +75,7 @@ export class SignUpComponent implements OnInit {
 						this.validationErrors.email = '';
 						this.validationErrors.password = '';
 
-						e.error.errors.forEach((element: ValidationError) => {
+						e.errors.forEach((element: IError) => {
 							if (element.attr === 'email') {
 								this.validationErrors.email += element.detail;
 								this.signUpForm.get('email')?.setErrors({ emailError: true });
@@ -93,13 +86,14 @@ export class SignUpComponent implements OnInit {
 							}
 						});
 					}
-					return throwError(() => new Error('Sign up error.'));
+
+					return EMPTY;
 				}),
 				takeUntilDestroyed(this.destroyRef),
 			)
 			.subscribe(response => {
 				this.isLoading = false;
-				this.auth.logIn(response.access, response.refresh);
+				this.auth.setUser(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});
 	}
