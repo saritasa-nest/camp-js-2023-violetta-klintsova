@@ -18,6 +18,18 @@ import { IError } from '@js-camp/core/models/error';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpComponent {
+	/** Sign up form. */
+	protected signUpForm: FormGroup;
+
+	/** Validation errors. */
+	protected validationErrors = {
+		email: '',
+		password: '',
+	};
+
+	/** Form state. */
+	public isLoading = false;
+
 	public constructor(
 		private readonly auth: AuthService,
 		private readonly destroyRef: DestroyRef,
@@ -35,18 +47,6 @@ export class SignUpComponent {
 			{ validators: equalityValidator('password', 'confirmedPassword') },
 		);
 	}
-
-	/** Sign up form. */
-	protected signUpForm!: FormGroup;
-
-	/** Validation errors. */
-	protected validationErrors = {
-		email: '',
-		password: '',
-	};
-
-	/** Form state. */
-	public isLoading = false;
 
 	/** Registers a new user. */
 	protected onSubmit(): void {
