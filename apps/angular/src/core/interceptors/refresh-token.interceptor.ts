@@ -53,6 +53,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
 	private onRefreshFailed(): Observable<never> {
 		this.auth.logOut();
-		return throwError(() => new Error('Could not refresh the key.'));
+		throw new Error('Could not refresh the key.');
 	}
 }
