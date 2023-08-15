@@ -33,7 +33,7 @@ export class AnimeService {
 	 */
 	public fetchAnimeList(options: ManagementOptions): Observable<Pagination<Anime>> {
 		const path = 'anime/anime/';
-		const url = new URL(path, this.apiUrl);
+		const url = new URL(path, this.apiUrl).toString();
 		let httpParams = new HttpParams()
 			.set('offset', `${options.limit * options.page}`)
 			.set('limit', options.limit);
@@ -51,7 +51,7 @@ export class AnimeService {
 		}
 
 		return this.http
-			.get<PaginationDto<AnimeDto[]>>(url.toString(), { params: httpParams })
+			.get<PaginationDto<AnimeDto[]>>(url, { params: httpParams })
 			.pipe(map(el => PaginationMapper.fromDto(el, AnimeMapper.fromDto)));
 	}
 
@@ -61,8 +61,8 @@ export class AnimeService {
 	 */
 	public fetchAnimeDetails(id: Anime['id']): Observable<AnimeDetails> {
 		const path = `anime/anime/${id}/`;
-		const url = new URL(path, this.apiUrl);
-		return this.http.get<AnimeDetailsDto>(url.toString()).pipe(map(el => AnimeDetailsMapper.fromDto(el)));
+		const url = new URL(path, this.apiUrl).toString();
+		return this.http.get<AnimeDetailsDto>(url).pipe(map(el => AnimeDetailsMapper.fromDto(el)));
 	}
 
 	/**

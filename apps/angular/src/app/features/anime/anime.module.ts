@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
@@ -22,6 +23,7 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { AnimeDetailsComponent } from './anime-details/anime-details.component';
+import { ImageDialogComponent } from './anime-details/image-dialog/image-dialog.component';
 import { AddEditComponent } from './add-edit/add-edit.component';
 import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog/confirmation-dialog.component';
 
@@ -41,12 +43,20 @@ import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog
 		RouterModule,
 		MatIconModule,
 		YouTubePlayerModule,
+		MatDialogModule,
 		MatDatepickerModule,
 		MatNativeDateModule,
 		MatRadioModule,
 		MatCheckboxModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent, AddEditComponent, ConfirmationDialogComponent],
+	declarations: [
+		AnimeTableComponent,
+		EmptyValue,
+		AnimeDetailsComponent,
+		ImageDialogComponent,
+		AddEditComponent,
+		ConfirmationDialogComponent,
+	],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}

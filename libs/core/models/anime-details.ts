@@ -32,6 +32,6 @@ export interface AnimeDetails extends Anime {
 	/** Synopsis. */
 	readonly synopsis: string;
 
-	/** Youtube trailer. */
-	readonly trailer: string;
+	/** Youtube trailer ID. */
+	readonly youtubeTrailerId: string;
 }

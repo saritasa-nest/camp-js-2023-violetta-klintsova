@@ -1,25 +1,26 @@
-import { HttpClient, HttpContext } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { RegistrationInfo } from '@js-camp/core/models/registration-info';
-import { environment } from '@js-camp/angular/environments/environment';
-import { AuthDto } from '@js-camp/core/dtos/auth.dto';
 import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
-import { Observable, ReplaySubject, map } from 'rxjs';
-import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
-import { LoginInfo } from '@js-camp/core/models/login-info';
-import { Auth } from '@js-camp/core/models/auth';
+import { EMPTY, Observable, ReplaySubject, catchError, map, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '@js-camp/angular/environments/environment';
+import { LoginInfo } from '@js-camp/core/models/login-info';
+import { AuthDto } from '@js-camp/core/dtos/auth.dto';
+import { RegistrationInfo } from '@js-camp/core/models/registration-info';
+import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
+import { Auth } from '@js-camp/core/models/auth';
+import { UserProfileDto } from '@js-camp/core/dtos/user-profile.dto';
+import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
 
 import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
 
-import { StorageService } from './auth-storage.service';
+import { TokenService } from './token.service';
 
 /** Authentification service. */
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthService {
-
 	private readonly apiUrl = environment.apiUrl;
 
 	/** User log in state. */
@@ -41,7 +42,7 @@ export class AuthService {
 	public constructor(
 		private readonly http: HttpClient,
 		private readonly router: Router,
-		private readonly storage: StorageService,
+		private readonly tokenService: TokenService,
 	) {}
 
 	/**
@@ -49,8 +50,7 @@ export class AuthService {
 	 * @param loginInfo Info required to log in.
 	 */
 	public login(loginInfo: LoginInfo): Observable<Auth> {
-		const path = 'auth/login/';
-		const url = new URL(path, this.apiUrl);
+		const url = new URL('auth/login/', this.apiUrl);
 		return this.http
 			.post<AuthDto>(url.toString(), loginInfo, { context: new HttpContext().set(BYPASS_LOG, true) })
 			.pipe(map(el => AuthMapper.fromDto(el)));
@@ -61,12 +61,19 @@ export class AuthService {
 	 * @param registerInfo Info required for registration.
 	 */
 	public register(registerInfo: RegistrationInfo): Observable<Auth> {
-		const path = 'auth/register/';
-		const url = new URL(path, this.apiUrl);
-		const mappedRegisterData = RegistrationInfoMapper.toDto(registerInfo);
+		const url = new URL('auth/register/', this.apiUrl);
+		const mappedRegister = RegistrationInfoMapper.toDto(registerInfo);
 		return this.http
-			.post<AuthDto>(url.toString(), mappedRegisterData, { context: new HttpContext().set(BYPASS_LOG, true) })
-			.pipe(map(el => AuthMapper.fromDto(el)));
+			.post<AuthDto>(url.toString(), mappedRegister, { context: new HttpContext().set(BYPASS_LOG, true) })
+			.pipe(
+				map(el => AuthMapper.fromDto(el)),
+				catchError((e: unknown) => {
+					if (e instanceof HttpErrorResponse && e.status === 400) {
+						return throwError(() => ErrorMapper.fromDto(e.error));
+					}
+					return EMPTY;
+				}),
+			);
 	}
 
 	/**
@@ -75,22 +82,14 @@ export class AuthService {
 	 * @returns Observable with access token.
 	 */
 	public refreshToken(refresh: string): Observable<Auth> {
-		const path = 'auth/token/refresh/';
-		const url = new URL(path, this.apiUrl);
-		return this.http
-			.post<AuthDto>(url.toString(), { refresh })
-			.pipe(map(el => AuthMapper.fromDto(el)));
+		const url = new URL('auth/token/refresh/', this.apiUrl);
+		return this.http.post<AuthDto>(url.toString(), { refresh }).pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
-	/**
-	 * Sends a request to verify a token.
-	 * @param access Access token.
-	 * @returns Observable with access token if it is valid.
-	 */
-	public verifyToken(access: string): Observable<string> {
-		const path = 'auth/token/verify/';
-		const url = new URL(path, this.apiUrl);
-		return this.http.post<string>(url.toString(), { token: access });
+	/** Fetches user profile. */
+	public fetchUserProfile(): Observable<UserProfileDto> {
+		const url = new URL('users/profile/', this.apiUrl);
+		return this.http.get<UserProfileDto>(url.toString());
 	}
 
 	/**
@@ -99,15 +98,16 @@ export class AuthService {
 	 * @param refresh Refresh key.
 	 * @param value Subject value.
 	 */
-	public logIn(access: string, refresh: string): void {
-		this.storage.setAccessToken(access);
-		this.storage.setRefreshToken(refresh);
+	public setUser(access: string, refresh: string): void {
+		this.tokenService.setToken('access', access);
+		this.tokenService.setToken('refresh', refresh);
 		this.updateUserState(true);
 	}
 
 	/** Logs a user out. */
 	public logOut(): void {
-		this.storage.deleteTokens();
+		this.tokenService.deleteTokens('access');
+		this.tokenService.deleteTokens('refresh');
 		this.router.navigate(['/']);
 		this.updateUserState(false);
 	}

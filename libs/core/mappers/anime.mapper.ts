@@ -16,7 +16,7 @@ export namespace AnimeMapper {
 		return {
 			id: dto.id,
 			titleEng: dto.title_eng,
-			image: dto.image,
+			thumbnailUrl: dto.image,
 			titleJpn: dto.title_jpn,
 			airedStartDate: DateMapper.fromDto(dto.aired.start),
 			type: DistributionTypesMapper.fromDto(dto.type),

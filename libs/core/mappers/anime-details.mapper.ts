@@ -21,7 +21,7 @@ export namespace AnimeDetailsMapper {
 			id: dto.id,
 			titleEng: dto.title_eng,
 			titleJpn: dto.title_jpn,
-			image: dto.image,
+			thumbnailUrl: dto.image,
 			airing: dto.airing,
 			airedStartDate: DateMapper.fromDto(dto.aired.start),
 			airedEndDate: DateMapper.fromDto(dto.aired.end),
@@ -33,7 +33,7 @@ export namespace AnimeDetailsMapper {
 			source: SourceMapper.fromDto(dto.source),
 			season: SeasonMapper.fromDto(dto.season),
 			synopsis: dto.synopsis,
-			trailer: dto.trailer_youtube_id,
+			youtubeTrailerId: dto.trailer_youtube_id,
 		};
 	}
 }

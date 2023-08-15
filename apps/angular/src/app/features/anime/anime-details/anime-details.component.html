@@ -1,69 +1,19 @@
 <ng-container *ngIf="animeDetails$ | async as details">
   <main class="main">
-    <div class="management">
-      <button
-        (click)="onClickGoBack()"
-        type="button"
-        mat-icon-button
-        color="primary"
-        class="go-back-btn"
-      >
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-      <button type="button" mat-raised-button color="primary" class="edit-btn">
-        Edit
-      </button>
-      <button
-        type="button"
-        mat-raised-button
-        color="accent"
-      >
-        Delete
-      </button>
-    </div>
-
     <div class="content">
       <section class="details-view">
         <div class="image">
-          <img src="{{ details.image }}" alt="Anime cover" />
-          <button
-            type="button"
-            class="open-full-size"
-            (click)="toggleImagePopup()"
-          >
+          <img src="{{ details.thumbnailUrl }}" alt="Anime cover" />
+          <button type="button" class="grey-icon-button" (click)="openImage(details.thumbnailUrl)">
             <mat-icon>open_in_full</mat-icon>
           </button>
-        </div>
-        <div
-          class="pop-up"
-          [ngClass]="isImageOpened ? 'open-pop-up' : 'close-pop-up'"
-        >
-          <div class="overlay">
-            <div class="pop-up-image">
-              <img src="{{ details.image }}" alt="Anime cover" />
-            </div>
-            <button
-              type="button"
-              class="close-full-size"
-              (click)="toggleImagePopup()"
-            >
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
         </div>
       </section>
       <section class="details-text">
         <h2 class="title-jpn">
           {{ details.titleJpn }}
           <span class="airing-period">
-            (
-            <span *ngIf="details.airedStartDate !== null">{{
-              details.airedStartDate | date : "YYYY"
-            }}</span>
-            <span *ngIf="details.airedEndDate !== null"
-              >-{{ details.airedEndDate | date : "YYYY" }}</span
-            >
-            )
+            <span>{{ getDateRange(details.airedStartDate, details.airedEndDate)}}</span>
           </span>
         </h2>
         <h3 class="title-eng">{{ details.titleEng }}</h3>
@@ -114,7 +64,7 @@
     </div>
     <div class="trailer">
       <youtube-player
-        videoId="{{ details.trailer }}"
+        videoId="{{ details.youtubeTrailerId }}"
         [width]="400"
         [height]="250"
       >

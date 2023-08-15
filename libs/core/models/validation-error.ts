@@ -1,12 +1,13 @@
+import { IError } from './error';
+
 /** Validation error. */
-export interface ValidationError {
+export class ValidationError extends Error {
 
-	/** Code. */
-	readonly code: string;
+	/** Received errors. */
+	public readonly errors: readonly IError[];
 
-	/** Detail. */
-	readonly detail: string;
-
-	/** Attribute. */
-	readonly attr: string;
+	public constructor(errors: readonly IError[]) {
+		super();
+		this.errors = errors;
+	}
 }

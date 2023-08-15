@@ -6,9 +6,6 @@ export namespace DateMapper {
 	 * @param date Date as a string.
 	 */
 	export function fromDto(date: string | null): Date | null {
-		if (date === null) {
-			return null;
-		}
-		return new Date(date);
+		return date ? new Date(date) : null;
 	}
 }

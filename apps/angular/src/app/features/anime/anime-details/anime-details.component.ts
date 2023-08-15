@@ -1,11 +1,11 @@
-import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { AnimeDetails } from '@js-camp/core/models/anime-details';
 import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
 
-let youtubeApiLoaded = false;
+import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 
 /** Anime details component. */
 @Component({
@@ -14,34 +14,20 @@ let youtubeApiLoaded = false;
 	styleUrls: ['./anime-details.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeDetailsComponent implements OnInit {
-	/** Image pop-up state. */
-	protected isImageOpened = false;
-
-	/** Delete dialog state. */
-	protected isDeleteDialogOpened = false;
+export class AnimeDetailsComponent {
+	/** Image popup state. */
+	protected isPopupOpened = false;
 
 	/** Response observable. */
-	protected animeDetails$: Observable<AnimeDetails>;
+	protected readonly animeDetails$: Observable<AnimeDetails>;
 
 	public constructor(
 		private readonly activatedRoute: ActivatedRoute,
 		private readonly router: Router,
 		private readonly animeService: AnimeService,
-		private readonly location: Location,
+		public readonly dialog: MatDialog,
 	) {
 		this.animeDetails$ = this.createAnimeDetailsStream();
-	}
-
-	/** Component initialization. */
-	public ngOnInit(): void {
-		// Adds youtube iFrame.
-		if (!youtubeApiLoaded) {
-			const script = document.createElement('script');
-			script.src = 'https://www.youtube.com/iframe_api';
-			document.body.appendChild(script);
-			youtubeApiLoaded = true;
-		}
 	}
 
 	/** Creates a stream with anime details. */
@@ -49,7 +35,7 @@ export class AnimeDetailsComponent implements OnInit {
 		return this.activatedRoute.paramMap.pipe(
 			switchMap(params => {
 				const id = Number(params.get('id'));
-				if (id !== null && !isNaN(id)) {
+				if (!isNaN(id)) {
 					return this.animeService.fetchAnimeDetails(id).pipe(
 						catchError(() => {
 							this.router.navigate(['/not-found']);
@@ -63,13 +49,27 @@ export class AnimeDetailsComponent implements OnInit {
 		);
 	}
 
-	/** Toggles state of the image pop-up. */
-	protected toggleImagePopup(): void {
-		this.isImageOpened = !this.isImageOpened;
+	/**
+	 * Opens a dialog with an image.
+	 * @param thumbnailUrl Image URL.
+	 */
+	protected openImage(thumbnailUrl: string): void {
+		this.dialog.open(ImageDialogComponent, {
+			data: { imageUrl: thumbnailUrl },
+		});
 	}
 
-	/** Returns the user to the previous page. */
-	protected onClickGoBack(): void {
-		this.location.back();
+	/**
+	 * Returns a date or a date range.
+	 * @param startDate Start date.
+	 * @param endDate End date.
+	 */
+	protected getDateRange(startDate: Date | null, endDate: Date | null): string {
+		const start = startDate ? startDate.getFullYear() : null;
+		const end = endDate ? endDate.getFullYear() : null;
+
+		const date = (start ? start.toString() : '') + (end ? `- ${end.toString()}` : '');
+
+		return `(${date})`;
 	}
 }

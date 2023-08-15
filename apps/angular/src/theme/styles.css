@@ -15,6 +15,17 @@ body {
   margin: 0 auto;
 }
 
-button {
-  cursor: pointer;
+.grey-icon-button {
+  border: none;
+  width: 35px;
+  height: 35px;
+  background-color: #ececec;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 5px;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

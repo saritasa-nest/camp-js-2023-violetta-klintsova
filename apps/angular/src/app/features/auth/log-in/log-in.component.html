@@ -1,6 +1,6 @@
 <div class="wrapper">
   <h1 class="heading">Welcome back, friend</h1>
-  <form [formGroup]="loginForm" class="log-in-form">
+  <form [formGroup]="loginForm" class="log-in-form" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input
@@ -20,24 +20,21 @@
     <mat-form-field>
       <mat-label>Password</mat-label>
       <input matInput type="password" formControlName="password" />
-      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+      <mat-error *ngIf="loginForm.get('password')?.invalid">
         Password is required
       </mat-error>
     </mat-form-field>
+
+    <mat-error *ngIf="loginForm.hasError('formError')">No active account with given credentials was found.</mat-error>
+
+    <button
+      type="submit"
+      mat-raised-button
+      color="accent"
+      class="log-in-button"
+      [disabled]="isLoading"
+    >
+      {{ isLoading ? "Logging in..." : "Log in" }}
+    </button>
   </form>
-
-  <ng-container *ngIf="loginForm.hasError('formError')">
-    <mat-error>No active account with given credentials was found.</mat-error>
-  </ng-container>
-
-  <button
-    type="submit"
-    mat-raised-button
-    color="accent"
-    class="log-in-button"
-    (click)="onSubmit()"
-    [disabled]="isLoading"
-  >
-    {{isLoading ? 'Logging in...' : 'Log in'}}
-  </button>
 </div>

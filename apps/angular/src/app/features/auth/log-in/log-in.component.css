@@ -20,6 +20,6 @@
 }
 
 .log-in-button:disabled {
-  background-color: #ff689a;
+  background-color: var(--accent-color-dimmed);
   color: white;
 }

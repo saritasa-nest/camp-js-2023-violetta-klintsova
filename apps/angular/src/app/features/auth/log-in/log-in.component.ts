@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
-import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
 
 /** Log in component. */
 @Component({
@@ -12,16 +12,9 @@ import { catchError, throwError } from 'rxjs';
 	styleUrls: ['./log-in.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnInit {
-	public constructor(
-		private readonly auth: AuthService,
-		private readonly destroyRef: DestroyRef,
-		private readonly router: Router,
-		private readonly changeDetector: ChangeDetectorRef,
-	) {}
-
+export class LoginComponent {
 	/** Log in form. */
-	protected loginForm!: FormGroup;
+	protected loginForm: FormGroup;
 
 	/** Form state. */
 	public isLoading = false;
@@ -29,8 +22,12 @@ export class LoginComponent implements OnInit {
 	/** Submit button state. */
 	public isDisabled = false;
 
-	/** Component initialization. */
-	public ngOnInit(): void {
+	public constructor(
+		private readonly auth: AuthService,
+		private readonly destroyRef: DestroyRef,
+		private readonly router: Router,
+		private readonly changeDetector: ChangeDetectorRef,
+	) {
 		this.loginForm = new FormGroup({
 			email: new FormControl('', [Validators.required, Validators.email]),
 			password: new FormControl('', Validators.required),
@@ -63,7 +60,7 @@ export class LoginComponent implements OnInit {
 			)
 			.subscribe(response => {
 				this.isLoading = false;
-				this.auth.logIn(response.access, response.refresh);
+				this.auth.setUser(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});
 	}

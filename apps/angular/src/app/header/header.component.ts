@@ -10,7 +10,7 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-	/** User authorization status. */
+	/** Whether user is authorized or not. */
 	protected isLoggedIn!: boolean;
 
 	public constructor(
