@@ -2,18 +2,18 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 /**
  * Checks whether two strings in a form are equal.
- * @param controlOne First field.
- * @param controlTwo Second field.
+ * @param mainField Main field, whose value is the one to be compared with.
+ * @param secondaryField Secondary field.
  */
-export function equalityValidator(controlOne: string, controlTwo: string): ValidatorFn {
+export function equalityValidator(mainField: string, secondaryField: string): ValidatorFn {
 	return (control: AbstractControl): ValidationErrors | null => {
-		const valueOne = control.get(controlOne);
-		const valueTwo = control.get(controlTwo);
+		const main = control.get(mainField);
+		const secondary = control.get(secondaryField);
 
-		if (valueOne !== null && valueTwo !== null && valueOne.value !== valueTwo.value) {
-			control.get(controlTwo)?.setErrors({ matchError: true });
+		if (main !== null && secondary !== null && main.value !== secondary.value) {
+			control.get(secondaryField)?.setErrors({ matchError: true });
 		} else {
-			control.get(controlTwo)?.setErrors(null);
+			control.get(secondaryField)?.setErrors(null);
 		}
 
 		return null;

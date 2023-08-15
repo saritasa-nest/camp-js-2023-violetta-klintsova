@@ -6,7 +6,7 @@ import {
 	HttpRequest,
 	HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, catchError, switchMap, tap, throwError } from 'rxjs';
+import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { environment } from '@js-camp/angular/environments/environment';
 
 import { AuthService } from '../services/auth.service';
@@ -36,9 +36,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 				if (e instanceof HttpErrorResponse) {
 					if (refresh && e.url !== `${environment.apiUrl}/auth/token/refresh/`) {
 						return this.auth.refreshToken(refresh).pipe(
-							tap(response => {
-								this.auth.setUser(response.access, response.refresh);
-							}),
 							catchError(() => this.onRefreshFailed()),
 							switchMap(() => next.handle(request)),
 						);

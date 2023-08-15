@@ -1,5 +1,5 @@
-/** Login dto. */
-export interface AuthDto {
+/** Login. */
+export interface Tokens {
 
 	/** Refresh token. */
 	readonly refresh: string;

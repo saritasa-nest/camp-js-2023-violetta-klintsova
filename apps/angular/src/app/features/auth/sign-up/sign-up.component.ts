@@ -92,9 +92,8 @@ export class SignUpComponent {
 				}),
 				takeUntilDestroyed(this.destroyRef),
 			)
-			.subscribe(response => {
+			.subscribe(() => {
 				this.isLoading = false;
-				this.auth.setUser(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});
 	}
