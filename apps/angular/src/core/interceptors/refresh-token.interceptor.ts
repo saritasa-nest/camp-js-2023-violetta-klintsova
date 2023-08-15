@@ -11,7 +11,7 @@ import { Observable, catchError, switchMap, tap, throwError } from 'rxjs';
 import { environment } from '@js-camp/angular/environments/environment';
 
 import { AuthService } from '../services/auth.service';
-import { TokenService } from '../services/token-service.service';
+import { TokenService } from '../services/token.service';
 
 /** Context for request to skip certain interceptors. */
 export const BYPASS_LOG = new HttpContextToken<boolean>(() => false);

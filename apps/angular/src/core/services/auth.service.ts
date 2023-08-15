@@ -14,7 +14,7 @@ import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
 
 import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
 
-import { TokenService } from './token-service.service';
+import { TokenService } from './token.service';
 
 /** Authentification service. */
 @Injectable({
