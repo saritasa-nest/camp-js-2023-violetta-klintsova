@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-	HttpEvent,
-	HttpInterceptor,
-	HttpHandler,
-	HttpRequest,
-	HttpErrorResponse,
-} from '@angular/common/http';
+import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { environment } from '@js-camp/angular/environments/environment';
 
@@ -15,7 +9,6 @@ import { TokenService } from '../services/token.service';
 /** Interceptor to handle auth tokens. */
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
-
 	private readonly urlsToSkip = [
 		new URL('auth/login/', environment.apiUrl).toString(),
 		new URL('auth/register/', environment.apiUrl).toString(),
@@ -27,15 +20,15 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 		return next.handle(request).pipe(
 			catchError((e: unknown) => {
-
 				if (this.shouldUrlBeHandled(request.url)) {
 					return next.handle(request);
 				}
 
-				const refresh = this.tokenService.getToken('refresh');
+				const tokens = this.tokenService.getTokens();
+				const refreshToken = tokens ? JSON.parse(tokens).refresh : null;
 				if (e instanceof HttpErrorResponse) {
-					if (refresh && e.url !== `${environment.apiUrl}/auth/token/refresh/`) {
-						return this.auth.refreshToken(refresh).pipe(
+					if (refreshToken && e.url !== `${environment.apiUrl}/auth/token/refresh/`) {
+						return this.auth.refreshToken(refreshToken).pipe(
 							catchError(() => this.onRefreshFailed()),
 							switchMap(() => next.handle(request)),
 						);
@@ -44,14 +37,14 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
 				// Executes in case no refresh key was found.
 				return throwError(() => {
-					this.auth.logOut();
+					this.auth.removeUser();
 				});
 			}),
 		);
 	}
 
 	private onRefreshFailed(): Observable<never> {
-		this.auth.logOut();
+		this.auth.removeUser();
 		throw new Error('Could not refresh the key.');
 	}
 

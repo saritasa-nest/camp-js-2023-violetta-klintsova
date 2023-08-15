@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
 			.fetchUserProfile()
 			.pipe(
 				catchError(() => {
-					this.auth.logOut();
+					this.auth.removeUser();
 					return EMPTY;
 				}),
 			)

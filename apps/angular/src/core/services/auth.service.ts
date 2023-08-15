@@ -49,7 +49,7 @@ export class AuthService {
 		const url = new URL('auth/login/', this.apiUrl);
 		return this.http.post<TokensDto>(url.toString(), loginInfo).pipe(
 			map(el => TokensMapper.fromDto(el)),
-			tap(el => this.setUser(el.access, el.refresh)),
+			tap(el => this.setUser(el)),
 		);
 	}
 
@@ -68,7 +68,7 @@ export class AuthService {
 				}
 				return EMPTY;
 			}),
-			tap(el => this.setUser(el.access, el.refresh)),
+			tap(el => this.setUser(el)),
 		);
 	}
 
@@ -81,7 +81,7 @@ export class AuthService {
 		const url = new URL('auth/token/refresh/', this.apiUrl);
 		return this.http.post<TokensDto>(url.toString(), { refresh }).pipe(
 			map(el => TokensMapper.fromDto(el)),
-			tap(el => this.setUser(el.access, el.refresh)),
+			tap(el => this.setUser(el)),
 		);
 	}
 
@@ -92,21 +92,17 @@ export class AuthService {
 	}
 
 	/**
-	 * Logs user in.
-	 * @param access Access key.
-	 * @param refresh Refresh key.
-	 * @param value Subject value.
+	 * Sets a user.
+	 * @param tokens Tokens.
 	 */
-	private setUser(access: string, refresh: string): void {
-		this.tokenService.setToken('access', access);
-		this.tokenService.setToken('refresh', refresh);
+	private setUser(tokens: Tokens): void {
+		this.tokenService.setTokens(tokens);
 		this.updateUserState(true);
 	}
 
-	/** Logs a user out. */
-	public logOut(): void {
-		this.tokenService.deleteTokens('access');
-		this.tokenService.deleteTokens('refresh');
+	/** Deletes user data and navigates back to the main page. */
+	public removeUser(): void {
+		this.tokenService.deleteTokens();
 		this.router.navigate(['/']);
 		this.updateUserState(false);
 	}
