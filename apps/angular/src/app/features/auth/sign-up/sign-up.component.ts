@@ -1,7 +1,7 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
 
-import { equalityValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
+import { equalityValidator } from '@js-camp/angular/core/utils/equality-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -35,14 +35,15 @@ export class SignUpComponent {
 		private readonly router: Router,
 		private readonly destroyRef: DestroyRef,
 		private readonly changeDetector: ChangeDetectorRef,
+		private readonly fb: FormBuilder,
 	) {
-		this.signUpForm = new FormGroup(
+		this.signUpForm = this.fb.group(
 			{
-				firstName: new FormControl('', Validators.required),
-				lastName: new FormControl('', Validators.required),
-				email: new FormControl('', [Validators.required, Validators.email]),
-				password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-				confirmedPassword: new FormControl('', Validators.required),
+				firstName: ['', Validators.required],
+				lastName: ['', Validators.required],
+				email: ['', [Validators.required, Validators.email]],
+				password: ['', [Validators.required, Validators.minLength(8)]],
+				confirmedPassword: ['', Validators.required],
 			},
 			{ validators: equalityValidator('password', 'confirmedPassword') },
 		);
@@ -91,9 +92,8 @@ export class SignUpComponent {
 				}),
 				takeUntilDestroyed(this.destroyRef),
 			)
-			.subscribe(response => {
+			.subscribe(() => {
 				this.isLoading = false;
-				this.auth.setUser(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});
 	}

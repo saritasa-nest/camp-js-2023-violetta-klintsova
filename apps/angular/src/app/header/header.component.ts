@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 
 /** Header component. */
@@ -10,25 +9,16 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-	/** Whether user is authorized or not. */
-	protected isLoggedIn!: boolean;
 
 	public constructor(
 		private readonly auth: AuthService,
-		private readonly destroyRef: DestroyRef,
-		private readonly changeDetector: ChangeDetectorRef,
-	) {
-		auth
-			.userState$()
-			.pipe(takeUntilDestroyed(this.destroyRef))
-			.subscribe(value => {
-				this.isLoggedIn = value;
-				this.changeDetector.markForCheck();
-			});
-	}
+	) {}
+
+	/** Whether user is authorized or not. */
+	protected readonly isLoggedIn$ = this.auth.userState$;
 
 	/** Logs the user out. */
 	public onLogOut(): void {
-		this.auth.logOut();
+		this.auth.removeUser();
 	}
 }

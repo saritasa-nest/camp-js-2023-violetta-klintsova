@@ -5,12 +5,6 @@ import { Injectable } from '@angular/core';
 	providedIn: 'root',
 })
 export class StorageService {
-
-	private keys = {
-		access: '',
-		refresh: '',
-	};
-
 	/**
 	 * Saves an item.
 	 * @param key Key.
@@ -21,7 +15,7 @@ export class StorageService {
 	}
 
 	/**
-	 * Returns an item.
+	 * Gets an item.
 	 * @param key Key.
 	 */
 	public get(key: string): string | null {
@@ -29,10 +23,10 @@ export class StorageService {
 	}
 
 	/**
-	 * Removes an item.
+	 * Deletes an item.
 	 * @param key Key.
 	 */
-	public reset(key: string): void {
+	public delete(key: string): void {
 		window.localStorage.removeItem(key);
 	}
 }

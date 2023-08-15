@@ -1,6 +1,6 @@
 <header class="header">
   <a routerLink="/" class="logo"><span class="logo-accent">Anime</span>ted</a>
-  <ng-container *ngIf="!isLoggedIn">
+  <ng-container *ngIf="(isLoggedIn$ | async) === false">
     <a
       routerLink="/auth/log-in"
       mat-button
@@ -20,8 +20,7 @@
       Sign up
     </a>
   </ng-container>
-
-  <ng-container *ngIf="isLoggedIn">
+  <ng-container *ngIf="isLoggedIn$ | async">
     <nav class="navigation">
       <a routerLink="/anime" class="all-anime">All anime</a>
     </nav>

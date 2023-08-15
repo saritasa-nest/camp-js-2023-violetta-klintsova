@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { EMPTY, catchError } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 
 import { AuthService } from '../core/services/auth.service';
@@ -33,8 +33,8 @@ export class AppComponent implements OnInit {
 			.fetchUserProfile()
 			.pipe(
 				catchError(() => {
-					this.auth.logOut();
-					return throwError(() => new Error('Could not fetch user profile.'));
+					this.auth.removeUser();
+					return EMPTY;
 				}),
 			)
 			.subscribe(() => this.auth.updateUserState(true));
