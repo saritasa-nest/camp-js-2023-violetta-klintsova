@@ -18,7 +18,6 @@ export class HeaderComponent {
 		private readonly destroyRef: DestroyRef,
 		private readonly changeDetector: ChangeDetectorRef,
 	) {
-
 		auth
 			.userState$()
 			.pipe(takeUntilDestroyed(this.destroyRef))

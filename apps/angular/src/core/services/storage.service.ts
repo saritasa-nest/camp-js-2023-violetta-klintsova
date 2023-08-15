@@ -4,7 +4,12 @@ import { Injectable } from '@angular/core';
 @Injectable({
 	providedIn: 'root',
 })
-export class StoreService {
+export class StorageService {
+
+	private keys = {
+		access: '',
+		refresh: '',
+	};
 
 	/**
 	 * Saves an item.

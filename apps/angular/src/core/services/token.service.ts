@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 
-import { StoreService } from './store-service.service';
+import { StorageService } from './storage.service';
 
-/** Storage service. */
+/** Token service. */
 @Injectable({
 	providedIn: 'root',
 })
 export class TokenService {
-
-	public constructor(private readonly storage: StoreService) {}
+	public constructor(private readonly storage: StorageService) {}
 
 	/**
-	 * Saves an item in the storage.
+	 * Saves a token.
 	 * @param token Name.
 	 * @param value Value.
 	 */
@@ -20,7 +19,7 @@ export class TokenService {
 	}
 
 	/**
-	 * Return an token.
+	 * Returns an token.
 	 * @param token Token name.
 	 */
 	public getToken(token: string): string | null {
@@ -28,7 +27,7 @@ export class TokenService {
 	}
 
 	/**
-	 * Deletes an item from the storage.
+	 * Deletes a token.
 	 * @param token Token name.
 	 */
 	public deleteTokens(token: string): void {
