@@ -1,4 +1,4 @@
-import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
 import { EMPTY, Observable, ReplaySubject, catchError, map } from 'rxjs';
@@ -11,8 +11,6 @@ import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.
 import { Auth } from '@js-camp/core/models/auth';
 import { UserProfileDto } from '@js-camp/core/dtos/user-profile.dto';
 import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
-
-import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
 
 import { TokenService } from './token.service';
 
@@ -50,7 +48,7 @@ export class AuthService {
 	public login(loginInfo: LoginInfo): Observable<Auth> {
 		const url = new URL('auth/login/', this.apiUrl);
 		return this.http
-			.post<AuthDto>(url.toString(), loginInfo, { context: new HttpContext().set(BYPASS_LOG, true) })
+			.post<AuthDto>(url.toString(), loginInfo)
 			.pipe(map(el => AuthMapper.fromDto(el)));
 	}
 
@@ -62,7 +60,7 @@ export class AuthService {
 		const url = new URL('auth/register/', this.apiUrl);
 		const mappedRegister = RegistrationInfoMapper.toDto(registerInfo);
 		return this.http
-			.post<AuthDto>(url.toString(), mappedRegister, { context: new HttpContext().set(BYPASS_LOG, true) })
+			.post<AuthDto>(url.toString(), mappedRegister)
 			.pipe(
 				map(el => AuthMapper.fromDto(el)),
 				catchError((e: unknown) => {
