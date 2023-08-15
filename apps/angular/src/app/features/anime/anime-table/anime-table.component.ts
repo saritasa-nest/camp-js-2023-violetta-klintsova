@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, shareReplay, switchMap, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
@@ -83,6 +83,7 @@ export class AnimeTableComponent implements OnInit {
 			tap(() => {
 				this.isLoading = false;
 			}),
+			shareReplay({ bufferSize: 1, refCount: true }),
 		);
 	}
 

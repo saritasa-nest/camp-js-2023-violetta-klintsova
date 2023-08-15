@@ -9,10 +9,13 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-	public constructor(private readonly auth: AuthService) {}
+
+	public constructor(
+		private readonly auth: AuthService,
+	) {}
 
 	/** Whether user is authorized or not. */
-	protected isLoggedIn$ = this.auth.userState$;
+	protected readonly isLoggedIn$ = this.auth.userState$;
 
 	/** Logs the user out. */
 	public onLogOut(): void {

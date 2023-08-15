@@ -1,7 +1,7 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
 
-import { equalityValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
+import { equalityValidator } from '@js-camp/angular/core/utils/equality-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

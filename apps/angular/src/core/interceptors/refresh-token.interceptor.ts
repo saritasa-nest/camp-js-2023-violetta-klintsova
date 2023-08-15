@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, share, switchMap, throwError } from 'rxjs';
 import { environment } from '@js-camp/angular/environments/environment';
 
 import { AuthService } from '../services/auth.service';
@@ -16,22 +16,30 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
 	public constructor(private readonly tokenService: TokenService, private readonly auth: AuthService) {}
 
+	/** Response with refresh tokens. */
+	public refreshResponse$!: Observable<HttpEvent<unknown>>;
+
 	/** @inheritdoc */
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 		return next.handle(request).pipe(
 			catchError((e: unknown) => {
+
 				if (this.shouldUrlBeHandled(request.url)) {
 					return next.handle(request);
 				}
 
 				const tokens = this.tokenService.getTokens();
 				const refreshToken = tokens ? JSON.parse(tokens).refresh : null;
+
 				if (e instanceof HttpErrorResponse) {
 					if (refreshToken && e.url !== `${environment.apiUrl}/auth/token/refresh/`) {
-						return this.auth.refreshToken(refreshToken).pipe(
+						this.refreshResponse$ = this.auth.refreshToken(refreshToken).pipe(
 							catchError(() => this.onRefreshFailed()),
 							switchMap(() => next.handle(request)),
+							share(),
 						);
+
+						return this.refreshResponse$;
 					}
 				}
 
