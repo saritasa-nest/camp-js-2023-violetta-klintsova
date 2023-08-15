@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
+import { EMPTY, catchError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
@@ -17,10 +17,10 @@ export class LoginComponent {
 	protected loginForm: FormGroup;
 
 	/** Form state. */
-	public isLoading = false;
+	protected isLoading = false;
 
 	/** Submit button state. */
-	public isDisabled = false;
+	protected isDisabled = false;
 
 	public constructor(
 		private readonly auth: AuthService,
@@ -54,7 +54,7 @@ export class LoginComponent {
 					this.isLoading = false;
 					this.loginForm.setErrors({ formError: true });
 					this.changeDetector.markForCheck();
-					return throwError(() => new Error('No active account with given credentials was found.'));
+					return EMPTY;
 				}),
 				takeUntilDestroyed(this.destroyRef),
 			)

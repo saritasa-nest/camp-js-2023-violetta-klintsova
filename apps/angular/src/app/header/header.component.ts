@@ -19,7 +19,7 @@ export class HeaderComponent {
 		private readonly changeDetector: ChangeDetectorRef,
 	) {
 		auth
-			.userState$()
+			.userState$
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(value => {
 				this.isLoggedIn = value;

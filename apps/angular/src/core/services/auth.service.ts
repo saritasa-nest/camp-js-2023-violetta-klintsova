@@ -1,7 +1,7 @@
 import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
-import { EMPTY, Observable, ReplaySubject, catchError, map, throwError } from 'rxjs';
+import { EMPTY, Observable, ReplaySubject, catchError, map } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '@js-camp/angular/environments/environment';
 import { LoginInfo } from '@js-camp/core/models/login-info';
@@ -16,7 +16,7 @@ import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
 
 import { TokenService } from './token.service';
 
-/** Authentification service. */
+/** Authentication service. */
 @Injectable({
 	providedIn: 'root',
 })
@@ -26,10 +26,8 @@ export class AuthService {
 	/** User log in state. */
 	private userStateSubject$ = new ReplaySubject<boolean>(1);
 
-	/** Returns the state subject as an observable. */
-	public userState$(): Observable<boolean> {
-		return this.userStateSubject$.asObservable();
-	}
+	/** State subject as an observable. */
+	public readonly userState$ = this.userStateSubject$.asObservable();
 
 	/**
 	 * Updates user state subject with supplied value.
@@ -69,7 +67,7 @@ export class AuthService {
 				map(el => AuthMapper.fromDto(el)),
 				catchError((e: unknown) => {
 					if (e instanceof HttpErrorResponse && e.status === 400) {
-						return throwError(() => ErrorMapper.fromDto(e.error));
+						throw ErrorMapper.fromDto(e.error);
 					}
 					return EMPTY;
 				}),
