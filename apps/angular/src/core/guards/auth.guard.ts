@@ -8,7 +8,5 @@ export const authGuard: CanMatchFn = (): Observable<boolean | UrlTree> => {
 	const router = inject(Router);
 	return inject(AuthService)
 		.userState$()
-		.pipe(
-			map(isLoggedIn => isLoggedIn || router.createUrlTree(['/auth/log-in'])),
-		);
+		.pipe(map(isLoggedIn => !isLoggedIn || router.createUrlTree(['/'])));
 };
