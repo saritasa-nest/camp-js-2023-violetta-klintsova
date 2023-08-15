@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } fro
 import { Router } from '@angular/router';
 import { EMPTY, catchError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 
 /** Log in component. */
@@ -27,10 +27,11 @@ export class LoginComponent {
 		private readonly destroyRef: DestroyRef,
 		private readonly router: Router,
 		private readonly changeDetector: ChangeDetectorRef,
+		private readonly fb: FormBuilder,
 	) {
-		this.loginForm = new FormGroup({
-			email: new FormControl('', [Validators.required, Validators.email]),
-			password: new FormControl('', Validators.required),
+		this.loginForm = this.fb.group({
+			email: ['', [Validators.required, Validators.email]],
+			password: ['', Validators.required],
 		});
 	}
 
@@ -42,13 +43,8 @@ export class LoginComponent {
 
 		this.isLoading = true;
 
-		const user = {
-			email: this.loginForm.value.email,
-			password: this.loginForm.value.password,
-		};
-
 		this.auth
-			.login(user)
+			.login(this.loginForm.getRawValue())
 			.pipe(
 				catchError(() => {
 					this.isLoading = false;
