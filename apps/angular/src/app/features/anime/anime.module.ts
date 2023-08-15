@@ -23,6 +23,7 @@ import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { AnimeDetailsComponent } from './anime-details/anime-details.component';
 import { AddEditComponent } from './add-edit/add-edit.component';
+import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog/confirmation-dialog.component';
 
 /** Anime table module. */
 @NgModule({
@@ -45,7 +46,7 @@ import { AddEditComponent } from './add-edit/add-edit.component';
 		MatRadioModule,
 		MatCheckboxModule,
 	],
-	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent, AddEditComponent],
+	declarations: [AnimeTableComponent, EmptyValue, AnimeDetailsComponent, AddEditComponent, ConfirmationDialogComponent],
 	exports: [AnimeTableComponent],
 })
 export class AnimeModule {}

@@ -17,58 +17,9 @@
         type="button"
         mat-raised-button
         color="accent"
-        (click)="toggleDeletePopup()"
       >
         Delete
       </button>
-      <div
-        class="pop-up"
-        [ngClass]="isDeleteDialogOpened ? 'open-pop-up' : 'close-pop-up'"
-      >
-        <div class="overlay">
-          <div class="delete-dialog">
-            <ng-container *ngIf="!isDeleteInProgress && !deleteError">
-              <p class="delete-message">
-                Are you sure you want to delete the anime?
-              </p>
-              <p>You cannot undo this action.</p>
-              <div class="buttons">
-                <button
-                  type="button"
-                  mat-raised-button
-                  color="accent"
-                  (click)="onClickDeleteAnime(details.id)"
-                >
-                  Yes, delete
-                </button>
-                <button
-                  type="button"
-                  mat-raised-button
-                  (click)="toggleDeletePopup()"
-                >
-                  Cancel
-                </button>
-              </div>
-            </ng-container>
-            <ng-container *ngIf="isDeleteInProgress && !deleteError">
-              <p>Please, wait a moment...</p>
-              <mat-spinner class="spinner" diameter="50"></mat-spinner>
-            </ng-container>
-            <ng-container *ngIf="deleteError">
-              <p class="delete-message">
-                Sorry, some kind of error happened... <br />Try again later!
-              </p>
-              <button
-                type="button"
-                mat-raised-button
-                (click)="toggleDeletePopup()"
-              >
-                Close
-              </button>
-            </ng-container>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="content">

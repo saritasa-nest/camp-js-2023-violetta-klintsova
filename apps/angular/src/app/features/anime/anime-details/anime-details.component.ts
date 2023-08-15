@@ -1,10 +1,9 @@
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { AnimeDetails } from '@js-camp/core/models/anime-details';
-import { EMPTY, Observable, catchError, switchMap, throwError } from 'rxjs';
+import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
 
 let youtubeApiLoaded = false;
 
@@ -22,12 +21,6 @@ export class AnimeDetailsComponent implements OnInit {
 	/** Delete dialog state. */
 	protected isDeleteDialogOpened = false;
 
-	/** Delete process state. */
-	protected isDeleteInProgress = false;
-
-	/** Will be changed to true in case any delete error occurs. */
-	protected deleteError = false;
-
 	/** Response observable. */
 	protected animeDetails$: Observable<AnimeDetails>;
 
@@ -36,8 +29,6 @@ export class AnimeDetailsComponent implements OnInit {
 		private readonly router: Router,
 		private readonly animeService: AnimeService,
 		private readonly location: Location,
-		private readonly destroyRef: DestroyRef,
-		private changeDetector: ChangeDetectorRef,
 	) {
 		this.animeDetails$ = this.createAnimeDetailsStream();
 	}
@@ -77,36 +68,8 @@ export class AnimeDetailsComponent implements OnInit {
 		this.isImageOpened = !this.isImageOpened;
 	}
 
-	/** Toggles state of the delete dialog pop-up. */
-	protected toggleDeletePopup(): void {
-		this.isDeleteDialogOpened = !this.isDeleteDialogOpened;
-	}
-
 	/** Returns the user to the previous page. */
 	protected onClickGoBack(): void {
 		this.location.back();
-	}
-
-	/**
-	 * Deletes an anime.
-	 * @param id Anime id.
-	 */
-	protected onClickDeleteAnime(id: AnimeDetails['id']): void {
-		this.isDeleteInProgress = true;
-		this.animeService
-			.deleteAnime(id)
-			.pipe(
-				catchError((e: unknown) => {
-					this.changeDetector.markForCheck();
-					this.deleteError = true;
-					this.isDeleteInProgress = false;
-					return throwError(() => e);
-				}),
-				takeUntilDestroyed(this.destroyRef),
-			)
-			.subscribe(() => {
-				this.location.back();
-				this.isDeleteInProgress = false;
-			});
 	}
 }
