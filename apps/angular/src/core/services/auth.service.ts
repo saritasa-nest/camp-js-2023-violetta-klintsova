@@ -93,14 +93,14 @@ export class AuthService {
 		return (
 			this.http
 				.get<UserProfileDto>(url.toString())
-				.pipe(retry(2), takeUntilDestroyed(this.destroyRef))
+				.pipe(retry(1), takeUntilDestroyed(this.destroyRef))
 				.subscribe({
 					next: () => this.updateUserState(true),
 					error: (error: unknown) => {
 						if (error instanceof HttpErrorResponse && error.status !== 500) {
 							this.removeUser();
 						} else {
-							this.router.navigate(['/auth/log-in']);
+							this.router.navigate(['/']);
 						}
 					},
 				})
