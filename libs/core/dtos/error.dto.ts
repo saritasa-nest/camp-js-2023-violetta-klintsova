@@ -1,12 +1,11 @@
-/** Error dto. */
-export interface IErrorDto {
+import { ErrorDetailsDto } from './error-details.dto';
 
-	/** Attribute. */
-	readonly attr: string;
+/** Error response dto. */
+export interface ErrorDto {
 
-	/** Code. */
-	readonly code: string;
+	/** Error type. */
+	readonly type?: string;
 
-	/** Details.  */
-	readonly detail: string;
+	/** Errors. */
+	readonly errors: readonly ErrorDetailsDto[];
 }

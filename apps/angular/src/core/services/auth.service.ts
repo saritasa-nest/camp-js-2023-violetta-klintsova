@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { DestroyRef, Injectable } from '@angular/core';
 import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
-import { EMPTY, Observable, ReplaySubject, catchError, map, tap } from 'rxjs';
+import { EMPTY, Observable, ReplaySubject, Subscription, catchError, map, retry, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { environment } from '@js-camp/angular/environments/environment';
 import { LoginInfo } from '@js-camp/core/models/login-info';
@@ -10,7 +11,7 @@ import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
 import { UserProfileDto } from '@js-camp/core/dtos/user-profile.dto';
-import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
+import { ErrorMapper } from '@js-camp/core/mappers/error.mapper';
 
 import { TokenService } from './token.service';
 
@@ -39,6 +40,7 @@ export class AuthService {
 		private readonly http: HttpClient,
 		private readonly router: Router,
 		private readonly tokenService: TokenService,
+		private readonly destroyRef: DestroyRef,
 	) {}
 
 	/**
@@ -86,9 +88,23 @@ export class AuthService {
 	}
 
 	/** Fetches user profile. */
-	public fetchUserProfile(): Observable<UserProfileDto> {
+	public fetchUserProfile(): Subscription {
 		const url = new URL('users/profile/', this.apiUrl);
-		return this.http.get<UserProfileDto>(url.toString());
+		return (
+			this.http
+				.get<UserProfileDto>(url.toString())
+				.pipe(retry(1), takeUntilDestroyed(this.destroyRef))
+				.subscribe({
+					next: () => this.updateUserState(true),
+					error: (error: unknown) => {
+						if (error instanceof HttpErrorResponse && error.status !== 500) {
+							this.removeUser();
+						} else {
+							this.router.navigate(['/']);
+						}
+					},
+				})
+		);
 	}
 
 	/**

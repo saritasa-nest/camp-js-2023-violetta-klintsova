@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { EMPTY, catchError } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 
 import { AuthService } from '../core/services/auth.service';
@@ -19,20 +18,8 @@ export class AppComponent implements OnInit {
 
 	/** @inheritdoc */
 	public ngOnInit(): void {
-		this.fetchUserProfile();
+		this.auth.fetchUserProfile();
 		this.loadYoutubeApi();
-	}
-
-	private fetchUserProfile(): void {
-		this.auth
-			.fetchUserProfile()
-			.pipe(
-				catchError(() => {
-					this.auth.removeUser();
-					return EMPTY;
-				}),
-			)
-			.subscribe(() => this.auth.updateUserState(true));
 	}
 
 	private loadYoutubeApi(): void {

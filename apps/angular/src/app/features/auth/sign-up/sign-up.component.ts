@@ -8,7 +8,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { EMPTY, catchError } from 'rxjs';
 import { ValidationError } from '@js-camp/core/models/validation-error';
-import { IError } from '@js-camp/core/models/error';
+import { ErrorDetails } from '@js-camp/core/models/error-details';
 
 /** Sign up component. */
 @Component({
@@ -22,10 +22,7 @@ export class SignUpComponent {
 	protected signUpForm: FormGroup;
 
 	/** Validation errors. */
-	protected validationErrors = {
-		email: '',
-		password: '',
-	};
+	protected validationErrors: ErrorDetails = {};
 
 	/** Form state. */
 	public isLoading = false;
@@ -72,22 +69,11 @@ export class SignUpComponent {
 						this.changeDetector.markForCheck();
 						this.isLoading = false;
 
-						/** Reset errors messages. */
-						this.validationErrors.email = '';
-						this.validationErrors.password = '';
-
-						e.errors.forEach((element: IError) => {
-							if (element.attr === 'email') {
-								this.validationErrors.email += element.detail;
-								this.signUpForm.get('email')?.setErrors({ emailError: true });
-							}
-							if (element.attr === 'password') {
-								this.validationErrors.password += element.detail;
-								this.signUpForm.get('password')?.setErrors({ passwordError: true });
-							}
-						});
+						for (const [attribute, details] of Object.entries(e.errors)) {
+							this.validationErrors[attribute] = details;
+							this.signUpForm.get(attribute)?.setErrors({ validationError: true });
+						}
 					}
-
 					return EMPTY;
 				}),
 				takeUntilDestroyed(this.destroyRef),
