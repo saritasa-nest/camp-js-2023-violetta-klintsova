@@ -1,4 +1,4 @@
-/** Error dto. */
+/** Error details dto. */
 export interface ErrorDetailsDto {
 
 	/** Attribute. */
