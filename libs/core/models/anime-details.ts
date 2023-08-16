@@ -12,7 +12,7 @@ export interface AnimeDetails extends Anime {
 	readonly airing: boolean;
 
 	/** Airing end date. */
-	readonly airedEndDate: null | Date;
+	readonly airedEndDate: Date | null;
 
 	/** List of studios. */
 	readonly studios: readonly Studio[];

@@ -8,6 +8,7 @@ import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 import { QueryParameters } from '@js-camp/core/models/query-parameters';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { isEmptyObject } from '@js-camp/angular/core/utils/is-empty-object';
+import { onMessageOrFailed } from '@js-camp/angular/core/utils/on-message-or-failed';
 
 /** Anime table. */
 @Component({
@@ -54,7 +55,7 @@ export class AnimeTableComponent implements OnInit {
 		'status',
 	];
 
-	/** Response observable. */
+	/** Anime observable. */
 	protected readonly anime$: Observable<Pagination<Anime>>;
 
 	public constructor(
@@ -68,7 +69,7 @@ export class AnimeTableComponent implements OnInit {
 	/** @inheritdoc */
 	public ngOnInit(): void {
 		if (isEmptyObject(this.getCurrentQueryParams())) {
-			this.router.navigate(['/anime'], { queryParams: { page: this.pageIndex, sort: this.sortOption } });
+			this.updateUrl({ page: this.pageIndex, sort: this.sortOption });
 		}
 	}
 
@@ -92,7 +93,7 @@ export class AnimeTableComponent implements OnInit {
 					search: this.searchValue,
 				});
 			}),
-			tap(() => {
+			onMessageOrFailed(() => {
 				this.isLoading = false;
 			}),
 			shareReplay({ bufferSize: 1, refCount: true }),

@@ -1,73 +1,77 @@
-<ng-container *ngIf="animeDetails$ | async as details">
-  <main class="main">
-    <div class="content">
-      <section class="details-view">
-        <div class="image">
-          <img src="{{ details.thumbnailUrl }}" alt="Anime cover" />
-          <div class="grey-icon-button" (click)="openImage(details.thumbnailUrl)">
-            <mat-icon>open_in_full</mat-icon>
+<main class="main" *ngIf="animeDetails$ | async as details">
+  <div class="content">
+    <section class="details-view">
+      <div class="anime-image">
+        <img [src]="details.thumbnailUrl" alt="Anime cover" class="image" />
+        <button
+          type="button"
+          class="grey-icon-button"
+          (click)="openImage(details.thumbnailUrl)"
+        >
+          <mat-icon>open_in_full</mat-icon>
+        </button>
+      </div>
+    </section>
+    <section class="details-text">
+      <h2 class="title-jpn">
+        {{ details.titleJpn }}
+        <span class="airing-period">
+          <span>{{
+            getYearsRange(details.airedStartDate, details.airedEndDate)
+          }}</span>
+        </span>
+      </h2>
+      <h3 class="title-eng">{{ details.titleEng }}</h3>
+      <div class="about">
+        <h4 class="title">About</h4>
+        <div class="detail">
+          <div>Type</div>
+          <div>{{ details.type | titlecase }}</div>
+        </div>
+        <div class="detail">
+          <div>Status</div>
+          <div>{{ details.status | titlecase }}</div>
+        </div>
+        <div class="detail">
+          <div>Rating</div>
+          <div>{{ details.rating }}</div>
+        </div>
+        <div class="detail">
+          <div>Source</div>
+          <div>{{ details.source | titlecase }}</div>
+        </div>
+        <div class="detail">
+          <div>Season</div>
+          <div>{{ details.season | titlecase }}</div>
+        </div>
+        <div class="detail">
+          <div>Airing</div>
+          <div>{{ details.airing ? "Yes" : "No" }}</div>
+        </div>
+        <div class="detail">
+          <div>Studios</div>
+          <div class="genre-list">
+            <span *ngFor="let studio of details.studios" class="studio">
+              {{ studio.name }}
+            </span>
           </div>
         </div>
-      </section>
-      <section class="details-text">
-        <h2 class="title-jpn">
-          {{ details.titleJpn }}
-          <span class="airing-period">
-            <span>{{ getDateRange(details.airedStartDate, details.airedEndDate)}}</span>
-          </span>
-        </h2>
-        <h3 class="title-eng">{{ details.titleEng }}</h3>
-        <div class="about">
-          <h4 class="title">About</h4>
-          <div class="detail">
-            <div>Type</div>
-            <div>{{ details.type | titlecase }}</div>
-          </div>
-          <div class="detail">
-            <div>Status</div>
-            <div>{{ details.status | titlecase }}</div>
-          </div>
-          <div class="detail">
-            <div>Rating</div>
-            <div>{{ details.rating }}</div>
-          </div>
-          <div class="detail">
-            <div>Source</div>
-            <div>{{ details.source | titlecase }}</div>
-          </div>
-          <div class="detail">
-            <div>Season</div>
-            <div>{{ details.season | titlecase }}</div>
-          </div>
-          <div class="detail">
-            <div>Airing</div>
-            <div>{{ details.airing ? "Yes" : "No" }}</div>
-          </div>
-          <div class="detail">
-            <div>Studios</div>
-            <div class="genre-list">
-              <span *ngFor="let studio of details.studios" class="studio">
-                {{ studio.name }}
-              </span>
-            </div>
-          </div>
-          <div class="detail">
-            <div>Genres</div>
-            <div class="genres-list">
-              <span *ngFor="let genre of details.genres" class="genre">
-                {{ genre.name }}</span>
-            </div>
+        <div class="detail">
+          <div>Genres</div>
+          <div class="genres-list">
+            <span *ngFor="let genre of details.genres" class="genre">
+              {{ genre.name }}
+            </span>
           </div>
         </div>
-      </section>
-    </div>
-    <div class="trailer">
-      <youtube-player
-        videoId="{{ details.youtubeTrailerId }}"
-        [width]="400"
-        [height]="250"
-      >
-      </youtube-player>
-    </div>
-  </main>
-</ng-container>
+      </div>
+    </section>
+  </div>
+  <div class="trailer">
+    <youtube-player
+      [videoId]="details.youtubeTrailerId"
+      [width]="400"
+      [height]="250"
+    />
+  </div>
+</main>

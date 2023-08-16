@@ -1,5 +1,5 @@
 /** Types of genres. */
-export enum GenreTypes {
+export enum GenreTypeDto {
 	Genres = 'GENRES',
 	ExplicitGenres = 'EXPLICIT_GENRES',
 	Themes = 'THEMES',

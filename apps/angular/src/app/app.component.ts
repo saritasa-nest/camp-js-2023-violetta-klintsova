@@ -4,8 +4,6 @@ import { DOCUMENT } from '@angular/common';
 
 import { AuthService } from '../core/services/auth.service';
 
-let youtubeApiLoaded = false;
-
 /** App component. */
 @Component({
 	selector: 'camp-root',
@@ -21,14 +19,11 @@ export class AppComponent implements OnInit {
 
 	/** @inheritdoc */
 	public ngOnInit(): void {
-		// The approach used here can be found in the docs - https://github.com/angular/components/tree/main/src/youtube-player#readme
-		if (!youtubeApiLoaded) {
-			const script = this.document.createElement('script');
-			script.src = 'https://www.youtube.com/iframe_api';
-			this.document.body.appendChild(script);
-			youtubeApiLoaded = true;
-		}
+		this.fetchUserProfile();
+		this.loadYoutubeApi();
+	}
 
+	private fetchUserProfile(): void {
 		this.auth
 			.fetchUserProfile()
 			.pipe(
@@ -38,5 +33,12 @@ export class AppComponent implements OnInit {
 				}),
 			)
 			.subscribe(() => this.auth.updateUserState(true));
+	}
+
+	private loadYoutubeApi(): void {
+		// The approach used here can be found in the docs - https://github.com/angular/components/tree/main/src/youtube-player#readme
+		const script = this.document.createElement('script');
+		script.src = 'https://www.youtube.com/iframe_api';
+		this.document.body.appendChild(script);
 	}
 }

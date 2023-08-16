@@ -19,7 +19,7 @@ export interface AnimeDetailsDto {
 	/** Modification date, for example, "2014-12-20T17:30:50.416Z". */
 	readonly modified: string;
 
-	/** Image. */
+	/** Image url. */
 	readonly image: string;
 
 	/** Youtube trailer. */
