@@ -1,12 +1,11 @@
-import { IError } from './error';
+import { ErrorDetails } from './error-details';
 
 /** Validation error. */
 export class ValidationError extends Error {
-
 	/** Received errors. */
-	public readonly errors: readonly IError[];
+	public readonly errors: readonly ErrorDetails[];
 
-	public constructor(errors: readonly IError[]) {
+	public constructor(errors: readonly ErrorDetails[]) {
 		super();
 		this.errors = errors;
 	}

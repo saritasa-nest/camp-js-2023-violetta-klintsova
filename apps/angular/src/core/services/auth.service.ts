@@ -10,7 +10,7 @@ import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
 import { Tokens } from '@js-camp/core/models/tokens';
 import { UserProfileDto } from '@js-camp/core/dtos/user-profile.dto';
-import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
+import { ErrorMapper } from '@js-camp/core/mappers/error.mapper';
 
 import { TokenService } from './token.service';
 

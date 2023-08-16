@@ -8,7 +8,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { EMPTY, catchError } from 'rxjs';
 import { ValidationError } from '@js-camp/core/models/validation-error';
-import { IError } from '@js-camp/core/models/error';
+import { ErrorDetails } from '@js-camp/core/models/error-details';
 
 /** Sign up component. */
 @Component({
@@ -76,7 +76,7 @@ export class SignUpComponent {
 						this.validationErrors.email = '';
 						this.validationErrors.password = '';
 
-						e.errors.forEach((element: IError) => {
+						e.errors.forEach((element: ErrorDetails) => {
 							if (element.attr === 'email') {
 								this.validationErrors.email += element.detail;
 								this.signUpForm.get('email')?.setErrors({ emailError: true });
