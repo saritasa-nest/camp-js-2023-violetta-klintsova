@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { EMPTY, catchError } from 'rxjs';
 
 import { AuthService } from '../core/services/auth.service';
 
@@ -14,14 +13,6 @@ export class AppComponent implements OnInit {
 
 	/** Component initialization. */
 	public ngOnInit(): void {
-		this.auth
-			.fetchUserProfile()
-			.pipe(
-				catchError(() => {
-					this.auth.removeUser();
-					return EMPTY;
-				}),
-			)
-			.subscribe(() => this.auth.updateUserState(true));
+		this.auth.fetchUserProfile();
 	}
 }
