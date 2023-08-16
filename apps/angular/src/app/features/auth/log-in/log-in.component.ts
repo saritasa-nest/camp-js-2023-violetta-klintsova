@@ -14,13 +14,10 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 })
 export class LoginComponent {
 	/** Log in form. */
-	protected loginForm: FormGroup;
+	protected readonly loginForm: FormGroup;
 
 	/** Form state. */
 	protected isLoading = false;
-
-	/** Submit button state. */
-	protected isDisabled = false;
 
 	public constructor(
 		private readonly auth: AuthService,

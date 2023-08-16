@@ -21,5 +21,5 @@
 
 .log-in-button:disabled {
   background-color: var(--accent-color-dimmed);
-  color: white;
+  color: var(--primary-contrast-color);
 }
