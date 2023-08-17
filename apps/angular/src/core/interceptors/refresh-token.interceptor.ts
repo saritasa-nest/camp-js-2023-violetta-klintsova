@@ -28,8 +28,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 					return next.handle(request);
 				}
 
-				const tokens = this.tokenService.getTokens();
-				const refreshToken = tokens ? JSON.parse(tokens).refresh : null;
+				const refreshToken = this.tokenService.getTokens()?.refresh;
 
 				if (e instanceof HttpErrorResponse) {
 					if (refreshToken && e.url !== `${environment.apiUrl}/auth/token/refresh/`) {

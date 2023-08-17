@@ -23,7 +23,7 @@ export class AuthService {
 	private readonly apiUrl = environment.apiUrl;
 
 	/** User log in state. */
-	private userStateSubject$ = new ReplaySubject<boolean>(1);
+	private readonly userStateSubject$ = new ReplaySubject<boolean>(1);
 
 	/** State subject as an observable. */
 	public readonly userState$ = this.userStateSubject$.asObservable();
@@ -32,7 +32,7 @@ export class AuthService {
 	 * Updates user state subject with supplied value.
 	 * @param value Value.
 	 */
-	public updateUserState(value: boolean): void {
+	private updateUserState(value: boolean): void {
 		this.userStateSubject$.next(value);
 	}
 

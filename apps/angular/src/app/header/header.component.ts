@@ -18,7 +18,7 @@ export class HeaderComponent {
 	protected readonly isLoggedIn$ = this.auth.userState$;
 
 	/** Logs the user out. */
-	public onLogOut(): void {
+	protected onLogOut(): void {
 		this.auth.removeUser();
 	}
 }

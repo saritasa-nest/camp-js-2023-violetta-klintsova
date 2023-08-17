@@ -19,13 +19,13 @@ import { ErrorDetails } from '@js-camp/core/models/error-details';
 })
 export class SignUpComponent {
 	/** Sign up form. */
-	protected signUpForm: FormGroup;
+	protected readonly signUpForm: FormGroup;
 
 	/** Validation errors. */
 	protected validationErrors: ErrorDetails = {};
 
 	/** Form state. */
-	public isLoading = false;
+	protected isLoading = false;
 
 	public constructor(
 		private readonly auth: AuthService,

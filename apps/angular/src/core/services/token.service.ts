@@ -20,8 +20,9 @@ export class TokenService {
 	}
 
 	/** Returns tokens. */
-	public getTokens(): string | null {
-		return this.storage.get('tokens');
+	public getTokens(): Tokens | null {
+		const tokens = this.storage.get('tokens');
+		return tokens ? JSON.parse(tokens) : null;
 	}
 
 	/** Deletes tokens. */
