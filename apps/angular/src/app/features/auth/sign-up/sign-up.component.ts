@@ -69,8 +69,8 @@ export class SignUpComponent {
 						this.changeDetector.markForCheck();
 						this.isLoading = false;
 
-						for (const [attribute, details] of Object.entries(e.errors)) {
-							this.validationErrors[attribute] = details;
+						for (const attribute of Object.keys(e.errors)) {
+							this.validationErrors = e.errors;
 							this.signUpForm.get(attribute)?.setErrors({ validationError: true });
 						}
 					}
