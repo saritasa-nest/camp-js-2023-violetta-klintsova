@@ -1,6 +1,5 @@
 import { ErrorDto } from '../dtos/error.dto';
 import { ValidationError } from '../models/validation-error';
-
 import { ErrorDetailsMapper } from './error-details.mapper';
 
 export namespace ErrorMapper {

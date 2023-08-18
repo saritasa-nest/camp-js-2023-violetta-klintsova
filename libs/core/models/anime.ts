@@ -1,5 +1,4 @@
 import { DistributionTypes } from './distribution-types';
-
 import { ProductionStatuses } from './production-statuses';
 
 /** Anime. */

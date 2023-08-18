@@ -1,12 +1,12 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+import { EMPTY, catchError } from 'rxjs';
 
 import { equalityValidator } from '@js-camp/angular/core/utils/equality-validator';
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
-import { EMPTY, catchError } from 'rxjs';
 import { ValidationError } from '@js-camp/core/models/validation-error';
 import { ErrorDetails } from '@js-camp/core/models/error-details';
 
@@ -19,13 +19,13 @@ import { ErrorDetails } from '@js-camp/core/models/error-details';
 })
 export class SignUpComponent {
 	/** Sign up form. */
-	protected signUpForm: FormGroup;
+	protected readonly signUpForm: FormGroup;
 
 	/** Validation errors. */
 	protected validationErrors: ErrorDetails = {};
 
 	/** Form state. */
-	public isLoading = false;
+	protected isLoading = false;
 
 	public constructor(
 		private readonly auth: AuthService,
@@ -69,8 +69,8 @@ export class SignUpComponent {
 						this.changeDetector.markForCheck();
 						this.isLoading = false;
 
-						for (const [attribute, details] of Object.entries(e.errors)) {
-							this.validationErrors[attribute] = details;
+						for (const attribute of Object.keys(e.errors)) {
+							this.validationErrors = e.errors;
 							this.signUpForm.get(attribute)?.setErrors({ validationError: true });
 						}
 					}

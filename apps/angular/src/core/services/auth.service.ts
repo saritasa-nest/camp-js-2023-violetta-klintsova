@@ -1,9 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { DestroyRef, Injectable } from '@angular/core';
-import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { EMPTY, Observable, ReplaySubject, Subscription, catchError, map, retry, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+
+import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { environment } from '@js-camp/angular/environments/environment';
 import { LoginInfo } from '@js-camp/core/models/login-info';
 import { TokensDto } from '@js-camp/core/dtos/tokens.dto';
@@ -23,7 +24,7 @@ export class AuthService {
 	private readonly apiUrl = environment.apiUrl;
 
 	/** User log in state. */
-	private userStateSubject$ = new ReplaySubject<boolean>(1);
+	private readonly userStateSubject$ = new ReplaySubject<boolean>(1);
 
 	/** State subject as an observable. */
 	public readonly userState$ = this.userStateSubject$.asObservable();
@@ -32,7 +33,7 @@ export class AuthService {
 	 * Updates user state subject with supplied value.
 	 * @param value Value.
 	 */
-	public updateUserState(value: boolean): void {
+	private updateUserState(value: boolean): void {
 		this.userStateSubject$.next(value);
 	}
 

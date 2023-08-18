@@ -18,8 +18,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
 	/** @inheritdoc */
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-		const tokens = this.tokenService.getTokens();
-		const accessToken = tokens ? JSON.parse(tokens).access : null;
+		const accessToken = this.tokenService.getTokens()?.access;
 
 		if (!accessToken && this.shouldUrlBeHandled(request.url)) {
 			return next.handle(request);
