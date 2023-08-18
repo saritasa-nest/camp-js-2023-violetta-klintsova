@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, share, switchMap, throwError } from 'rxjs';
+
 import { environment } from '@js-camp/angular/environments/environment';
 
 import { AuthService } from '../services/auth.service';

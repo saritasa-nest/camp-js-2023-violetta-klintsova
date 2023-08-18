@@ -2,9 +2,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { unauthorizedGuard } from '../core/guards/unauthorized.guard';
 import { authorizedGuard } from '../core/guards/authorized.guard';
-
+import { unauthorizedGuard } from '../core/guards/unauthorized.guard';
 import { LandingComponent } from './landing/landing.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 
