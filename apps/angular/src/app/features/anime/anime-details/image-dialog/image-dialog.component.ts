@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
 import { ImageDialogData } from '@js-camp/core/models/image-dialog-data';
 
 /** Dialog with an image. */

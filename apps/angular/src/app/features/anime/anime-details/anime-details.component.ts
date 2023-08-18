@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { AnimeDetails } from '@js-camp/core/models/anime-details';
 import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { AnimeDetails } from '@js-camp/core/models/anime-details';
+import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { ImageDialogData } from '@js-camp/core/models/image-dialog-data';
 
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
