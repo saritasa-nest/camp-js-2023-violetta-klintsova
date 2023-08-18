@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+
 import { AuthService } from '@js-camp/angular/core/services/auth.service';
 
 /** Header component. */
@@ -9,10 +10,7 @@ import { AuthService } from '@js-camp/angular/core/services/auth.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-
-	public constructor(
-		private readonly auth: AuthService,
-	) {}
+	public constructor(private readonly auth: AuthService) {}
 
 	/** Whether user is authorized or not. */
 	protected readonly isLoggedIn$ = this.auth.userState$;

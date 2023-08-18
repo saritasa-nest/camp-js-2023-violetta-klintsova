@@ -18,7 +18,7 @@ import { isEmptyObject } from '@js-camp/angular/core/utils/is-empty-object';
 })
 export class AnimeTableComponent implements OnInit {
 	/** Filter options. */
-	protected filterOptions = Object.values(DistributionTypes);
+	protected readonly filterOptions = Object.values(DistributionTypes);
 
 	/** Default filter option. */
 	protected filters = [''];
@@ -107,7 +107,7 @@ export class AnimeTableComponent implements OnInit {
 	 * Updates URL with sort options.
 	 * @param event Event.
 	 */
-	public onSort(): void {
+	protected onSort(): void {
 		this.updateUrl({ ...this.getCurrentQueryParams(), sort: this.sortOption });
 	}
 
@@ -115,7 +115,7 @@ export class AnimeTableComponent implements OnInit {
 	 * Updates URL with filter options.
 	 * @param event Event.
 	 */
-	public onFilter(): void {
+	protected onFilter(): void {
 		const updatedParams: QueryParameters = this.getCurrentQueryParams();
 		this.pageIndex = 0;
 		updatedParams.page = 0;
@@ -139,12 +139,12 @@ export class AnimeTableComponent implements OnInit {
 	 * Updates navigation with supplied query parameters.
 	 * @param params Updated params.
 	 */
-	protected updateUrl(params: QueryParameters): void {
+	private updateUrl(params: QueryParameters): void {
 		this.router.navigate(['/anime'], { queryParams: params });
 	}
 
 	/** Gets current URL query parameters. */
-	protected getCurrentQueryParams(): QueryParameters {
+	private getCurrentQueryParams(): QueryParameters {
 		return { ...this.activatedRoute.snapshot.queryParams } as QueryParameters;
 	}
 

@@ -17,7 +17,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 	public constructor(private readonly tokenService: TokenService, private readonly auth: AuthService) {}
 
 	/** Response with refresh tokens. */
-	public refreshResponse$!: Observable<HttpEvent<unknown>>;
+	private refreshResponse$!: Observable<HttpEvent<unknown>>;
 
 	/** @inheritdoc */
 	public intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

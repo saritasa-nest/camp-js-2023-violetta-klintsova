@@ -33,7 +33,7 @@ export class LoginComponent {
 	}
 
 	/** Log in. */
-	public onSubmit(): void {
+	protected onSubmit(): void {
 		if (this.loginForm.invalid) {
 			return;
 		}
