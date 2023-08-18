@@ -1,0 +1,33 @@
+<mat-form-field>
+  <mat-label>Genres</mat-label>
+  <mat-chip-grid #chipGrid>
+    <mat-chip-row *ngFor="let genre of selectedGenres" (removed)="removeGenre(genre)"
+>
+      {{ genre.name }}
+      <button type="button" matChipRemove [attr.aria-label]="'remove ' + genre">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+  </mat-chip-grid>
+
+  <input
+    matInput
+    #genresInput
+    type="text"
+    [formControl]="genresControl"
+    [matAutocomplete]="auto"
+    [matChipInputFor]="chipGrid"
+		[matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+		(matChipInputTokenEnd)="addGenre($event)"
+  />
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    (optionSelected)="selectGenre($event)"
+  >
+    <ng-container *ngIf="genres$ | async as genres">
+      <mat-option *ngFor="let genre of genres.results" [value]="genre">
+        {{ genre.name }}
+      </mat-option>
+    </ng-container>
+  </mat-autocomplete>
+</mat-form-field>

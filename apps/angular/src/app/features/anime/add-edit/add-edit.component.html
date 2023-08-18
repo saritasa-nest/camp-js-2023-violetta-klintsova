@@ -82,16 +82,16 @@
       <input matInput type="text" />
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Genres</mat-label>
-      <mat-select></mat-select>
-    </mat-form-field>
+    <camp-chips-autocomplete />
 
     <mat-form-field>
       <mat-label>Studios</mat-label>
-      <mat-select></mat-select>
+      <mat-select multiple>
+        <mat-option></mat-option>
+      </mat-select>
     </mat-form-field>
 
+    
     <div class="date-range flex">
       <mat-form-field>
         <mat-label>Anime start date</mat-label>
@@ -103,7 +103,7 @@
         ></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
       </mat-form-field>
-
+      
       <mat-form-field>
         <mat-label>Anime end date</mat-label>
         <input matInput [matDatepicker]="picker2" />
@@ -122,13 +122,15 @@
         <mat-radio-button value="false">No</mat-radio-button>
       </mat-radio-group>
     </div>
-
+    
     <div class="file-upload flex">
       <label>Upload anime image</label>
       <button type="button" mat-mini-fab color="primary" class="upload-btn">
         <mat-icon>attach_file</mat-icon>
       </button>
     </div>
+
+
   </form>
 
   <button mat-raised-button color="primary" type="button">Submit</button>

@@ -25,12 +25,11 @@ export class AnimeService {
 	public constructor(private readonly http: HttpClient) {}
 
 	/**
-	 * Get anime list from the server.
+	 * Fetches anime list from the server.
 	 * @param options Options which specify what kind of data to request.
 	 */
 	public fetchAnimeList(options: ManagementOptions): Observable<Pagination<Anime>> {
-		const path = 'anime/anime/';
-		const url = new URL(path, this.apiUrl).toString();
+		const url = new URL('anime/anime/', this.apiUrl).toString();
 		let httpParams = new HttpParams()
 			.set('offset', `${options.limit * options.page}`)
 			.set('limit', options.limit);
@@ -53,12 +52,11 @@ export class AnimeService {
 	}
 
 	/**
-	 * Gets selected anime details.
+	 * Fetches selected anime details.
 	 * @param id Anime id.
 	 */
 	public fetchAnimeDetails(id: Anime['id']): Observable<AnimeDetails> {
-		const path = `anime/anime/${id}/`;
-		const url = new URL(path, this.apiUrl).toString();
+		const url = new URL(`anime/anime/${id}/`, this.apiUrl).toString();
 		return this.http.get<AnimeDetailsDto>(url).pipe(map(el => AnimeDetailsMapper.fromDto(el)));
 	}
 
@@ -67,8 +65,7 @@ export class AnimeService {
 	 * @param id Anime id.
 	 */
 	public deleteAnime(id: Anime['id']): Observable<null> {
-		const path = `anime/anime/${id}/`;
-		const url = new URL(path, this.apiUrl);
+		const url = new URL(`anime/anime/${id}/`, this.apiUrl);
 		return this.http.delete<null>(url.toString());
 	}
 }

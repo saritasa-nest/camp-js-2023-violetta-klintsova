@@ -15,7 +15,13 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 /** App module. */
 @NgModule({
-	declarations: [AppComponent, HeaderComponent, LandingComponent, MainLayoutComponent, NotFoundComponent],
+	declarations: [
+		AppComponent,
+		HeaderComponent,
+		LandingComponent,
+		MainLayoutComponent,
+		NotFoundComponent,
+	],
 	imports: [BrowserModule, SharedModule, AppRoutingModule, HttpClientModule, BrowserAnimationsModule, MatButtonModule],
 	providers: [httpInterceptorProviders],
 	bootstrap: [AppComponent],

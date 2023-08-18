@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 import { ProductionStatuses } from '@js-camp/core/models/production-statuses';
 import { Rating } from '@js-camp/core/models/rating';

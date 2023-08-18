@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -14,10 +14,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
-import { EmptyValue } from '@js-camp/angular/core/utils/empty-value-pipe';
 import { RouterModule } from '@angular/router';
 import { YouTubePlayerModule } from '@angular/youtube-player';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+
+import { EmptyValue } from '@js-camp/angular/core/utils/empty-value-pipe';
 
 import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './anime-table/anime-table.component';
@@ -25,6 +27,7 @@ import { AnimeDetailsComponent } from './anime-details/anime-details.component';
 import { ImageDialogComponent } from './anime-details/image-dialog/image-dialog.component';
 import { AddEditComponent } from './add-edit/add-edit.component';
 import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog/confirmation-dialog.component';
+import { ChipsAutocompleteComponent } from './add-edit/chips-autocomplete/chips-autocomplete.component';
 
 /** Anime table module. */
 @NgModule({
@@ -47,6 +50,9 @@ import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog
 		MatNativeDateModule,
 		MatRadioModule,
 		MatCheckboxModule,
+		ReactiveFormsModule,
+		MatAutocompleteModule,
+		MatChipsModule,
 	],
 	declarations: [
 		AnimeTableComponent,
@@ -55,6 +61,8 @@ import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog
 		ImageDialogComponent,
 		AddEditComponent,
 		ConfirmationDialogComponent,
+		AddEditComponent,
+		ChipsAutocompleteComponent,
 	],
 	exports: [AnimeTableComponent],
 })
