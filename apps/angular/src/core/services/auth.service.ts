@@ -1,22 +1,22 @@
-import { HttpClient, HttpContext, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AuthMapper } from '@js-camp/core/mappers/auth.mapper';
-import { EMPTY, Observable, ReplaySubject, catchError, map, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { DestroyRef, Injectable } from '@angular/core';
+import { EMPTY, Observable, ReplaySubject, Subscription, catchError, map, retry, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
+
+import { TokensMapper } from '@js-camp/core/mappers/tokens.mapper';
 import { environment } from '@js-camp/angular/environments/environment';
 import { LoginInfo } from '@js-camp/core/models/login-info';
-import { AuthDto } from '@js-camp/core/dtos/auth.dto';
+import { TokensDto } from '@js-camp/core/dtos/tokens.dto';
 import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { RegistrationInfoMapper } from '@js-camp/core/mappers/registration-info.mapper';
-import { Auth } from '@js-camp/core/models/auth';
+import { Tokens } from '@js-camp/core/models/tokens';
 import { UserProfileDto } from '@js-camp/core/dtos/user-profile.dto';
-import { ErrorMapper } from '@js-camp/core/mappers/error-response.mapper';
-
-import { BYPASS_LOG } from '../interceptors/refresh-token.interceptor';
+import { ErrorMapper } from '@js-camp/core/mappers/error.mapper';
 
 import { TokenService } from './token.service';
 
-/** Authentification service. */
+/** Authentication service. */
 @Injectable({
 	providedIn: 'root',
 })
@@ -24,18 +24,16 @@ export class AuthService {
 	private readonly apiUrl = environment.apiUrl;
 
 	/** User log in state. */
-	private userStateSubject$ = new ReplaySubject<boolean>(1);
+	private readonly userStateSubject$ = new ReplaySubject<boolean>(1);
 
-	/** Returns the state subject as an observable. */
-	public userState$(): Observable<boolean> {
-		return this.userStateSubject$.asObservable();
-	}
+	/** State subject as an observable. */
+	public readonly userState$ = this.userStateSubject$.asObservable();
 
 	/**
 	 * Updates user state subject with supplied value.
 	 * @param value Value.
 	 */
-	public updateUserState(value: boolean): void {
+	private updateUserState(value: boolean): void {
 		this.userStateSubject$.next(value);
 	}
 
@@ -43,37 +41,38 @@ export class AuthService {
 		private readonly http: HttpClient,
 		private readonly router: Router,
 		private readonly tokenService: TokenService,
+		private readonly destroyRef: DestroyRef,
 	) {}
 
 	/**
 	 * User login.
 	 * @param loginInfo Info required to log in.
 	 */
-	public login(loginInfo: LoginInfo): Observable<Auth> {
+	public login(loginInfo: LoginInfo): Observable<Tokens> {
 		const url = new URL('auth/login/', this.apiUrl);
-		return this.http
-			.post<AuthDto>(url.toString(), loginInfo, { context: new HttpContext().set(BYPASS_LOG, true) })
-			.pipe(map(el => AuthMapper.fromDto(el)));
+		return this.http.post<TokensDto>(url.toString(), loginInfo).pipe(
+			map(el => TokensMapper.fromDto(el)),
+			tap(el => this.setUser(el)),
+		);
 	}
 
 	/**
 	 * User registration.
 	 * @param registerInfo Info required for registration.
 	 */
-	public register(registerInfo: RegistrationInfo): Observable<Auth> {
+	public register(registerInfo: RegistrationInfo): Observable<Tokens> {
 		const url = new URL('auth/register/', this.apiUrl);
 		const mappedRegister = RegistrationInfoMapper.toDto(registerInfo);
-		return this.http
-			.post<AuthDto>(url.toString(), mappedRegister, { context: new HttpContext().set(BYPASS_LOG, true) })
-			.pipe(
-				map(el => AuthMapper.fromDto(el)),
-				catchError((e: unknown) => {
-					if (e instanceof HttpErrorResponse && e.status === 400) {
-						return throwError(() => ErrorMapper.fromDto(e.error));
-					}
-					return EMPTY;
-				}),
-			);
+		return this.http.post<TokensDto>(url.toString(), mappedRegister).pipe(
+			map(el => TokensMapper.fromDto(el)),
+			catchError((e: unknown) => {
+				if (e instanceof HttpErrorResponse && e.status === 400) {
+					throw ErrorMapper.fromDto(e.error);
+				}
+				return EMPTY;
+			}),
+			tap(el => this.setUser(el)),
+		);
 	}
 
 	/**
@@ -81,33 +80,46 @@ export class AuthService {
 	 * @param refresh Refresh token.
 	 * @returns Observable with access token.
 	 */
-	public refreshToken(refresh: string): Observable<Auth> {
+	public refreshToken(refresh: string): Observable<Tokens> {
 		const url = new URL('auth/token/refresh/', this.apiUrl);
-		return this.http.post<AuthDto>(url.toString(), { refresh }).pipe(map(el => AuthMapper.fromDto(el)));
+		return this.http.post<TokensDto>(url.toString(), { refresh }).pipe(
+			map(el => TokensMapper.fromDto(el)),
+			tap(el => this.setUser(el)),
+		);
 	}
 
 	/** Fetches user profile. */
-	public fetchUserProfile(): Observable<UserProfileDto> {
+	public fetchUserProfile(): Subscription {
 		const url = new URL('users/profile/', this.apiUrl);
-		return this.http.get<UserProfileDto>(url.toString());
+		return (
+			this.http
+				.get<UserProfileDto>(url.toString())
+				.pipe(retry(1), takeUntilDestroyed(this.destroyRef))
+				.subscribe({
+					next: () => this.updateUserState(true),
+					error: (error: unknown) => {
+						if (error instanceof HttpErrorResponse && error.status !== 500) {
+							this.removeUser();
+						} else {
+							this.router.navigate(['/']);
+						}
+					},
+				})
+		);
 	}
 
 	/**
-	 * Logs user in.
-	 * @param access Access key.
-	 * @param refresh Refresh key.
-	 * @param value Subject value.
+	 * Sets a user.
+	 * @param tokens Tokens.
 	 */
-	public setUser(access: string, refresh: string): void {
-		this.tokenService.setToken('access', access);
-		this.tokenService.setToken('refresh', refresh);
+	private setUser(tokens: Tokens): void {
+		this.tokenService.setTokens(tokens);
 		this.updateUserState(true);
 	}
 
-	/** Logs a user out. */
-	public logOut(): void {
-		this.tokenService.deleteTokens('access');
-		this.tokenService.deleteTokens('refresh');
+	/** Deletes user data and navigates back to the main page. */
+	public removeUser(): void {
+		this.tokenService.deleteTokens();
 		this.router.navigate(['/']);
 		this.updateUserState(false);
 	}

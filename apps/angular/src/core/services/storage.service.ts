@@ -1,4 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+
+import { WINDOW } from './window.service';
 
 /** Storage service. */
 @Injectable({
@@ -6,10 +8,7 @@ import { Injectable } from '@angular/core';
 })
 export class StorageService {
 
-	private keys = {
-		access: '',
-		refresh: '',
-	};
+	public constructor(@Inject(WINDOW) private readonly window: Window) {}
 
 	/**
 	 * Saves an item.
@@ -17,22 +16,22 @@ export class StorageService {
 	 * @param value Value.
 	 */
 	public set(key: string, value: string): void {
-		window.localStorage.setItem(key, value);
+		this.window.localStorage.setItem(key, value);
 	}
 
 	/**
-	 * Returns an item.
+	 * Gets an item.
 	 * @param key Key.
 	 */
 	public get(key: string): string | null {
-		return window.localStorage.getItem(key);
+		return this.window.localStorage.getItem(key);
 	}
 
 	/**
-	 * Removes an item.
+	 * Deletes an item.
 	 * @param key Key.
 	 */
-	public reset(key: string): void {
-		window.localStorage.removeItem(key);
+	public delete(key: string): void {
+		this.window.localStorage.removeItem(key);
 	}
 }

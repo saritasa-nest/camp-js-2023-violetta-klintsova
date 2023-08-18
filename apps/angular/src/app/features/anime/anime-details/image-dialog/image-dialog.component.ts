@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+import { ImageDialogData } from '@js-camp/core/models/image-dialog-data';
+
 /** Dialog with an image. */
 @Component({
 	selector: 'camp-image-dialog',
@@ -9,7 +11,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ImageDialogComponent {
 	public constructor(
-		public readonly dialogRef: MatDialogRef<ImageDialogComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: { imageUrl: string; },
+		protected readonly dialogRef: MatDialogRef<ImageDialogComponent>,
+		@Inject(MAT_DIALOG_DATA) protected readonly data: ImageDialogData,
 	) {}
 }

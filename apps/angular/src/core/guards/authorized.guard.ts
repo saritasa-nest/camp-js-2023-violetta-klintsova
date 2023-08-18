@@ -4,9 +4,7 @@ import { Observable, map } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 
-export const modulesGuard: CanMatchFn = (): Observable<boolean | UrlTree> => {
+export const authorizedGuard: CanMatchFn = (): Observable<boolean | UrlTree> => {
 	const router = inject(Router);
-	return inject(AuthService)
-		.userState$()
-		.pipe(map(isLoggedIn => isLoggedIn || router.createUrlTree(['/auth/log-in'])));
+	return inject(AuthService).userState$.pipe(map(isLoggedIn => !isLoggedIn || router.createUrlTree(['/'])));
 };

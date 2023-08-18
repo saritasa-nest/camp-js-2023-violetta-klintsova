@@ -1,6 +1,5 @@
 import { AnimeDetailsDto } from '../dtos/anime-details.dto';
 import { AnimeDetails } from '../models/anime-details';
-
 import { SourceMapper } from './source.mapper';
 import { DistributionTypesMapper } from './distribution-types.mapper';
 import { GenreMapper } from './genre.mapper';

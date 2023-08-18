@@ -1,8 +1,6 @@
 import { AnimeDto } from '../dtos/anime.dto';
 import { Anime } from '../models/anime';
-
 import { DateMapper } from './date.mapper';
-
 import { DistributionTypesMapper } from './distribution-types.mapper';
 import { ProductionStatusesMapper } from './production-statuses.mapper';
 

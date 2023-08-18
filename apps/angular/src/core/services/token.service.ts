@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { Tokens } from '@js-camp/core/models/tokens';
+
 import { StorageService } from './storage.service';
 
 /** Token service. */
@@ -10,27 +12,21 @@ export class TokenService {
 	public constructor(private readonly storage: StorageService) {}
 
 	/**
-	 * Saves a token.
-	 * @param token Name.
-	 * @param value Value.
+	 * Saves tokens.
+	 * @param tokens Tokens.
 	 */
-	public setToken(token: string, value: string): void {
-		this.storage.set(token, value);
+	public setTokens(tokens: Tokens): void {
+		this.storage.set('tokens', JSON.stringify(tokens));
 	}
 
-	/**
-	 * Returns an token.
-	 * @param token Token name.
-	 */
-	public getToken(token: string): string | null {
-		return this.storage.get(token);
+	/** Returns tokens. */
+	public getTokens(): Tokens | null {
+		const tokens = this.storage.get('tokens');
+		return tokens ? JSON.parse(tokens) : null;
 	}
 
-	/**
-	 * Deletes a token.
-	 * @param token Token name.
-	 */
-	public deleteTokens(token: string): void {
-		this.storage.reset(token);
+	/** Deletes tokens. */
+	public deleteTokens(): void {
+		this.storage.delete('tokens');
 	}
 }

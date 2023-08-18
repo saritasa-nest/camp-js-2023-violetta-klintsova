@@ -1,5 +1,5 @@
-/** Error model. */
-export interface IError {
+/** Error details dto. */
+export interface ErrorDetailsDto {
 
 	/** Attribute. */
 	readonly attr: string;

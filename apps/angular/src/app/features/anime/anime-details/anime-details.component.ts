@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AnimeService } from '@js-camp/angular/core/services/anime.service';
-import { AnimeDetails } from '@js-camp/core/models/anime-details';
 import { EMPTY, Observable, catchError, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { AnimeDetails } from '@js-camp/core/models/anime-details';
+import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+import { ImageDialogData } from '@js-camp/core/models/image-dialog-data';
 
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 
@@ -15,8 +17,6 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeDetailsComponent {
-	/** Image popup state. */
-	protected isPopupOpened = false;
 
 	/** Response observable. */
 	protected readonly animeDetails$: Observable<AnimeDetails>;
@@ -25,7 +25,7 @@ export class AnimeDetailsComponent {
 		private readonly activatedRoute: ActivatedRoute,
 		private readonly router: Router,
 		private readonly animeService: AnimeService,
-		public readonly dialog: MatDialog,
+		private readonly dialog: MatDialog,
 	) {
 		this.animeDetails$ = this.createAnimeDetailsStream();
 	}
@@ -54,7 +54,7 @@ export class AnimeDetailsComponent {
 	 * @param thumbnailUrl Image URL.
 	 */
 	protected openImage(thumbnailUrl: string): void {
-		this.dialog.open(ImageDialogComponent, {
+		this.dialog.open<ImageDialogComponent, ImageDialogData, void>(ImageDialogComponent, {
 			data: { imageUrl: thumbnailUrl },
 		});
 	}
@@ -64,12 +64,22 @@ export class AnimeDetailsComponent {
 	 * @param startDate Start date.
 	 * @param endDate End date.
 	 */
-	protected getDateRange(startDate: Date | null, endDate: Date | null): string {
+	protected getYearsRange(startDate: Date | null, endDate: Date | null): string {
 		const start = startDate ? startDate.getFullYear() : null;
 		const end = endDate ? endDate.getFullYear() : null;
 
-		const date = (start ? start.toString() : '') + (end ? `- ${end.toString()}` : '');
+		if (start !== null && end !== null) {
+			return `(${start} - ${end})`;
+		}
 
-		return `(${date})`;
+		if (start === null) {
+			return `(Unknown - ${end})`;
+		}
+
+		if (end === null) {
+			return `(${start})`;
+		}
+
+		return '';
 	}
 }

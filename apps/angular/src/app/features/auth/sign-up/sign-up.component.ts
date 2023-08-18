@@ -1,14 +1,14 @@
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef } from '@angular/core';
-
-import { equalityValidator } from '@js-camp/angular/core/utils/equal-passwords-validator';
-import { AuthService } from '@js-camp/angular/core/services/auth.service';
-import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { EMPTY, catchError } from 'rxjs';
+
+import { equalityValidator } from '@js-camp/angular/core/utils/equality-validator';
+import { AuthService } from '@js-camp/angular/core/services/auth.service';
+import { RegistrationInfo } from '@js-camp/core/models/registration-info';
 import { ValidationError } from '@js-camp/core/models/validation-error';
-import { IError } from '@js-camp/core/models/error';
+import { ErrorDetails } from '@js-camp/core/models/error-details';
 
 /** Sign up component. */
 @Component({
@@ -19,30 +19,28 @@ import { IError } from '@js-camp/core/models/error';
 })
 export class SignUpComponent {
 	/** Sign up form. */
-	protected signUpForm: FormGroup;
+	protected readonly signUpForm: FormGroup;
 
 	/** Validation errors. */
-	protected validationErrors = {
-		email: '',
-		password: '',
-	};
+	protected validationErrors: ErrorDetails = {};
 
 	/** Form state. */
-	public isLoading = false;
+	protected isLoading = false;
 
 	public constructor(
 		private readonly auth: AuthService,
 		private readonly router: Router,
 		private readonly destroyRef: DestroyRef,
 		private readonly changeDetector: ChangeDetectorRef,
+		private readonly fb: FormBuilder,
 	) {
-		this.signUpForm = new FormGroup(
+		this.signUpForm = this.fb.group(
 			{
-				firstName: new FormControl('', Validators.required),
-				lastName: new FormControl('', Validators.required),
-				email: new FormControl('', [Validators.required, Validators.email]),
-				password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-				confirmedPassword: new FormControl('', Validators.required),
+				firstName: ['', Validators.required],
+				lastName: ['', Validators.required],
+				email: ['', [Validators.required, Validators.email]],
+				password: ['', [Validators.required, Validators.minLength(8)]],
+				confirmedPassword: ['', Validators.required],
 			},
 			{ validators: equalityValidator('password', 'confirmedPassword') },
 		);
@@ -71,29 +69,17 @@ export class SignUpComponent {
 						this.changeDetector.markForCheck();
 						this.isLoading = false;
 
-						/** Reset errors messages. */
-						this.validationErrors.email = '';
-						this.validationErrors.password = '';
-
-						e.errors.forEach((element: IError) => {
-							if (element.attr === 'email') {
-								this.validationErrors.email += element.detail;
-								this.signUpForm.get('email')?.setErrors({ emailError: true });
-							}
-							if (element.attr === 'password') {
-								this.validationErrors.password += element.detail;
-								this.signUpForm.get('password')?.setErrors({ passwordError: true });
-							}
-						});
+						for (const attribute of Object.keys(e.errors)) {
+							this.validationErrors = e.errors;
+							this.signUpForm.get(attribute)?.setErrors({ validationError: true });
+						}
 					}
-
 					return EMPTY;
 				}),
 				takeUntilDestroyed(this.destroyRef),
 			)
-			.subscribe(response => {
+			.subscribe(() => {
 				this.isLoading = false;
-				this.auth.setUser(response.access, response.refresh);
 				this.router.navigate(['/anime']);
 			});
 	}
