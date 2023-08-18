@@ -1,0 +1,19 @@
+.delete-dialog {
+  text-align: center;
+  padding: 30px 40px;
+}
+
+.delete-message {
+  font-size: var(--big-font-size);
+}
+
+.buttons {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.spinner {
+  margin: 0 auto;
+}

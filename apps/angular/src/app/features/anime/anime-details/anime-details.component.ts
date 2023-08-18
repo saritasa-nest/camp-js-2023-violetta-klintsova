@@ -8,6 +8,8 @@ import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { ImageDialogData } from '@js-camp/core/models/image-dialog-data';
 
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
+import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { DeleteConfirmationData } from '@js-camp/core/models/delete-confirmation-data';
 
 /** Anime details component. */
 @Component({
@@ -17,7 +19,6 @@ import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeDetailsComponent {
-
 	/** Response observable. */
 	protected readonly animeDetails$: Observable<AnimeDetails>;
 
@@ -56,6 +57,16 @@ export class AnimeDetailsComponent {
 	protected openImage(thumbnailUrl: string): void {
 		this.dialog.open<ImageDialogComponent, ImageDialogData, void>(ImageDialogComponent, {
 			data: { imageUrl: thumbnailUrl },
+		});
+	}
+
+	/**
+	 * Opens confirmation dialog.
+	 * @param id Id.
+	 */
+	protected openConfirmationDialog(id: number): void {
+		this.dialog.open<ConfirmationDialogComponent, DeleteConfirmationData, void>(ConfirmationDialogComponent, {
+			data: { id },
 		});
 	}
 

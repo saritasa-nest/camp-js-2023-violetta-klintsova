@@ -3,7 +3,7 @@
     <button type="button" mat-raised-button color="primary" class="edit-btn">
       Edit
     </button>
-    <button type="button" mat-raised-button color="accent">Delete</button>
+    <button type="button" mat-raised-button color="accent" (click)="openConfirmationDialog(details.id)">Delete</button>
   </div>
   <div class="content">
     <section class="details-view">
