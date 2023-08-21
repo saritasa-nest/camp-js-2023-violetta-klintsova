@@ -1,7 +1,5 @@
-import { GenreTypeDto } from './genre-type.dto';
-
-/** Genre DTO. */
-export interface GenreDto {
+/** Studio. */
+export interface StudioDto {
 
 	/** ID. */
 	readonly id: number;
@@ -14,7 +12,4 @@ export interface GenreDto {
 
 	/** Name. */
 	readonly name: string;
-
-	/** Type. */
-	readonly type: GenreTypeDto;
 }

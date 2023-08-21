@@ -13,8 +13,8 @@
 		"react:serve": "nx run react:serve",
 		"react:lint": "nx run react:lint --fix",
 		"react:stylelint": "nx run react:stylelint",
-		"angular:build": "nx run angular:build",
-		"angular:build:development": "nx run angular:build:development",
+		"angular:build": "nx run angular:build --subresource-integrity",
+		"angular:build:development": "nx run angular:build:development --subresource-integrity",
 		"angular:serve": "nx run angular:serve",
 		"angular:lint": "nx run angular:lint --fix",
 		"angular:stylelint": "nx run angular:stylelint",
@@ -36,6 +36,7 @@
 		"@angular/platform-browser": "16.0.3",
 		"@angular/platform-browser-dynamic": "16.0.3",
 		"@angular/router": "16.0.3",
+		"@angular/youtube-player": "^16.1.7",
 		"@reduxjs/toolkit": "1.9.3",
 		"axios": "^1.4.0",
 		"core-js": "^3.30.2",
@@ -97,6 +98,6 @@
 	"author": "Violetta Klintsova",
 	"prettier": {
 		"trailingComma": "all",
-    "arrowParens": "avoid"
+		"arrowParens": "avoid"
 	}
 }

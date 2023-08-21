@@ -1,4 +1,4 @@
-/** Registration info dto.  */
+/** Registration info DTO.  */
 export interface RegisterInfoDto {
 
 	/** Email. */

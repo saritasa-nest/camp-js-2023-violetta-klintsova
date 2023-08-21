@@ -24,11 +24,16 @@
   /* Font sizes */
   --small-font-size: 12px;
   --medium-font-size: 16px;
-  --large-font-size: 22px;
+  --big-font-size: 20px;
+  --large-font-size: 24px;
 
   /* Other custom variable */
   --border-color: #bebebe;
   --border-dark-color: #7e7e7e;
+  --selected-light-color: #f8f8f8ad;
+  --text-dark-text: #0f0f0f;
+  --text-light-color: #4b4b4b;
+  --overlay-bg-color: #00000056;
   --accent-color-dimmed: #ff689a;
   --border-radius-medium: 5px;
 }

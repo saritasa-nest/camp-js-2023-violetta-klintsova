@@ -29,8 +29,8 @@ export class SignUpComponent {
 
 	public constructor(
 		private readonly auth: AuthService,
-		private readonly destroyRef: DestroyRef,
 		private readonly router: Router,
+		private readonly destroyRef: DestroyRef,
 		private readonly changeDetector: ChangeDetectorRef,
 		private readonly fb: FormBuilder,
 	) {

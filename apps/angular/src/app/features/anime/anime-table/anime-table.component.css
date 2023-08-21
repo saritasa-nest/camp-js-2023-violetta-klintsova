@@ -23,6 +23,10 @@
   height: 150px;
 }
 
+tr.selected-row:hover {
+  background-color: var(--selected-light-color);
+}
+
 .cdk-header-cell {
   font-weight: 700;
 }

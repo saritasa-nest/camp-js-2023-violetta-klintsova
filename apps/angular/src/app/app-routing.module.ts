@@ -6,6 +6,7 @@ import { authorizedGuard } from '../core/guards/authorized.guard';
 import { unauthorizedGuard } from '../core/guards/unauthorized.guard';
 import { LandingComponent } from './landing/landing.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
 	{
@@ -25,6 +26,7 @@ const routes: Routes = [
 		canMatch: [authorizedGuard],
 		loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
 	},
+	{ path: 'not-found', component: NotFoundComponent },
 	{ path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

@@ -8,16 +8,16 @@ export interface AnimeDto {
 	/** ID. */
 	readonly id: number;
 
-	/** Creation date. */
+	/** Creation date, e.g. "2023-08-11T10:27:48.934Z". */
 	readonly created: string;
 
-	/** Modification date. */
+	/** Modification date, e.g. "2023-08-11T10:27:48.934Z". */
 	readonly modified: string;
 
-	/** Title. */
+	/** Title (ENG). */
 	readonly title_eng: string;
 
-	/** Image title. */
+	/** Title (JPN). */
 	readonly title_jpn: string;
 
 	/** Image URL. */
