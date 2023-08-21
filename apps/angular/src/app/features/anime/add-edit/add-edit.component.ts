@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
+import { Genre } from '@js-camp/core/models/genre';
 import { ProductionStatuses } from '@js-camp/core/models/production-statuses';
 import { Rating } from '@js-camp/core/models/rating';
 import { Season } from '@js-camp/core/models/season';
@@ -14,6 +15,9 @@ import { Source } from '@js-camp/core/models/source';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditComponent {
+
+	/** Interface for genre input. */
+	public readonly genre = Genre;
 
 	/** Options for select inputs. */
 	protected options = {

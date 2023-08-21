@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
@@ -19,11 +19,29 @@ export class StudiosService {
 
 	public constructor(private readonly http: HttpClient) {}
 
-	/** Fetches studios. */
-	public fetchStudios(): Observable<Pagination<Studio>> {
+	/**
+	 * Fetches studios.
+	 * @param searchValue Search value.
+	 */
+	public fetchStudios(searchValue: string): Observable<Pagination<Studio>> {
 		const url = new URL('anime/studios/', this.apiUrl).toString();
+
+		let httpParams = new HttpParams();
+		if (searchValue) {
+			httpParams = httpParams.append('search', searchValue);
+		}
+
 		return this.http
-			.get<PaginationDto<StudioDto>>(url)
+			.get<PaginationDto<StudioDto>>(url, { params: httpParams })
 			.pipe(map(el => PaginationMapper.fromDto(el, StudiosMapper.fromDto)));
+	}
+
+	/**
+	 * Adds new studio.
+	 * @param studioName Studio.
+	 */
+	public addStudio(studioName: string): Observable<Studio> {
+		const url = new URL('anime/studios/', this.apiUrl).toString();
+		return this.http.post<StudioDto>(url, { name: studioName }).pipe(map(el => StudiosMapper.fromDto(el)));
 	}
 }

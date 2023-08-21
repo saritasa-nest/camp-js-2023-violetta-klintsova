@@ -11,12 +11,12 @@ import { Pagination } from '@js-camp/core/models/pagination';
 
 /** Chips with autocomplete. */
 @Component({
-	selector: 'camp-chips-autocomplete',
-	templateUrl: './chips-autocomplete.component.html',
-	styleUrls: ['./chips-autocomplete.component.css'],
+	selector: 'camp-studios-input',
+	templateUrl: './genres-input.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChipsAutocompleteComponent implements OnInit {
+export class GenresInputComponent implements OnInit {
+
 	/** Separator key codes. */
 	protected separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -24,65 +24,62 @@ export class ChipsAutocompleteComponent implements OnInit {
 	@ViewChild('genresInput') protected genresInput!: ElementRef<HTMLInputElement>;
 
 	/** Selected genres. */
-	protected selectedGenres: Genre[] = [];
+	protected selectedItems: Genre[] = [];
 
 	/** Genres input. */
-	protected genresControl = new FormControl();
+	protected inputControl = new FormControl();
 
 	/** Genres observable. */
-	protected genres$!: Observable<Pagination<Genre>>;
+	protected response$!: Observable<Pagination<Genre>>;
 
-	public constructor(
-		private readonly genresService: GenresService,
-		private readonly changeDetector: ChangeDetectorRef,
-	) {}
+	public constructor(private readonly service: GenresService, private readonly changeDetector: ChangeDetectorRef) {}
 
 	/** @inheritdoc */
 	public ngOnInit(): void {
-		this.genres$ = this.genresControl.valueChanges.pipe(
+		this.response$ = this.inputControl.valueChanges.pipe(
 			filter(res => res !== null && res.length >= 0),
 			distinctUntilChanged(),
 			debounceTime(500),
-			switchMap(searchValue => this.genresService.fetchGenres(searchValue)),
+			switchMap(searchValue => this.service.fetchGenres(searchValue)),
 		);
 	}
 
 	/**
-	 * Pushes a selected genre to an array.
+	 * Pushes a selected item to an array.
 	 * @param event Event.
 	 */
-	protected selectGenre(event: MatAutocompleteSelectedEvent): void {
-		this.selectedGenres.push(event.option.value);
+	protected select(event: MatAutocompleteSelectedEvent): void {
+		this.selectedItems.push(event.option.value);
 		this.genresInput.nativeElement.value = '';
-		this.genresControl.setValue(null);
+		this.inputControl.setValue(null);
 	}
 
 	/**
-	 * Adds a new genre.
+	 * Adds a new item.
 	 * @param event Event.
 	 */
-	protected addGenre(event: MatChipInputEvent): void {
+	protected add(event: MatChipInputEvent): void {
 		const genre = (event.value || '').trim().toUpperCase();
 
 		if (genre) {
-			this.genresService.addGenre(genre).subscribe(res => {
+			this.service.addGenre(genre).subscribe(res => {
 				this.changeDetector.markForCheck();
-				this.selectedGenres.push(res);
+				this.selectedItems.push(res);
 				event.chipInput.clear();
-				this.genresControl.setValue(null);
+				this.inputControl.setValue(null);
 			});
 		}
 	}
 
 	/**
-	 * Removes genre from selected ones.
-	 * @param genre Genre.
+	 * Removes item from selected ones.
+	 * @param item Genre.
 	 */
-	protected removeGenre(genre: Genre): void {
-		const index = this.selectedGenres.indexOf(genre);
+	protected remove(item: Genre): void {
+		const index = this.selectedItems.indexOf(item);
 
 		if (index >= 0) {
-			this.selectedGenres.splice(index, 1);
+			this.selectedItems.splice(index, 1);
 		}
 	}
 }

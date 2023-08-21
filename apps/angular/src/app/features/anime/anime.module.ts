@@ -27,7 +27,8 @@ import { AnimeDetailsComponent } from './anime-details/anime-details.component';
 import { ImageDialogComponent } from './anime-details/image-dialog/image-dialog.component';
 import { AddEditComponent } from './add-edit/add-edit.component';
 import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog/confirmation-dialog.component';
-import { ChipsAutocompleteComponent } from './add-edit/chips-autocomplete/chips-autocomplete.component';
+import { GenresInputComponent } from './add-edit/genres-input/genres-input.component';
+import { FileUploaderComponent } from './add-edit/file-uploader/file-uploader.component';
 
 /** Anime table module. */
 @NgModule({
@@ -62,7 +63,8 @@ import { ChipsAutocompleteComponent } from './add-edit/chips-autocomplete/chips-
 		AddEditComponent,
 		ConfirmationDialogComponent,
 		AddEditComponent,
-		ChipsAutocompleteComponent,
+		GenresInputComponent,
+		FileUploaderComponent,
 	],
 	exports: [AnimeTableComponent],
 })
