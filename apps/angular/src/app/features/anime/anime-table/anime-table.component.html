@@ -30,7 +30,7 @@
   </form>
 </div>
 
-<ng-container *ngIf="response$ | async as response">
+<ng-container *ngIf="anime$ | async as anime">
   <div class="wrapper">
     <div class="spinner-with-shade" *ngIf="isLoading">
       <mat-spinner />
@@ -39,7 +39,7 @@
     <div class="anime-table">
       <table
         mat-table
-        [dataSource]="response.results"
+        [dataSource]="anime.results"
         class="mat-elevation-z8"
         [trackBy]="trackById"
         aria-describedby="title"
@@ -53,7 +53,7 @@
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Image</th>
           <td mat-cell *matCellDef="let element" class="cell-anime-img">
-            <img src="{{ element.image }}" alt="" />
+            <img [src]="element.thumbnailUrl" alt="Cover of {{ element.titleEng }}" />
           </td>
         </ng-container>
         <ng-container matColumnDef="titleJpn">
@@ -81,11 +81,11 @@
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr routerLink="details/{{element.id}}" routerLinkActive="router-link-active"  mat-row *matRowDef="let element; columns: displayedColumns" class="selected-row"></tr>
       </table>
       <mat-paginator
         (page)="onPageChange($event)"
-        [length]="response.count"
+        [length]="anime.count"
         [pageSize]="pageSize"
         [pageIndex]="pageIndex"
         [showFirstLastButtons]="true"

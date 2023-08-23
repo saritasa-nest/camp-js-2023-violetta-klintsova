@@ -1,0 +1,76 @@
+.image {
+  width: 100%;
+  height: 100%;
+}
+
+.main {
+  padding: 10px 0;
+}
+
+.content {
+  display: flex;
+  gap: 60px;
+}
+
+.details-view {
+  width: 400px;
+}
+
+.trailer {
+  margin-top: 30px;
+}
+
+.title-jpn {
+  margin-bottom: 12px;
+  font-size: var(--large-font-size);
+}
+
+.title-eng {
+  font-size: var(--big-font-size);
+  font-weight: 300;
+}
+
+.about {
+  margin-top: 50px;
+}
+
+.title {
+  margin-bottom: 20px;
+  font-size: var(--big-font-size);
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 30px;
+  margin-bottom: 18px;
+  font-size: var(--medium-font-size);
+}
+
+.detail > :first-child {
+  color: var(--text-light-color);
+}
+
+.genre,
+.studio {
+  padding: 3px;
+  border: 1px solid var(--border-dark-color);
+  border-radius: 3px;
+}
+
+.genres-list,
+.studio-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.anime-image {
+  position: relative;
+}
+
+@media (max-width: 870px) {
+  .content {
+    flex-direction: column-reverse;
+  }
+}

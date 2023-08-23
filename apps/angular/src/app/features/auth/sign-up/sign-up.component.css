@@ -1,0 +1,25 @@
+.wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.heading {
+  padding: 30px 0;
+}
+
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sign-up-button {
+  display: block;
+  margin: 20px auto 0;
+}
+
+.sign-up-button:disabled {
+  background-color: var(--accent-color-dimmed);
+  color: white;
+}

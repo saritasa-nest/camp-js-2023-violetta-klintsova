@@ -1,3 +1,37 @@
 <header class="header">
-  <h1 class="logo">Anime<span class="logo-accent">App</span></h1>
+  <a routerLink="/" class="logo"><span class="logo-accent">Anime</span>ted</a>
+  <ng-container *ngIf="(isLoggedIn$ | async) === false">
+    <a
+      routerLink="/auth/log-in"
+      mat-button
+      color="primary"
+      type="button"
+      class="log-in button"
+    >
+      Log in
+    </a>
+    <a
+      routerLink="/auth/sign-up"
+      mat-raised-button
+      color="primary"
+      type="button"
+      class="button"
+    >
+      Sign up
+    </a>
+  </ng-container>
+  <ng-container *ngIf="isLoggedIn$ | async">
+    <nav class="navigation">
+      <a routerLink="/anime" class="all-anime">All anime</a>
+    </nav>
+    <button
+      mat-button
+      color="primary"
+      type="button"
+      class="log-out button"
+      (click)="onLogOut()"
+    >
+      Log out
+    </button>
+  </ng-container>
 </header>

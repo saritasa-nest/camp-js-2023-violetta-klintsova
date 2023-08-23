@@ -1,0 +1,27 @@
+.not-found {
+  margin: 0 auto;
+  text-align: center;
+  padding: 100px 0;
+  max-width: 600px;
+}
+
+.description {
+  margin: 20px 0 50px;
+  font-size: var(--large-font-size);
+  font-weight: 300;
+}
+
+.number {
+  color: var(--text-light-color);
+  font-size: 200px;
+  margin-bottom: 70px;
+}
+
+.back-link {
+  color: var(--primary-dark-color);
+  cursor: pointer;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}

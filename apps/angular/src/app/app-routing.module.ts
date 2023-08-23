@@ -2,11 +2,32 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AnimeTableComponent } from './features/anime-table/anime-table/anime-table.component';
+import { authorizedGuard } from '../core/guards/authorized.guard';
+import { unauthorizedGuard } from '../core/guards/unauthorized.guard';
+import { LandingComponent } from './landing/landing.component';
+import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
-	{ path: 'anime', component: AnimeTableComponent },
-	{ path: '', redirectTo: '/anime', pathMatch: 'full' },
+	{
+		path: '',
+		component: MainLayoutComponent,
+		children: [
+			{ path: '', component: LandingComponent },
+			{
+				path: 'anime',
+				canMatch: [unauthorizedGuard],
+				loadChildren: () => import('./features/anime/anime.module').then(m => m.AnimeModule),
+			},
+		],
+	},
+	{
+		path: 'auth',
+		canMatch: [authorizedGuard],
+		loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule),
+	},
+	{ path: 'not-found', component: NotFoundComponent },
+	{ path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 /** App routing module. */

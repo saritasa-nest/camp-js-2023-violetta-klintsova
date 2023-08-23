@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Observable, switchMap, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, shareReplay, switchMap, tap } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
+
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { Anime } from '@js-camp/core/models/anime';
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 import { QueryParameters } from '@js-camp/core/models/query-parameters';
 import { Pagination } from '@js-camp/core/models/pagination';
 import { isEmptyObject } from '@js-camp/angular/core/utils/is-empty-object';
+import { onMessageOrFailed } from '@js-camp/angular/core/utils/on-message-or-failed';
 
 /** Anime table. */
 @Component({
@@ -18,7 +20,7 @@ import { isEmptyObject } from '@js-camp/angular/core/utils/is-empty-object';
 })
 export class AnimeTableComponent implements OnInit {
 	/** Filter options. */
-	protected filterOptions = Object.values(DistributionTypes);
+	protected readonly filterOptions = Object.values(DistributionTypes);
 
 	/** Default filter option. */
 	protected filters = [''];
@@ -54,25 +56,37 @@ export class AnimeTableComponent implements OnInit {
 		'status',
 	];
 
-	/** Response observable. */
-	protected response$: Observable<Pagination<Anime>>;
+	/** Anime observable. */
+	protected readonly anime$: Observable<Pagination<Anime>>;
 
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly router: Router,
 		private readonly activatedRoute: ActivatedRoute,
 	) {
-		this.response$ = this.activatedRoute.queryParamMap.pipe(
+		this.anime$ = this.createAnimePaginationStream();
+	}
+
+	/** @inheritdoc */
+	public ngOnInit(): void {
+		if (isEmptyObject(this.getCurrentQueryParams())) {
+			this.updateUrl({ page: this.pageIndex, sort: this.sortOption });
+		}
+	}
+
+	/** Creates a stream with anime. */
+	private createAnimePaginationStream(): Observable<Pagination<Anime>> {
+		return this.activatedRoute.queryParamMap.pipe(
 			tap(() => {
 				this.isLoading = true;
 			}),
-			switchMap((params: ParamMap) => {
+			switchMap(params => {
 				this.pageIndex = Number(params.get('page')) || this.pageIndex;
 				this.sortOption = params.get('sort') ?? 'title_eng';
 				this.filters = params.get('filters')?.split(',') ?? [];
 				this.searchValue = params.get('search') ?? '';
 
-				return this.animeService.getAnimeList({
+				return this.animeService.fetchAnimeList({
 					limit: this.pageSize,
 					page: this.pageIndex,
 					sort: this.sortOption,
@@ -80,17 +94,11 @@ export class AnimeTableComponent implements OnInit {
 					search: this.searchValue,
 				});
 			}),
-			tap(() => {
+			onMessageOrFailed(() => {
 				this.isLoading = false;
 			}),
+			shareReplay({ bufferSize: 1, refCount: true }),
 		);
-	}
-
-	/** Component initialization. */
-	public ngOnInit(): void {
-		if (isEmptyObject(this.getCurrentQueryParams())) {
-			this.router.navigate(['/anime'], { queryParams: { page: this.pageIndex, sort: this.sortOption } });
-		}
 	}
 
 	/**
@@ -106,7 +114,7 @@ export class AnimeTableComponent implements OnInit {
 	 * Updates URL with sort options.
 	 * @param event Event.
 	 */
-	public onSort(): void {
+	protected onSort(): void {
 		this.updateUrl({ ...this.getCurrentQueryParams(), sort: this.sortOption });
 	}
 
@@ -114,7 +122,7 @@ export class AnimeTableComponent implements OnInit {
 	 * Updates URL with filter options.
 	 * @param event Event.
 	 */
-	public onFilter(): void {
+	protected onFilter(): void {
 		const updatedParams: QueryParameters = this.getCurrentQueryParams();
 		this.pageIndex = 0;
 		updatedParams.page = 0;
@@ -138,12 +146,12 @@ export class AnimeTableComponent implements OnInit {
 	 * Updates navigation with supplied query parameters.
 	 * @param params Updated params.
 	 */
-	protected updateUrl(params: QueryParameters): void {
+	private updateUrl(params: QueryParameters): void {
 		this.router.navigate(['/anime'], { queryParams: params });
 	}
 
 	/** Gets current URL query parameters. */
-	protected getCurrentQueryParams(): QueryParameters {
+	private getCurrentQueryParams(): QueryParameters {
 		return { ...this.activatedRoute.snapshot.queryParams } as QueryParameters;
 	}
 

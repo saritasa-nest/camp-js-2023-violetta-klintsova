@@ -1,28 +1,27 @@
 import { DistributionTypes } from './distribution-types';
-
 import { ProductionStatuses } from './production-statuses';
 
 /** Anime. */
 export interface Anime {
 
 	/** ID. */
-	id: number;
+	readonly id: number;
 
-	/** Title. */
-	titleEng: string;
+	/** Title (ENG). */
+	readonly titleEng: string;
 
 	/** Image. */
-	image: string;
+	readonly thumbnailUrl: string;
 
-	/** Image title. */
-	titleJpn: string;
+	/** Title (JPN). */
+	readonly titleJpn: string;
 
 	/** Release date. */
-	airedStartDate: Date;
+	readonly airedStartDate: Date | null;
 
 	/** Type. */
-	type: DistributionTypes;
+	readonly type: DistributionTypes;
 
 	/** Status. */
-	status: ProductionStatuses;
+	readonly status: ProductionStatuses;
 }
