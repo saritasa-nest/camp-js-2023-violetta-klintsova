@@ -65,6 +65,7 @@ import { FileUploaderComponent } from './add-edit/file-uploader/file-uploader.co
 		AddEditComponent,
 		GenresInputComponent,
 		FileUploaderComponent,
+		AddEditComponent,
 	],
 	exports: [AnimeTableComponent],
 })
