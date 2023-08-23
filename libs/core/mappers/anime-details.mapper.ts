@@ -1,13 +1,12 @@
 import { AnimeDetailsDto } from '../dtos/anime-details.dto';
 import { AnimeDetails } from '../models/anime-details';
 import { SourceMapper } from './source.mapper';
-import { DistributionTypesMapper } from './distribution-types.mapper';
 import { GenreMapper } from './genre.mapper';
-import { ProductionStatusesMapper } from './production-statuses.mapper';
 import { StudiosMapper } from './studios.mapper';
 import { SeasonMapper } from './season.mapper';
 import { RatingMapper } from './rating.mapper';
 import { DateMapper } from './date.mapper';
+import { AnimeMapper } from './anime.mapper';
 
 export namespace AnimeDetailsMapper {
 
@@ -17,15 +16,9 @@ export namespace AnimeDetailsMapper {
 	 */
 	export function fromDto(dto: AnimeDetailsDto): AnimeDetails {
 		return {
-			id: dto.id,
-			titleEng: dto.title_eng,
-			titleJpn: dto.title_jpn,
-			thumbnailUrl: dto.image,
+			...AnimeMapper.fromDto(dto),
 			airing: dto.airing,
-			airedStartDate: DateMapper.fromDto(dto.aired.start),
 			airedEndDate: DateMapper.fromDto(dto.aired.end),
-			type: DistributionTypesMapper.fromDto(dto.type),
-			status: ProductionStatusesMapper.fromDto(dto.status),
 			studios: dto.studios_data.map(el => StudiosMapper.fromDto(el)),
 			genres: dto.genres_data.map(el => GenreMapper.fromDto(el)),
 			rating: RatingMapper.fromDto(dto.rating),

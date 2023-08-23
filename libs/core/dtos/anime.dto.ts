@@ -33,8 +33,8 @@ export interface AnimeDto {
 	readonly status: ProductionStatusesDto;
 
 	/** General anime rating. */
-	readonly score: number;
+	readonly score: number | null;
 
 	/** Amine rating specified by the user. */
-	readonly user_score: number;
+	readonly user_score: number | null;
 }

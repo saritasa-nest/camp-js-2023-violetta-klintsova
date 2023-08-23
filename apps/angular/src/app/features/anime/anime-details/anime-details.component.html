@@ -57,7 +57,7 @@
         <div class="detail">
           <div>Studios</div>
           <div class="genre-list">
-            <span *ngFor="let studio of details.studios" class="studio">
+            <span *ngFor="let studio of details.studios; trackBy: trackById" class="studio">
               {{ studio.name }}
             </span>
           </div>
@@ -65,7 +65,7 @@
         <div class="detail">
           <div>Genres</div>
           <div class="genres-list">
-            <span *ngFor="let genre of details.genres" class="genre">
+            <span *ngFor="let genre of details.genres; trackBy: trackById" class="genre">
               {{ genre.name }}
             </span>
           </div>
