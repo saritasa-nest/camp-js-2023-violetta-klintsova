@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { GenresService } from '@js-camp/angular/core/services/genres.service';
+import { StudiosService } from '@js-camp/angular/core/services/studios.service';
 
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 import { Genre } from '@js-camp/core/models/genre';
@@ -6,6 +8,7 @@ import { ProductionStatuses } from '@js-camp/core/models/production-statuses';
 import { Rating } from '@js-camp/core/models/rating';
 import { Season } from '@js-camp/core/models/season';
 import { Source } from '@js-camp/core/models/source';
+import { Studio } from '@js-camp/core/models/studio';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -16,8 +19,13 @@ import { Source } from '@js-camp/core/models/source';
 })
 export class AddEditComponent {
 
-	/** Interface for genre input. */
-	public readonly genre = Genre;
+	public inputGenreData: Genre[] = [];
+
+	public inputStudiosData: Studio[] = [];
+
+	// public genresService = inject(GenresService);
+
+	// public studiosService = inject(StudiosService);
 
 	/** Options for select inputs. */
 	protected options = {

@@ -1,21 +1,41 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	Input,
+	OnChanges,
+	OnInit,
+	Output,
+	ViewChild,
+	inject,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
 
+import { Pagination } from '@js-camp/core/models/pagination';
 import { GenresService } from '@js-camp/angular/core/services/genres.service';
 import { Genre } from '@js-camp/core/models/genre';
-import { Pagination } from '@js-camp/core/models/pagination';
+import { EventEmitter } from 'stream';
 
 /** Chips with autocomplete. */
 @Component({
-	selector: 'camp-studios-input',
+	selector: 'camp-autocomplete-input',
 	templateUrl: './genres-input.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GenresInputComponent implements OnInit {
+export class GenresInputComponent<T> implements OnChanges {
+
+	@Input() public selectedItems: T[] = [];
+
+	@Input()
+	public searchFunction: (query: string) => Observable<T>;
+
+	@Output()
+	public readonly added = new EventEmitter<T | string>();
 
 	/** Separator key codes. */
 	protected separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -23,24 +43,26 @@ export class GenresInputComponent implements OnInit {
 	/** Genres input element. */
 	@ViewChild('genresInput') protected genresInput!: ElementRef<HTMLInputElement>;
 
-	/** Selected genres. */
-	protected selectedItems: Genre[] = [];
-
 	/** Genres input. */
 	protected inputControl = new FormControl();
 
 	/** Genres observable. */
-	protected response$!: Observable<Pagination<Genre>>;
+	protected response$!: Observable<T>;
 
-	public constructor(private readonly service: GenresService, private readonly changeDetector: ChangeDetectorRef) {}
+	private service = inject(GenresService);
+
+	public constructor(
+		private readonly changeDetector: ChangeDetectorRef,
+	) {
+	}
 
 	/** @inheritdoc */
-	public ngOnInit(): void {
+	public ngOnChanges(): void {
 		this.response$ = this.inputControl.valueChanges.pipe(
 			filter(res => res !== null && res.length >= 0),
 			distinctUntilChanged(),
 			debounceTime(500),
-			switchMap(searchValue => this.service.fetchGenres(searchValue)),
+			switchMap(searchValue => this.searchFunction(searchValue)),
 		);
 	}
 
@@ -59,23 +81,23 @@ export class GenresInputComponent implements OnInit {
 	 * @param event Event.
 	 */
 	protected add(event: MatChipInputEvent): void {
-		const genre = (event.value || '').trim().toUpperCase();
+		const item = (event.value || '').trim().toUpperCase();
 
-		if (genre) {
-			this.service.addGenre(genre).subscribe(res => {
-				this.changeDetector.markForCheck();
-				this.selectedItems.push(res);
-				event.chipInput.clear();
-				this.inputControl.setValue(null);
-			});
-		}
+		// if (item) {
+		// 	this.service.addItem(item).subscribe(res => {
+		// 		this.changeDetector.markForCheck();
+		// 		this.selectedItems.push(res);
+		// 		event.chipInput.clear();
+		// 		this.inputControl.setValue(null);
+		// 	});
+		// }
 	}
 
 	/**
 	 * Removes item from selected ones.
 	 * @param item Genre.
 	 */
-	protected remove(item: Genre): void {
+	protected remove(item: T): void {
 		const index = this.selectedItems.indexOf(item);
 
 		if (index >= 0) {

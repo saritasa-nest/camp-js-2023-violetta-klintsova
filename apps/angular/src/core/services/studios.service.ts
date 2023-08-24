@@ -23,7 +23,7 @@ export class StudiosService {
 	 * Fetches studios.
 	 * @param searchValue Search value.
 	 */
-	public fetchStudios(searchValue: string): Observable<Pagination<Studio>> {
+	public fetchAll(searchValue: string): Observable<Pagination<Studio>> {
 		const url = new URL('anime/studios/', this.apiUrl).toString();
 
 		let httpParams = new HttpParams();
@@ -40,7 +40,7 @@ export class StudiosService {
 	 * Adds new studio.
 	 * @param studioName Studio.
 	 */
-	public addStudio(studioName: string): Observable<Studio> {
+	public addItem(studioName: string): Observable<Studio> {
 		const url = new URL('anime/studios/', this.apiUrl).toString();
 		return this.http.post<StudioDto>(url, { name: studioName }).pipe(map(el => StudiosMapper.fromDto(el)));
 	}

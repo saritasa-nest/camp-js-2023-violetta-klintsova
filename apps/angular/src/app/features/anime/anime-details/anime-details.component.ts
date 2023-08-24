@@ -7,10 +7,10 @@ import { AnimeDetails } from '@js-camp/core/models/anime-details';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { ImageDialogData } from '@js-camp/core/models/image-dialog-data';
 import { Studio } from '@js-camp/core/models/studio';
+import { DeleteConfirmationData } from '@js-camp/core/models/delete-confirmation-data';
 
 import { ImageDialogComponent } from './image-dialog/image-dialog.component';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
-import { DeleteConfirmationData } from '@js-camp/core/models/delete-confirmation-data';
 
 /** Anime details component. */
 @Component({

@@ -23,7 +23,7 @@ export class GenresService {
 	 * Fetches genres.
 	 * @param searchValue Search value.
 	 */
-	public fetchGenres(searchValue: string): Observable<Pagination<Genre>> {
+	public fetchAll(searchValue: string): Observable<Pagination<Genre>> {
 		const url = new URL('anime/genres/', this.apiUrl).toString();
 		let httpParams = new HttpParams();
 
@@ -40,7 +40,7 @@ export class GenresService {
 	 * Adds new genre.
 	 * @param genreName Genre.
 	 */
-	public addGenre(genreName: string): Observable<Genre> {
+	public addItem(genreName: string): Observable<Genre> {
 		const url = new URL('anime/genres/', this.apiUrl).toString();
 		return this.http
 			.post<GenreDto>(url, { name: genreName, type: 'GENRES' })
