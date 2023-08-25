@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Observable, map } from 'rxjs';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
 import { GenresService } from '@js-camp/angular/core/services/genres.service';
 import { StudiosService } from '@js-camp/angular/core/services/studios.service';
-
+import { AutoCompleteData } from '@js-camp/core/models/autocomplete-data';
 import { DistributionTypes } from '@js-camp/core/models/distribution-types';
 import { Genre } from '@js-camp/core/models/genre';
 import { ProductionStatuses } from '@js-camp/core/models/production-statuses';
@@ -19,13 +21,23 @@ import { Studio } from '@js-camp/core/models/studio';
 })
 export class AddEditComponent {
 
-	public inputGenreData: Genre[] = [];
+	/** Genre input. */
+	public genreAutocomplete: AutoCompleteData<Genre> = {
+		title: 'Genres',
+		defaultData: [],
+		search: (query: string): Observable<Genre[]> => this.genresService.fetchAll(query).pipe(map(el => el.results)),
+		addItem: (item: string): Observable<Genre> => this.genresService.addItem(item),
+	};
 
-	public inputStudiosData: Studio[] = [];
+	/** Studio input. */
+	public studioAutocomplete: AutoCompleteData<Studio> = {
+		title: 'Studios',
+		defaultData: [],
+		search: (query: string): Observable<Studio[]> => this.studioService.fetchAll(query).pipe(map(el => el.results)),
+		addItem: (item: string): Observable<Studio> => this.studioService.addItem(item),
+	};
 
-	// public genresService = inject(GenresService);
-
-	// public studiosService = inject(StudiosService);
+	public constructor(private readonly genresService: GenresService, private readonly studioService: StudiosService) {}
 
 	/** Options for select inputs. */
 	protected options = {

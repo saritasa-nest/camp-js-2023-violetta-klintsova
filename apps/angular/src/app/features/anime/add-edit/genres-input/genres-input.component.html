@@ -1,10 +1,10 @@
 <mat-form-field>
-  <mat-label>Genres</mat-label>
+  <mat-label>{{inputManagement.title}}</mat-label>
   <mat-chip-grid #chipGrid>
-    <mat-chip-row *ngFor="let genre of selectedItems" (removed)="remove(genre)"
+    <mat-chip-row *ngFor="let item of inputManagement.defaultData" (removed)="remove(item)"
 >
-      {{ genre.name }}
-      <button type="button" matChipRemove [attr.aria-label]="'remove ' + genre">
+      {{ item.name }}
+      <button type="button" matChipRemove [attr.aria-label]="'remove ' + item">
         <mat-icon>cancel</mat-icon>
       </button>
     </mat-chip-row>
@@ -12,7 +12,7 @@
 
   <input
     matInput
-    #genresInput
+    #autocompleteInput
     type="text"
     [formControl]="inputControl"
     [matAutocomplete]="auto"
@@ -24,9 +24,9 @@
     #auto="matAutocomplete"
     (optionSelected)="select($event)"
   >
-    <ng-container *ngIf="response$ | async as genres">
-      <mat-option *ngFor="let genre of genres.results" [value]="genre">
-        {{ genre.name }}
+    <ng-container *ngIf="response$ | async as items">
+      <mat-option *ngFor="let item of items" [value]="item">
+        {{ item.name }}
       </mat-option>
     </ng-container>
   </mat-autocomplete>

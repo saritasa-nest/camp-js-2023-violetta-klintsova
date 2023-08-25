@@ -82,14 +82,8 @@
       <input matInput type="text" />
     </mat-form-field>
 
-    <camp-autocomplete-input [selectedItems]="inputGenreData" (added)=""/>
-
-    <mat-form-field>
-      <mat-label>Studios</mat-label>
-      <mat-select multiple>
-        <mat-option></mat-option>
-      </mat-select>
-    </mat-form-field>
+    <camp-autocomplete-input [inputManagement]="genreAutocomplete"/>
+    <camp-autocomplete-input [inputManagement]="studioAutocomplete"/>
 
     <div class="date-range flex">
       <mat-form-field>

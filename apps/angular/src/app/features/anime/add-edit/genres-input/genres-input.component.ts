@@ -5,21 +5,20 @@ import {
 	ElementRef,
 	Input,
 	OnChanges,
-	OnInit,
-	Output,
 	ViewChild,
-	inject,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { AutoCompleteData } from '@js-camp/core/models/autocomplete-data';
 
-import { Pagination } from '@js-camp/core/models/pagination';
-import { GenresService } from '@js-camp/angular/core/services/genres.service';
-import { Genre } from '@js-camp/core/models/genre';
-import { EventEmitter } from 'stream';
+interface Item {
+
+	/** Name. */
+	name: string;
+}
 
 /** Chips with autocomplete. */
 @Component({
@@ -27,34 +26,25 @@ import { EventEmitter } from 'stream';
 	templateUrl: './genres-input.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GenresInputComponent<T> implements OnChanges {
+export class GenresInputComponent<T extends Item> implements OnChanges {
 
-	@Input() public selectedItems: T[] = [];
-
+	/** Data for autocomplete. */
 	@Input()
-	public searchFunction: (query: string) => Observable<T>;
-
-	@Output()
-	public readonly added = new EventEmitter<T | string>();
+	public inputManagement!: AutoCompleteData<T>;
 
 	/** Separator key codes. */
 	protected separatorKeysCodes: number[] = [ENTER, COMMA];
 
 	/** Genres input element. */
-	@ViewChild('genresInput') protected genresInput!: ElementRef<HTMLInputElement>;
+	@ViewChild('autocompleteInput') protected genericInput!: ElementRef<HTMLInputElement>;
 
 	/** Genres input. */
 	protected inputControl = new FormControl();
 
 	/** Genres observable. */
-	protected response$!: Observable<T>;
+	protected response$!: Observable<T[]>;
 
-	private service = inject(GenresService);
-
-	public constructor(
-		private readonly changeDetector: ChangeDetectorRef,
-	) {
-	}
+	public constructor(private readonly changeDetector: ChangeDetectorRef) {}
 
 	/** @inheritdoc */
 	public ngOnChanges(): void {
@@ -62,7 +52,7 @@ export class GenresInputComponent<T> implements OnChanges {
 			filter(res => res !== null && res.length >= 0),
 			distinctUntilChanged(),
 			debounceTime(500),
-			switchMap(searchValue => this.searchFunction(searchValue)),
+			switchMap(searchValue => this.inputManagement.search(searchValue)),
 		);
 	}
 
@@ -71,8 +61,8 @@ export class GenresInputComponent<T> implements OnChanges {
 	 * @param event Event.
 	 */
 	protected select(event: MatAutocompleteSelectedEvent): void {
-		this.selectedItems.push(event.option.value);
-		this.genresInput.nativeElement.value = '';
+		this.inputManagement.defaultData.push(event.option.value);
+		this.genericInput.nativeElement.value = '';
 		this.inputControl.setValue(null);
 	}
 
@@ -83,14 +73,14 @@ export class GenresInputComponent<T> implements OnChanges {
 	protected add(event: MatChipInputEvent): void {
 		const item = (event.value || '').trim().toUpperCase();
 
-		// if (item) {
-		// 	this.service.addItem(item).subscribe(res => {
-		// 		this.changeDetector.markForCheck();
-		// 		this.selectedItems.push(res);
-		// 		event.chipInput.clear();
-		// 		this.inputControl.setValue(null);
-		// 	});
-		// }
+		if (item) {
+			this.inputManagement.addItem(item).subscribe(res => {
+				this.changeDetector.markForCheck();
+				this.inputManagement.defaultData.push(res);
+				event.chipInput.clear();
+				this.inputControl.setValue(null);
+			});
+		}
 	}
 
 	/**
@@ -98,10 +88,9 @@ export class GenresInputComponent<T> implements OnChanges {
 	 * @param item Genre.
 	 */
 	protected remove(item: T): void {
-		const index = this.selectedItems.indexOf(item);
-
+		const index = this.inputManagement.defaultData.indexOf(item);
 		if (index >= 0) {
-			this.selectedItems.splice(index, 1);
+			this.inputManagement.defaultData.splice(index, 1);
 		}
 	}
 }
