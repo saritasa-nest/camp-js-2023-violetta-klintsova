@@ -24,6 +24,10 @@ export class AuthInterceptor implements HttpInterceptor {
 			return next.handle(request);
 		}
 
+				if (request.url === 'https://s3.us-west-2.amazonaws.com/camp-js-backend-files-dev') {
+					return next.handle(request);
+				}
+
 		const requestWithToken = request.clone({
 			headers: request.headers.set('Authorization', `Bearer ${accessToken}`),
 		});
