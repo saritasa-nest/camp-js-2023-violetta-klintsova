@@ -65,6 +65,6 @@ export class S3Service {
 				map(params => this.getFormData(params, file)),
 				switchMap(({ url, formData }) => this.uploadToS3Bucket(url, formData)),
 				map((res: string) => XMLResponseMapper.fromDto(res)),
-			);
+			)
 	}
 }

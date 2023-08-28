@@ -1,6 +1,7 @@
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 import { GenresService } from '@js-camp/angular/core/services/genres.service';
 import { StudiosService } from '@js-camp/angular/core/services/studios.service';
@@ -12,7 +13,7 @@ import { Rating } from '@js-camp/core/models/rating';
 import { Season } from '@js-camp/core/models/season';
 import { Source } from '@js-camp/core/models/source';
 import { Studio } from '@js-camp/core/models/studio';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { S3Service } from '@js-camp/angular/core/services/s3.service';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -22,7 +23,6 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditComponent {
-
 	private imageFile: File | null = null;
 
 	/** Genre input. */
@@ -57,6 +57,7 @@ export class AddEditComponent {
 		private readonly genresService: GenresService,
 		private readonly studioService: StudiosService,
 		private readonly fb: FormBuilder,
+		private readonly s3Service: S3Service,
 	) {
 		this.animeForm = this.fb.group({
 			titleEng: [''],
@@ -73,12 +74,13 @@ export class AddEditComponent {
 			startDate: [null],
 			endDate: [null],
 			airing: [''],
-			file: [null],
+			image: [null],
 		});
 	}
 
 	/** Add a new anime. */
 	protected onSubmit(): void {
+		this.uploadImage();
 		console.log(this.animeForm.getRawValue());
 	}
 
@@ -111,4 +113,16 @@ export class AddEditComponent {
 		this.imageFile = e;
 	}
 
+	/** Goes to the service to upload an image. */
+	private uploadImage(): void {
+		if (this.imageFile) {
+			this.s3Service.uploadImage(this.imageFile).subscribe(res => {
+				this.animeForm.get('image')?.setValue(res);
+			});
+		}
+	}
+
+	// TODO Probably concatMap could be used in this case
+	// One request after another
+	// Requires some research
 }
