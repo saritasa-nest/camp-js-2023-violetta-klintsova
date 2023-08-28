@@ -1,21 +1,21 @@
 <div class="wrapper">
   <h2 class="heading">Add new anime</h2>
 
-  <form class="form">
+  <form class="form" [formGroup]="animeForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Title (eng)</mat-label>
-      <input matInput type="text" />
+      <input matInput type="text" formControlName="titleEng"/>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Title (jpn)</mat-label>
-      <input matInput type="text" />
+      <input matInput type="text" formControlName="titleJpn"/>
     </mat-form-field>
 
     <div class="flex">
       <mat-form-field>
         <mat-label>Type</mat-label>
-        <mat-select>
+        <mat-select formControlName="type">
           <mat-option *ngFor="let option of options.type" value="{{ option }}">
             {{ option | titlecase }}
           </mat-option>
@@ -24,7 +24,7 @@
 
       <mat-form-field>
         <mat-label>Rating</mat-label>
-        <mat-select>
+        <mat-select formControlName="rating">
           <mat-option
             *ngFor="let option of options.rating"
             value="{{ option }}"
@@ -36,7 +36,7 @@
 
       <mat-form-field>
         <mat-label>Source</mat-label>
-        <mat-select>
+        <mat-select formControlName="source">
           <mat-option
             *ngFor="let option of options.source"
             value="{{ option }}"
@@ -49,7 +49,7 @@
     <div class="flex">
       <mat-form-field>
         <mat-label>Status</mat-label>
-        <mat-select>
+        <mat-select formControlName="status">
           <mat-option
             *ngFor="let option of options.status"
             value="{{ option }}"
@@ -61,7 +61,7 @@
 
       <mat-form-field>
         <mat-label>Season</mat-label>
-        <mat-select>
+        <mat-select formControlName="season">
           <mat-option
             *ngFor="let option of options.season"
             value="{{ option }}"
@@ -74,12 +74,12 @@
 
     <mat-form-field>
       <mat-label>Synopsis</mat-label>
-      <textarea matInput name="" id="" cols="30" rows="2"></textarea>
+      <textarea matInput name="" id="" cols="30" rows="2" formControlName="synopsis"></textarea>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Youtube trailer ID</mat-label>
-      <input matInput type="text" />
+      <input matInput type="text" formControlName="youtubeTrailer"/>
     </mat-form-field>
 
     <camp-autocomplete-input [inputManagement]="genreAutocomplete"/>
@@ -88,7 +88,7 @@
     <div class="date-range flex">
       <mat-form-field>
         <mat-label>Anime start date</mat-label>
-        <input matInput [matDatepicker]="picker1" />
+        <input matInput [matDatepicker]="picker1" formControlName="startDate" (dateChange)="printDate($event)"/>
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle
           matIconSuffix
@@ -99,7 +99,7 @@
 
       <mat-form-field>
         <mat-label>Anime end date</mat-label>
-        <input matInput [matDatepicker]="picker2" />
+        <input matInput [matDatepicker]="picker2" formControlName="endDate" (dateChange)="printDate($event)"/>
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle
           matIconSuffix
@@ -110,14 +110,14 @@
     </div>
     <div class="airing">
       <label class="example-margin">Airing</label>
-      <mat-radio-group>
+      <mat-radio-group formControlName="airing">
         <mat-radio-button value="true">Yes</mat-radio-button>
         <mat-radio-button value="false">No</mat-radio-button>
       </mat-radio-group>
     </div>
 
     <camp-file-uploader />
+    <button mat-raised-button color="primary" type="submit">Submit</button>
   </form>
 
-  <button mat-raised-button color="primary" type="button">Submit</button>
 </div>

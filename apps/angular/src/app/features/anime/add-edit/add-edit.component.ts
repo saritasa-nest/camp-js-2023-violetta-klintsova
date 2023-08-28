@@ -1,5 +1,6 @@
 import { Observable, map } from 'rxjs';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { GenresService } from '@js-camp/angular/core/services/genres.service';
 import { StudiosService } from '@js-camp/angular/core/services/studios.service';
@@ -11,6 +12,7 @@ import { Rating } from '@js-camp/core/models/rating';
 import { Season } from '@js-camp/core/models/season';
 import { Source } from '@js-camp/core/models/source';
 import { Studio } from '@js-camp/core/models/studio';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -20,7 +22,6 @@ import { Studio } from '@js-camp/core/models/studio';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditComponent {
-
 	/** Genre input. */
 	public genreAutocomplete: AutoCompleteData<Genre> = {
 		title: 'Genres',
@@ -37,8 +38,6 @@ export class AddEditComponent {
 		addItem: (item: string): Observable<Studio> => this.studioService.addItem(item),
 	};
 
-	public constructor(private readonly genresService: GenresService, private readonly studioService: StudiosService) {}
-
 	/** Options for select inputs. */
 	protected options = {
 		type: Object.values(DistributionTypes),
@@ -47,4 +46,42 @@ export class AddEditComponent {
 		rating: Object.values(Rating),
 		season: Object.values(Season),
 	};
+
+	/** Anime form. */
+	protected readonly animeForm: FormGroup;
+
+	public constructor(
+		private readonly genresService: GenresService,
+		private readonly studioService: StudiosService,
+		private readonly fb: FormBuilder,
+	) {
+		this.animeForm = this.fb.group({
+			titleEng: [''],
+			titleJpn: [''],
+			type: [''],
+			rating: [''],
+			source: [''],
+			status: [''],
+			season: [''],
+			synopsis: [''],
+			youtubeTrailer: [''],
+			genres: [[]],
+			studios: [[]],
+			startDate: [null],
+			endDate: [null],
+			airing: [''],
+			file: [null],
+		});
+	}
+
+	/** Add a new anime. */
+	protected onSubmit(): void {
+		console.log(this.animeForm);
+		console.log(this.animeForm.getRawValue());
+	}
+
+	protected printDate(event: MatDatepickerInputEvent<Date>) {
+		console.log(event);
+		console.log(event.value);
+	}
 }

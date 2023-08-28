@@ -21,7 +21,7 @@ export class S3Service {
 	 * @param contentType Content type.
 	 * @param file File.
 	 */
-	public getUploadParams(file: File): Observable<S3ResponseDto> {
+	private getUploadParams(file: File): Observable<S3ResponseDto> {
 		const url = new URL('s3direct/get_params/', this.apiUrl).toString();
 
 		return this.http.post<S3ResponseDto>(url, { dest: 'anime_images', filename: file.name, content_type: file.type });
