@@ -22,6 +22,9 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditComponent {
+
+	private imageFile: File | null = null;
+
 	/** Genre input. */
 	public genreAutocomplete: AutoCompleteData<Genre> = {
 		title: 'Genres',
@@ -98,6 +101,14 @@ export class AddEditComponent {
 	 */
 	protected onStudiosChange(e: Studio[]): void {
 		this.animeForm.get('studios')?.setValue(e);
+	}
+
+	/**
+	 * Saves a file.
+	 * @param e File (image).
+	 */
+	protected onFileSelection(e: File): void {
+		this.imageFile = e;
 	}
 
 }

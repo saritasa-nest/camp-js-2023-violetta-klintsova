@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 /** File uploader. */
 @Component({
@@ -7,6 +7,10 @@ import { Component } from '@angular/core';
 	styleUrls: ['./file-uploader.component.css'],
 })
 export class FileUploaderComponent {
+
+	/** Emitter for the selected file. */
+	@Output() public selectedFile = new EventEmitter<File>();
+
 	/** File name. */
 	protected fileName = '';
 
@@ -22,6 +26,7 @@ export class FileUploaderComponent {
 
 		if (target.files) {
 			this.file = target.files[0];
+			this.selectedFile.emit(this.file);
 			this.fileName = this.file.name;
 		}
 	}

@@ -116,7 +116,7 @@
       </mat-radio-group>
     </div>
 
-    <camp-file-uploader />
+    <camp-file-uploader (selectedFile)="onFileSelection($event)" />
     <button mat-raised-button color="primary" type="submit">Submit</button>
   </form>
 
