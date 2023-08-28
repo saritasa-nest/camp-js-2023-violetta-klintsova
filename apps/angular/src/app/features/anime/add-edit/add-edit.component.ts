@@ -25,7 +25,7 @@ export class AddEditComponent {
 	/** Genre input. */
 	public genreAutocomplete: AutoCompleteData<Genre> = {
 		title: 'Genres',
-		defaultData: [],
+		items: [],
 		search: (query: string): Observable<Genre[]> => this.genresService.fetchAll(query).pipe(map(el => el.results)),
 		addItem: (item: string): Observable<Genre> => this.genresService.addItem(item),
 	};
@@ -33,7 +33,7 @@ export class AddEditComponent {
 	/** Studio input. */
 	public studioAutocomplete: AutoCompleteData<Studio> = {
 		title: 'Studios',
-		defaultData: [],
+		items: [],
 		search: (query: string): Observable<Studio[]> => this.studioService.fetchAll(query).pipe(map(el => el.results)),
 		addItem: (item: string): Observable<Studio> => this.studioService.addItem(item),
 	};
@@ -84,4 +84,6 @@ export class AddEditComponent {
 		console.log(event);
 		console.log(event.value);
 	}
+
+
 }

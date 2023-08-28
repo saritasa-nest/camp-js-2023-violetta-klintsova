@@ -4,8 +4,10 @@ import {
 	Component,
 	ElementRef,
 	Input,
+	Output,
 	OnChanges,
 	ViewChild,
+	EventEmitter,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -28,6 +30,9 @@ interface Item {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AutocompleteInputComponent<T extends Item> implements OnChanges {
+
+	/** Selected items to be send up to the parent component. */
+	@Output() public selectedItems = new EventEmitter<T[]>();
 
 	/** Data for autocomplete. */
 	@Input()
@@ -62,9 +67,10 @@ export class AutocompleteInputComponent<T extends Item> implements OnChanges {
 	 * @param event Event.
 	 */
 	protected select(event: MatAutocompleteSelectedEvent): void {
-		this.inputManagement.defaultData.push(event.option.value);
+		this.inputManagement.items.push(event.option.value);
 		this.genericInput.nativeElement.value = '';
 		this.inputControl.setValue(null);
+		this.selectedItems.emit(this.inputManagement.items);
 	}
 
 	/**
@@ -77,9 +83,10 @@ export class AutocompleteInputComponent<T extends Item> implements OnChanges {
 		if (item) {
 			this.inputManagement.addItem(item).subscribe(res => {
 				this.changeDetector.markForCheck();
-				this.inputManagement.defaultData.push(res);
+				this.inputManagement.items.push(res);
 				event.chipInput.clear();
 				this.inputControl.setValue(null);
+				this.selectedItems.emit(this.inputManagement.items);
 			});
 		}
 	}
@@ -89,9 +96,10 @@ export class AutocompleteInputComponent<T extends Item> implements OnChanges {
 	 * @param item Genre.
 	 */
 	protected remove(item: T): void {
-		const index = this.inputManagement.defaultData.indexOf(item);
+		const index = this.inputManagement.items.indexOf(item);
 		if (index >= 0) {
-			this.inputManagement.defaultData.splice(index, 1);
+			this.inputManagement.items.splice(index, 1);
+			this.selectedItems.emit(this.inputManagement.items);
 		}
 	}
 }

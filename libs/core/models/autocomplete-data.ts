@@ -7,7 +7,7 @@ export interface AutoCompleteData<T> {
 	title: string;
 
 	/** Default values. */
-	defaultData: T[];
+	items: T[];
 
 	/** Search callback. */
 	search: (query: string) => Observable<T[]>;
