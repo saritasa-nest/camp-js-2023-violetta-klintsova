@@ -82,8 +82,8 @@
       <input matInput type="text" formControlName="youtubeTrailer"/>
     </mat-form-field>
 
-    <camp-autocomplete-input [inputManagement]="genreAutocomplete"/>
-    <camp-autocomplete-input [inputManagement]="studioAutocomplete"/>
+    <camp-autocomplete-input (selectedItems)="onGenresChange($event)" [inputManagement]="genreAutocomplete"/>
+    <camp-autocomplete-input (selectedItems)="onStudiosChange($event)" [inputManagement]="studioAutocomplete"/>
 
     <div class="date-range flex">
       <mat-form-field>

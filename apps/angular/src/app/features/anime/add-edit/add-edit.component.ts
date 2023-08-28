@@ -76,7 +76,6 @@ export class AddEditComponent {
 
 	/** Add a new anime. */
 	protected onSubmit(): void {
-		console.log(this.animeForm);
 		console.log(this.animeForm.getRawValue());
 	}
 
@@ -85,5 +84,20 @@ export class AddEditComponent {
 		console.log(event.value);
 	}
 
+	/**
+	 * Assigns genres to the control.
+	 * @param e List of selected genres.
+	 */
+	protected onGenresChange(e: Genre[]): void {
+		this.animeForm.get('genres')?.setValue(e);
+	}
+
+	/**
+	 * Assigns studios to the control.
+	 * @param e List of selected studios.
+	 */
+	protected onStudiosChange(e: Studio[]): void {
+		this.animeForm.get('studios')?.setValue(e);
+	}
 
 }
