@@ -27,7 +27,7 @@ import { AnimeDetailsComponent } from './anime-details/anime-details.component';
 import { ImageDialogComponent } from './anime-details/image-dialog/image-dialog.component';
 import { AddEditComponent } from './add-edit/add-edit.component';
 import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog/confirmation-dialog.component';
-import { GenresInputComponent } from './add-edit/genres-input/genres-input.component';
+import { AutocompleteInputComponent } from './add-edit/autocomplete-input/autocomplete-input.component';
 import { FileUploaderComponent } from './add-edit/file-uploader/file-uploader.component';
 
 /** Anime table module. */
@@ -63,7 +63,7 @@ import { FileUploaderComponent } from './add-edit/file-uploader/file-uploader.co
 		AddEditComponent,
 		ConfirmationDialogComponent,
 		AddEditComponent,
-		GenresInputComponent,
+		AutocompleteInputComponent,
 		FileUploaderComponent,
 		AddEditComponent,
 	],

@@ -12,6 +12,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { MatChipInputEvent } from '@angular/material/chips';
+
 import { AutoCompleteData } from '@js-camp/core/models/autocomplete-data';
 
 interface Item {
@@ -23,10 +24,10 @@ interface Item {
 /** Chips with autocomplete. */
 @Component({
 	selector: 'camp-autocomplete-input',
-	templateUrl: './genres-input.component.html',
+	templateUrl: './autocomplete-input.component.html',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GenresInputComponent<T extends Item> implements OnChanges {
+export class AutocompleteInputComponent<T extends Item> implements OnChanges {
 
 	/** Data for autocomplete. */
 	@Input()
