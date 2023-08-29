@@ -78,4 +78,14 @@ export class AnimeService {
 		const url = new URL('anime/anime/', this.apiUrl).toString();
 		return this.http.post<AnimeDetailsDto>(url, anime).pipe(map(el => AnimeDetailsMapper.fromDto(el)));
 	}
+
+	/**
+	 * Edit an existing anime.
+	 * @param anime Anime details.
+	 * @param id Anime ID.
+	 */
+	public editAnime(anime: AnimeFormDto, id: Anime['id']): Observable<AnimeDetails> {
+		const url = new URL(`anime/anime/${id}/`, this.apiUrl).toString();
+		return this.http.put<AnimeDetailsDto>(url, anime).pipe(map(el => AnimeDetailsMapper.fromDto(el)));
+	}
 }
