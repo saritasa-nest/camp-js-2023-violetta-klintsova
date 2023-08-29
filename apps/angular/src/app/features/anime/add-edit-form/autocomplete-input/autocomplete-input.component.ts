@@ -8,6 +8,7 @@ import {
 	OnChanges,
 	ViewChild,
 	EventEmitter,
+	OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -27,7 +28,6 @@ interface Item {
 @Component({
 	selector: 'camp-autocomplete-input',
 	templateUrl: './autocomplete-input.component.html',
-	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AutocompleteInputComponent<T extends Item> implements OnChanges {
 
@@ -49,8 +49,6 @@ export class AutocompleteInputComponent<T extends Item> implements OnChanges {
 
 	/** Genres observable. */
 	protected response$!: Observable<T[]>;
-
-	public constructor(private readonly changeDetector: ChangeDetectorRef) {}
 
 	/** @inheritdoc */
 	public ngOnChanges(): void {
@@ -82,7 +80,6 @@ export class AutocompleteInputComponent<T extends Item> implements OnChanges {
 
 		if (item) {
 			this.inputManagement.addItem(item).subscribe(res => {
-				this.changeDetector.markForCheck();
 				this.inputManagement.items.push(res);
 				event.chipInput.clear();
 				this.inputControl.setValue(null);

@@ -134,6 +134,8 @@ export class AddEditFormComponent implements OnInit {
 					this.studioAutocomplete.items = details.studios;
 					this.animeForm.get('genres')?.patchValue(this.genreAutocomplete.items);
 					this.animeForm.get('studios')?.patchValue(this.studioAutocomplete.items);
+
+					this.animeForm.get('airing')?.patchValue(details.airing.toString());
 					
 					this.imageName = getImageName(details.thumbnailUrl);
 					console.log(this.animeForm.getRawValue());
