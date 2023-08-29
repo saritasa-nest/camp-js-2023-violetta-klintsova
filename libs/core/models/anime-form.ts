@@ -15,47 +15,47 @@ export type AnimeNullableForm = {
 export interface AnimeForm {
 
 	/** Title (eng). */
-	titleEng: string;
+	readonly titleEng: string;
 
 	/** Title (jpn). */
-	titleJpn: string;
+	readonly titleJpn: string;
 
 	/** Type. */
-	type: DistributionTypes;
+	readonly type: DistributionTypes;
 
 	/** Rating. */
-	rating: Rating;
+	readonly rating: Rating;
 
 	/** Source. */
-	source: Source;
+	readonly source: Source;
 
 	/** Status. */
-	status: ProductionStatuses;
+	readonly status: ProductionStatuses;
 
 	/** Season. */
-	season: Season;
+	readonly season: Season;
 
 	/** Synopsis. */
-	synopsis: string;
+	readonly synopsis: string;
 
 	/** Youtube trailer ID. */
-	youtubeTrailer: string;
+	readonly youtubeTrailer: string;
 
 	/** Genres. */
-	genres: Genre[];
+	readonly genres: Genre[];
 
 	/** Studios. */
-	studios: Studio[];
+	readonly studios: Studio[];
 
 	/** Airing start date. */
-	startDate: Date | null;
+	readonly startDate: Date | null;
 
 	/** Airing end date. */
-	endDate: Date | null;
+	readonly endDate: Date | null;
 
 	/** Airing. */
-	airing: 'true' | 'false' | '';
+	readonly airing: boolean;
 
 	/** Image file. */
-	image: string;
+	readonly image: string;
 }

@@ -6,18 +6,9 @@
 }
 
 .form {
-  margin-bottom: 40px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.wrapper {
-  padding: 20px 0;
-}
-
-.heading {
-  padding: 10px 0 20px;
 }
 
 .date-range {

@@ -15,10 +15,10 @@ export interface AnimeDetails extends Anime {
 	readonly airedEndDate: Date | null;
 
 	/** List of studios. */
-	readonly studios: readonly Studio[];
+	readonly studios: Studio[];
 
 	/** List of genres. */
-	readonly genres: readonly Genre[];
+	readonly genres: Genre[];
 
 	/** Rating. */
 	readonly rating: Rating;

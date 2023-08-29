@@ -34,6 +34,30 @@ export namespace AnimeFormMapper {
 		};
 	}
 
+	// /**
+	//  * Maps anime details to anime form.
+	//  * @param data Anime details dto.
+	//  */
+	// export function toAnimeForm(data: AnimeDetails): AnimeForm {
+	// 	return {
+	// 		titleEng: data.titleEng,
+	// 		titleJpn: data.titleJpn,
+	// 		type: data.type,
+	// 		rating: data.rating,
+	// 		source: data.source,
+	// 		status: data.status,
+	// 		season: data.season,
+	// 		synopsis: data.synopsis,
+	// 		youtubeTrailer: data.youtubeTrailerId,
+	// 		genres: data.genres,
+	// 		studios: data.studios,
+	// 		startDate: data.airedStartDate,
+	// 		endDate: data.airedEndDate,
+	// 		airing: data.airing,
+	// 		image: data.thumbnailUrl,
+	// 	};
+	// }
+
 	/**
 	 * Converts an array of genre objects to array of only their IDs.
 	 * @param genres Array of Genre objects.
