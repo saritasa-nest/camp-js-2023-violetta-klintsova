@@ -1,3 +1,4 @@
+import { DateRangeDto } from './date-range.dto';
 import { DistributionTypesDto } from './distribution-types.dto';
 import { ProductionStatusesDto } from './production-statuses.dto';
 import { RatingDto } from './rating.dto';
@@ -10,7 +11,7 @@ export interface AnimeFormDto {
 	/** Title (eng). */
 	readonly title_eng: string;
 
-	/** Title (jpn) */
+	/** Title (jpn). */
 	readonly title_jpn: string;
 
 	/** Type. */
@@ -34,21 +35,17 @@ export interface AnimeFormDto {
 	/** Youtube trailer ID. */
 	readonly trailer_youtube_id: string;
 
-  /** Genres IDs. */
-  readonly genres: number[];
+	/** Genres IDs. */
+	readonly genres: readonly number[];
 
-  /** Studios IDs.. */
-  readonly studios: number[];
+	/** Studios IDs.. */
+	readonly studios: readonly number[];
 
-  /** Airing start date. */
-  readonly startDate: string;
+	readonly aired: DateRangeDto;
 
-  /** Airing end date. */
-  readonly endDate: string;
+	/** Airing. */
+	readonly airing: true | false;
 
-  /** Airing. */
-  readonly airing: true | false;
-
-  /** Image file. */
-  readonly image: string;
+	/** Image file. */
+	readonly image: string;
 }

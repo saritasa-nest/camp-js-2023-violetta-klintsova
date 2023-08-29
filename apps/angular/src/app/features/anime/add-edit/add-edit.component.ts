@@ -14,6 +14,8 @@ import { Season } from '@js-camp/core/models/season';
 import { Source } from '@js-camp/core/models/source';
 import { Studio } from '@js-camp/core/models/studio';
 import { S3Service } from '@js-camp/angular/core/services/s3.service';
+import { AnimeNullableForm } from '@js-camp/core/models/anime-form';
+import { AnimeFormMapper } from '@js-camp/core/mappers/anime-form.mapper';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -59,33 +61,33 @@ export class AddEditComponent {
 		private readonly fb: FormBuilder,
 		private readonly s3Service: S3Service,
 	) {
-		this.animeForm = this.fb.group({
-			titleEng: [''],
-			titleJpn: [''],
-			type: [''],
-			rating: [''],
-			source: [''],
-			status: [''],
-			season: [''],
-			synopsis: [''],
-			youtubeTrailer: [''],
-			genres: [[]],
-			studios: [[]],
-			startDate: [null],
-			endDate: [null],
-			airing: [''],
-			image: [null],
+		this.animeForm = this.fb.group<AnimeNullableForm>({
+			titleEng: '',
+			titleJpn: '',
+			type: null,
+			rating: null,
+			source: null,
+			status: null,
+			season: null,
+			synopsis: '',
+			youtubeTrailer: '',
+			genres: [],
+			studios: [],
+			startDate: null,
+			endDate: null,
+			airing: '',
+			image: null,
 		});
 	}
 
-	/** Add a new anime. */
+	/** Adds a new anime. */
 	protected onSubmit(): void {
 		this.uploadImage();
 		console.log(this.animeForm.getRawValue());
+		console.log(AnimeFormMapper.toDto(this.animeForm.getRawValue()));
 	}
 
 	protected printDate(event: MatDatepickerInputEvent<Date>) {
-		console.log(event);
 		console.log(event.value);
 	}
 
