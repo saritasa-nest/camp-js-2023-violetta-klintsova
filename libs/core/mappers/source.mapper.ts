@@ -21,6 +21,26 @@ const FROM_ANIME_SOURCE_DTO: Readonly<Record<SourceDto, Source>> = {
 	[SourceDto.Unknown]: Source.Unknown,
 };
 
+const TO_ANIME_SOURCE_DTO: Readonly<Record<Source, SourceDto>> = {
+	[Source.FourKomaManga]: SourceDto.FourKomaManga,
+	[Source.Book]: SourceDto.Book,
+	[Source.CardGame]: SourceDto.CardGame,
+	[Source.Game]: SourceDto.Game,
+	[Source.LightNovel]: SourceDto.LightNovel,
+	[Source.Manga]: SourceDto.Manga,
+	[Source.MixedMedia]: SourceDto.MixedMedia,
+	[Source.Music]: SourceDto.Music,
+	[Source.Novel]: SourceDto.Novel,
+	[Source.Original]: SourceDto.Original,
+	[Source.PictureBook]: SourceDto.PictureBook,
+	[Source.Radio]: SourceDto.Radio,
+	[Source.VisualNovel]: SourceDto.VisualNovel,
+	[Source.WebManga]: SourceDto.WebManga,
+	[Source.WebNovel]: SourceDto.WebNovel,
+	[Source.Other]: SourceDto.Other,
+	[Source.Unknown]: SourceDto.Unknown,
+};
+
 /** Anime source mapper. */
 export namespace SourceMapper {
 
@@ -30,5 +50,13 @@ export namespace SourceMapper {
 	 */
 	export function fromDto(data: SourceDto): Source {
 		return FROM_ANIME_SOURCE_DTO[data];
+	}
+
+	/**
+	 * Maps data from model to dto.
+	 * @param data Received data.
+	 */
+	export function toDto(data: Source): SourceDto {
+		return TO_ANIME_SOURCE_DTO[data];
 	}
 }

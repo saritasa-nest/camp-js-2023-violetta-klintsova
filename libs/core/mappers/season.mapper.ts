@@ -9,6 +9,14 @@ const FROM_SEASONS_DTO: Readonly<Record<SeasonDto, Season>> = {
 	[SeasonDto.NonSeasonal]: Season.NonSeasonal,
 };
 
+const TO_SEASONS_DTO: Readonly<Record<Season, SeasonDto>> = {
+	[Season.Summer]: SeasonDto.Summer,
+	[Season.Winter]: SeasonDto.Winter,
+	[Season.Spring]: SeasonDto.Spring,
+	[Season.Fall]: SeasonDto.Fall,
+	[Season.NonSeasonal]: SeasonDto.NonSeasonal,
+};
+
 /** Seasons mapper. */
 export namespace SeasonMapper {
 
@@ -18,5 +26,13 @@ export namespace SeasonMapper {
 	 */
 	export function fromDto(data: SeasonDto): Season {
 		return FROM_SEASONS_DTO[data];
+	}
+
+	/**
+	 * Maps data from model to dto.
+	 * @param data Received data.
+	 */
+	export function toDto(data: Season): SeasonDto {
+		return TO_SEASONS_DTO[data];
 	}
 }
