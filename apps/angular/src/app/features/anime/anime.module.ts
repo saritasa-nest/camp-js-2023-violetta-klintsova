@@ -25,10 +25,12 @@ import { AnimeRoutingModule } from './anime-routing.module';
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { AnimeDetailsComponent } from './anime-details/anime-details.component';
 import { ImageDialogComponent } from './anime-details/image-dialog/image-dialog.component';
-import { AddEditComponent } from './add-edit/add-edit.component';
+import { AddEditComponent } from './add-edit-form/add-edit.component';
 import { ConfirmationDialogComponent } from './anime-details/confirmation-dialog/confirmation-dialog.component';
-import { AutocompleteInputComponent } from './add-edit/autocomplete-input/autocomplete-input.component';
-import { FileUploaderComponent } from './add-edit/file-uploader/file-uploader.component';
+import { AutocompleteInputComponent } from './add-edit-form/autocomplete-input/autocomplete-input.component';
+import { FileUploaderComponent } from './add-edit-form/file-uploader/file-uploader.component';
+import { AddAnimeComponent } from './add-anime/add-anime.component';
+import { EditAnimeComponent } from './edit-anime/edit-anime.component';
 
 /** Anime table module. */
 @NgModule({
@@ -66,6 +68,8 @@ import { FileUploaderComponent } from './add-edit/file-uploader/file-uploader.co
 		AutocompleteInputComponent,
 		FileUploaderComponent,
 		AddEditComponent,
+		AddAnimeComponent,
+		EditAnimeComponent,
 	],
 	exports: [AnimeTableComponent],
 })

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AnimeTableComponent } from './anime-table/anime-table.component';
 import { AnimeDetailsComponent } from './anime-details/anime-details.component';
-import { AddEditComponent } from './add-edit/add-edit.component';
+import { AddEditComponent } from './add-edit-form/add-edit.component';
 
 const routes: Routes = [
 	{ path: '', component: AnimeTableComponent },

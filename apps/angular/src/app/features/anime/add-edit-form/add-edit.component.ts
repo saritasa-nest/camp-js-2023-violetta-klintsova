@@ -1,8 +1,8 @@
 import { Observable, concatMap, map, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { GenresService } from '@js-camp/angular/core/services/genres.service';
 import { StudiosService } from '@js-camp/angular/core/services/studios.service';
@@ -26,7 +26,7 @@ import { onMessageOrFailed } from '@js-camp/angular/core/utils/on-message-or-fai
 	styleUrls: ['./add-edit.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddEditComponent {
+export class AddEditComponent implements OnInit {
 	private imageFile: File | null = null;
 
 	/** Genre input. */
@@ -63,6 +63,9 @@ export class AddEditComponent {
 	/** Form state. */
 	protected isLoading = false;
 
+	/** Anime ID if it exists. */
+	private id = null;
+
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly genresService: GenresService,
@@ -91,7 +94,12 @@ export class AddEditComponent {
 		});
 	}
 
-	/** Adds a new anime. */
+	/** @inheritdoc */
+	public ngOnInit(): void {
+		console.log('init');
+	}
+
+	/** Submits a form. */
 	protected onSubmit(): void {
 		this.submitState = true;
 		this.animeForm.markAllAsTouched();
