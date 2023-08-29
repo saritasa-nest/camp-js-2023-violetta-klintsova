@@ -18,6 +18,7 @@ import { S3Service } from '@js-camp/angular/core/services/s3.service';
 import { AnimeFormMapper } from '@js-camp/core/mappers/anime-form.mapper';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { onMessageOrFailed } from '@js-camp/angular/core/utils/on-message-or-failed';
+import { getImageName } from '@js-camp/core/utils/get-image.name';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -28,6 +29,9 @@ import { onMessageOrFailed } from '@js-camp/angular/core/utils/on-message-or-fai
 })
 export class AddEditFormComponent implements OnInit {
 	private imageFile: File | null = null;
+
+	/** Image name to show in file uploader component. */
+	public imageName = '';
 
 	/** Genre input. */
 	public genreAutocomplete: AutoCompleteData<Genre> = {
@@ -107,6 +111,7 @@ export class AddEditFormComponent implements OnInit {
 				.subscribe(details => {
 					console.log(details);
 					this.changeDetector.markForCheck();
+					
 					this.animeForm = this.fb.group({
 						titleEng: [details.titleEng, Validators.required],
 						titleJpn: [details.titleJpn, Validators.required],
@@ -127,13 +132,12 @@ export class AddEditFormComponent implements OnInit {
 
 					this.genreAutocomplete.items = details.genres;
 					this.studioAutocomplete.items = details.studios;
-					
-					console.log(this.animeForm.getRawValue());
-
 					this.animeForm.get('genres')?.patchValue(this.genreAutocomplete.items);
 					this.animeForm.get('studios')?.patchValue(this.studioAutocomplete.items);
 					
+					this.imageName = getImageName(details.thumbnailUrl);
 					console.log(this.animeForm.getRawValue());
+
 				});
 		}
 	}
@@ -147,34 +151,35 @@ export class AddEditFormComponent implements OnInit {
 			return;
 		}
 
-		this.isLoading = true;
+		console.log(this.animeForm.getRawValue());
+		// this.isLoading = true;
 
-		if (this.animeForm.get('thumbnailUrl')) {
-			this.animeService
-				.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))
-				.pipe(
-					takeUntilDestroyed(this.destroyRef),
-					onMessageOrFailed(() => {
-						this.isLoading = false;
-					}),
-				)
-				.subscribe();
-		} else {
-			this.uploadImage()
-				.pipe(
-					tap(res => this.animeForm.get('thumbnailUrl')?.setValue(res)),
-					tap(_ => console.log(this.animeForm.getRawValue())),
-					concatMap(() => this.animeService.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))),
-					takeUntilDestroyed(this.destroyRef),
-					onMessageOrFailed(() => {
-						this.isLoading = false;
-					}),
-				)
-				.subscribe(anime => {
-					console.log(anime);
-					// this.router.navigate([`anime/${anime.id}`]);
-				});
-		}
+		// if (this.animeForm.get('thumbnailUrl')) {
+		// 	this.animeService
+		// 		.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))
+		// 		.pipe(
+		// 			takeUntilDestroyed(this.destroyRef),
+		// 			onMessageOrFailed(() => {
+		// 				this.isLoading = false;
+		// 			}),
+		// 		)
+		// 		.subscribe();
+		// } else {
+		// 	this.uploadImage()
+		// 		.pipe(
+		// 			tap(res => this.animeForm.get('thumbnailUrl')?.setValue(res)),
+		// 			tap(_ => console.log(this.animeForm.getRawValue())),
+		// 			concatMap(() => this.animeService.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))),
+		// 			takeUntilDestroyed(this.destroyRef),
+		// 			onMessageOrFailed(() => {
+		// 				this.isLoading = false;
+		// 			}),
+		// 		)
+		// 		.subscribe(anime => {
+		// 			console.log(anime);
+		// 			// this.router.navigate([`anime/${anime.id}`]);
+		// 		});
+		// }
 	}
 
 	/**

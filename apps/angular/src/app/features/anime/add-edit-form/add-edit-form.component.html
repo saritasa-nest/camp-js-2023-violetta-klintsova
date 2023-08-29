@@ -137,7 +137,7 @@
       >
     </div>
   </div>
-  <camp-file-uploader (selectedFile)="onFileSelection($event)" />
+  <camp-file-uploader (selectedFile)="onFileSelection($event)" [fileName]="imageName"/>
   <div>
     <mat-error *ngIf="this.submitState && getRequiredErrorState('image')"
       >Required field</mat-error

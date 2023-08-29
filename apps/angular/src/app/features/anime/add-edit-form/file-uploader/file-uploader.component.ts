@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 /** File uploader. */
 @Component({
@@ -12,7 +12,7 @@ export class FileUploaderComponent {
 	@Output() public selectedFile = new EventEmitter<File>();
 
 	/** File name. */
-	protected fileName = '';
+	@Input() public fileName = '';
 
 	/** File to be saved. */
 	public file!: File;
