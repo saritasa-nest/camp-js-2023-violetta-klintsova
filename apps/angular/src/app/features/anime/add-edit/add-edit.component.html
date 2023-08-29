@@ -3,13 +3,19 @@
 
   <form class="form" [formGroup]="animeForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <mat-label>Title (eng)</mat-label>
-      <input matInput type="text" formControlName="titleEng"/>
+      <mat-label>English title</mat-label>
+      <input matInput type="text" formControlName="titleEng" />
+      <mat-error *ngIf="getRequiredErrorState('titleEng')"
+        >Required field</mat-error
+      >
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Title (jpn)</mat-label>
-      <input matInput type="text" formControlName="titleJpn"/>
+      <mat-label>Japanese title</mat-label>
+      <input matInput type="text" formControlName="titleJpn" />
+      <mat-error *ngIf="getRequiredErrorState('titleJpn')"
+        >Required field</mat-error
+      >
     </mat-form-field>
 
     <div class="flex">
@@ -20,6 +26,9 @@
             {{ option | titlecase }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="getRequiredErrorState('type')"
+          >Required field</mat-error
+        >
       </mat-form-field>
 
       <mat-form-field>
@@ -32,6 +41,9 @@
             {{ option }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="getRequiredErrorState('rating')"
+          >Required field</mat-error
+        >
       </mat-form-field>
 
       <mat-form-field>
@@ -44,6 +56,9 @@
             {{ option | titlecase }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="getRequiredErrorState('source')"
+          >Required field</mat-error
+        >
       </mat-form-field>
     </div>
     <div class="flex">
@@ -57,6 +72,9 @@
             {{ option | titlecase }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="getRequiredErrorState('status')"
+          >Required field</mat-error
+        >
       </mat-form-field>
 
       <mat-form-field>
@@ -69,27 +87,42 @@
             {{ option | titlecase }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="getRequiredErrorState('season')"
+          >Required field</mat-error
+        >
       </mat-form-field>
     </div>
 
     <mat-form-field>
       <mat-label>Synopsis</mat-label>
-      <textarea matInput name="" id="" cols="30" rows="2" formControlName="synopsis"></textarea>
+      <textarea
+        matInput
+        name=""
+        id=""
+        cols="30"
+        rows="2"
+        formControlName="synopsis"
+      ></textarea>
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Youtube trailer ID</mat-label>
-      <input matInput type="text" formControlName="youtubeTrailer"/>
+      <input matInput type="text" formControlName="youtubeTrailer" />
     </mat-form-field>
 
-    <camp-autocomplete-input (selectedItems)="onGenresChange($event)" [inputManagement]="genreAutocomplete"/>
-    <camp-autocomplete-input (selectedItems)="onStudiosChange($event)" [inputManagement]="studioAutocomplete"/>
+    <camp-autocomplete-input
+      (selectedItems)="onGenresChange($event)"
+      [inputManagement]="genreAutocomplete"
+    />
+    <camp-autocomplete-input
+      (selectedItems)="onStudiosChange($event)"
+      [inputManagement]="studioAutocomplete"
+    />
 
     <div class="date-range flex">
       <mat-form-field>
         <mat-label>Anime start date</mat-label>
-        <input matInput [matDatepicker]="picker1" formControlName="startDate"/>
-        <mat-hint>MM/DD/YYYY</mat-hint>
+        <input matInput [matDatepicker]="picker1" formControlName="startDate" />
         <mat-datepicker-toggle
           matIconSuffix
           [for]="picker1"
@@ -99,8 +132,7 @@
 
       <mat-form-field>
         <mat-label>Anime end date</mat-label>
-        <input matInput [matDatepicker]="picker2" formControlName="endDate"/>
-        <mat-hint>MM/DD/YYYY</mat-hint>
+        <input matInput [matDatepicker]="picker2" formControlName="endDate" />
         <mat-datepicker-toggle
           matIconSuffix
           [for]="picker2"
@@ -114,10 +146,18 @@
         <mat-radio-button value="true">Yes</mat-radio-button>
         <mat-radio-button value="false">No</mat-radio-button>
       </mat-radio-group>
+      <div>
+        <mat-error *ngIf="this.submitState && getRequiredErrorState('airing')"
+          >Required field</mat-error
+        >
+      </div>
     </div>
-
     <camp-file-uploader (selectedFile)="onFileSelection($event)" />
+    <div>
+      <mat-error *ngIf="this.submitState && getRequiredErrorState('image')"
+        >Required field</mat-error
+      >
+    </div>
     <button mat-raised-button color="primary" type="submit">Submit</button>
   </form>
-
 </div>

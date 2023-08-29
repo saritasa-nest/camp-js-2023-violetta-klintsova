@@ -1,7 +1,8 @@
 import { Observable, concatMap, map, tap } from 'rxjs';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { GenresService } from '@js-camp/angular/core/services/genres.service';
 import { StudiosService } from '@js-camp/angular/core/services/studios.service';
@@ -14,9 +15,9 @@ import { Season } from '@js-camp/core/models/season';
 import { Source } from '@js-camp/core/models/source';
 import { Studio } from '@js-camp/core/models/studio';
 import { S3Service } from '@js-camp/angular/core/services/s3.service';
-import { AnimeNullableForm } from '@js-camp/core/models/anime-form';
 import { AnimeFormMapper } from '@js-camp/core/mappers/anime-form.mapper';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
+import { onMessageOrFailed } from '@js-camp/angular/core/utils/on-message-or-failed';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -56,42 +57,64 @@ export class AddEditComponent {
 	/** Anime form. */
 	protected readonly animeForm: FormGroup;
 
+	/** Form submit state used to display some errors. */
+	protected submitState = false;
+
+	/** Form state. */
+	protected isLoading = false;
+
 	public constructor(
 		private readonly animeService: AnimeService,
 		private readonly genresService: GenresService,
 		private readonly studioService: StudiosService,
 		private readonly fb: FormBuilder,
 		private readonly s3Service: S3Service,
+		private readonly destroyRef: DestroyRef,
+		private readonly router: Router,
 	) {
-		this.animeForm = this.fb.group<AnimeNullableForm>({
-			titleEng: '',
-			titleJpn: '',
-			type: null,
-			rating: null,
-			source: null,
-			status: null,
-			season: null,
+		this.animeForm = this.fb.group({
+			titleEng: ['', Validators.required],
+			titleJpn: ['', Validators.required],
+			type: [null, Validators.required],
+			rating: [null, Validators.required],
+			source: [null, Validators.required],
+			status: [null, Validators.required],
+			season: [null, Validators.required],
 			synopsis: '',
 			youtubeTrailer: '',
 			genres: [],
 			studios: [],
 			startDate: null,
 			endDate: null,
-			airing: '',
-			image: null,
+			airing: ['', Validators.required],
+			image: [null, Validators.required],
 		});
 	}
 
 	/** Adds a new anime. */
 	protected onSubmit(): void {
+		this.submitState = true;
+		this.animeForm.markAllAsTouched();
+
+		if (this.animeForm.invalid) {
+			return;
+		}
+
+		this.isLoading = true;
+
 		this.uploadImage()
 			.pipe(
 				tap(res => this.animeForm.get('image')?.setValue(res)),
 				tap(_ => console.log(this.animeForm.getRawValue())),
 				concatMap(() => this.animeService.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))),
+				takeUntilDestroyed(this.destroyRef),
+				onMessageOrFailed(() => {
+					this.isLoading = false;
+				}),
 			)
-			.subscribe(x => {
-				console.log(x);
+			.subscribe(anime => {
+				console.log(anime);
+				// this.router.navigate([`anime/${anime.id}`]);
 			});
 	}
 
@@ -127,7 +150,11 @@ export class AddEditComponent {
 		throw new Error('No image supplied.');
 	}
 
-	// TODO Probably concatMap could be used in this case
-	// One request after another
-	// Requires some research
+	/**
+	 * Return true if an error exists.
+	 * @param fieldName Form field name.
+	 */
+	protected getRequiredErrorState(fieldName: string): boolean | undefined {
+		return this.animeForm.get(fieldName)?.hasError('required');
+	}
 }
