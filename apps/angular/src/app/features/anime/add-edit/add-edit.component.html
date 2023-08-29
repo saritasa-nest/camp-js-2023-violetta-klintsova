@@ -88,7 +88,7 @@
     <div class="date-range flex">
       <mat-form-field>
         <mat-label>Anime start date</mat-label>
-        <input matInput [matDatepicker]="picker1" formControlName="startDate" (dateChange)="printDate($event)"/>
+        <input matInput [matDatepicker]="picker1" formControlName="startDate"/>
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle
           matIconSuffix
@@ -99,7 +99,7 @@
 
       <mat-form-field>
         <mat-label>Anime end date</mat-label>
-        <input matInput [matDatepicker]="picker2" formControlName="endDate" (dateChange)="printDate($event)"/>
+        <input matInput [matDatepicker]="picker2" formControlName="endDate"/>
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle
           matIconSuffix

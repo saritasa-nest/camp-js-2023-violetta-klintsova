@@ -1,4 +1,4 @@
-import { Observable, map } from 'rxjs';
+import { Observable, concatMap, map, tap } from 'rxjs';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -16,6 +16,7 @@ import { Studio } from '@js-camp/core/models/studio';
 import { S3Service } from '@js-camp/angular/core/services/s3.service';
 import { AnimeNullableForm } from '@js-camp/core/models/anime-form';
 import { AnimeFormMapper } from '@js-camp/core/mappers/anime-form.mapper';
+import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -56,6 +57,7 @@ export class AddEditComponent {
 	protected readonly animeForm: FormGroup;
 
 	public constructor(
+		private readonly animeService: AnimeService,
 		private readonly genresService: GenresService,
 		private readonly studioService: StudiosService,
 		private readonly fb: FormBuilder,
@@ -82,13 +84,15 @@ export class AddEditComponent {
 
 	/** Adds a new anime. */
 	protected onSubmit(): void {
-		this.uploadImage();
-		console.log(this.animeForm.getRawValue());
-		console.log(AnimeFormMapper.toDto(this.animeForm.getRawValue()));
-	}
-
-	protected printDate(event: MatDatepickerInputEvent<Date>) {
-		console.log(event.value);
+		this.uploadImage()
+			.pipe(
+				tap(res => this.animeForm.get('image')?.setValue(res)),
+				tap(_ => console.log(this.animeForm.getRawValue())),
+				concatMap(() => this.animeService.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))),
+			)
+			.subscribe(x => {
+				console.log(x);
+			});
 	}
 
 	/**
@@ -116,12 +120,11 @@ export class AddEditComponent {
 	}
 
 	/** Goes to the service to upload an image. */
-	private uploadImage(): void {
+	private uploadImage(): Observable<string | null> {
 		if (this.imageFile) {
-			this.s3Service.uploadImage(this.imageFile).subscribe(res => {
-				this.animeForm.get('image')?.setValue(res);
-			});
+			return this.s3Service.uploadImage(this.imageFile);
 		}
+		throw new Error('No image supplied.');
 	}
 
 	// TODO Probably concatMap could be used in this case
