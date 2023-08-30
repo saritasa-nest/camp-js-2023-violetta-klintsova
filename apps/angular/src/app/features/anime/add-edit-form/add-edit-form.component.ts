@@ -149,7 +149,6 @@ export class AddEditFormComponent implements OnInit {
 					}),
 				)
 				.subscribe(anime => {
-					console.log(anime);
 					this.navigateToDetails(anime.id);
 				});
 		} else {
@@ -162,7 +161,6 @@ export class AddEditFormComponent implements OnInit {
 					}),
 				)
 				.subscribe(anime => {
-					console.log(anime);
 					this.navigateToDetails(anime.id);
 				});
 		}
@@ -180,7 +178,6 @@ export class AddEditFormComponent implements OnInit {
 				}),
 			)
 			.subscribe(anime => {
-				console.log(anime);
 				this.navigateToDetails(anime.id);
 			});
 	}
@@ -195,7 +192,6 @@ export class AddEditFormComponent implements OnInit {
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(details => {
 				this.changeDetector.markForCheck();
-				console.log(details);
 
 				this.animeForm = this.fb.group({
 					titleEng: details.titleEng,

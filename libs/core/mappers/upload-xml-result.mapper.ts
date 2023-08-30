@@ -19,8 +19,7 @@ export namespace XMLResponseMapper {
 	 */
 	export function fromDto(xml: string): string | null {
 		let imageUrl = '';
-		const json = parseString(xml, (err, result: Result) => {
-			console.log(result.PostResponse.Location[0]);
+		parseString(xml, (err, result: Result) => {
 			imageUrl = result.PostResponse.Location[0];
 		});
 		return imageUrl;

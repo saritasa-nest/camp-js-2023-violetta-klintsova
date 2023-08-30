@@ -2,7 +2,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ApiKeyInterceptor } from './anime-service.interceptor';
 import { AuthInterceptor } from './auth.interceptor';
-// import { ContentTypeInterceptor } from './content-type.interceptor';
 import { RefreshTokenInterceptor } from './refresh-token.interceptor';
 
 /** Http interceptors. */

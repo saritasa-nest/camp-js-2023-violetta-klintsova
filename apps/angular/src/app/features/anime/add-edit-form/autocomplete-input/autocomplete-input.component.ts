@@ -1,6 +1,4 @@
 import {
-	ChangeDetectionStrategy,
-	ChangeDetectorRef,
 	Component,
 	ElementRef,
 	Input,
@@ -8,7 +6,6 @@ import {
 	OnChanges,
 	ViewChild,
 	EventEmitter,
-	OnInit,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
