@@ -39,7 +39,7 @@ export namespace AnimeFormMapper {
 	 * @param genres Array of Genre objects.
 	 */
 	function genresToDto(genres: Genre[]): number[] {
-		return genres.map(genre => genre.id);
+		return genres ? genres.map(genre => genre.id) : [];
 	}
 
 	/**
@@ -47,6 +47,6 @@ export namespace AnimeFormMapper {
 	 * @param studios Array of Studio objects.
 	 */
 	function studiosToDto(studios: Studio[]): number[] {
-		return studios.map(studio => studio.id);
+		return studios ? studios.map(studio => studio.id) : [];
 	}
 }

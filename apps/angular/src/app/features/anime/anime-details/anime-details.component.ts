@@ -84,6 +84,10 @@ export class AnimeDetailsComponent {
 			return `(${start} - ${end})`;
 		}
 
+		if (!start && !end) {
+			return '';
+		}
+
 		if (start === null) {
 			return `(Unknown - ${end})`;
 		}

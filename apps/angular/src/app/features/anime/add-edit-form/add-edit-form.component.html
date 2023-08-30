@@ -85,11 +85,18 @@
       rows="2"
       formControlName="synopsis"
     ></textarea>
+    <mat-error *ngIf="getRequiredErrorState('synopsis')"
+      >Required field</mat-error
+    >
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Youtube trailer ID</mat-label>
     <input matInput type="text" formControlName="youtubeTrailerId" />
+    <mat-error
+      *ngIf="this.submitState && getRequiredErrorState('youtubeTrailerId')"
+      >Required field</mat-error
+    >
   </mat-form-field>
 
   <camp-autocomplete-input
@@ -104,7 +111,11 @@
   <div class="date-range flex">
     <mat-form-field>
       <mat-label>Anime start date</mat-label>
-      <input matInput [matDatepicker]="picker1" formControlName="airedStartDate" />
+      <input
+        matInput
+        [matDatepicker]="picker1"
+        formControlName="airedStartDate"
+      />
       <mat-datepicker-toggle
         matIconSuffix
         [for]="picker1"
@@ -114,7 +125,11 @@
 
     <mat-form-field>
       <mat-label>Anime end date</mat-label>
-      <input matInput [matDatepicker]="picker2" formControlName="airedEndDate" />
+      <input
+        matInput
+        [matDatepicker]="picker2"
+        formControlName="airedEndDate"
+      />
       <mat-datepicker-toggle
         matIconSuffix
         [for]="picker2"
@@ -134,9 +149,12 @@
       >
     </div>
   </div>
-  <camp-file-uploader (selectedFile)="onFileSelection($event)" [fileName]="imageName"/>
+  <camp-file-uploader
+    (selectedFile)="onFileSelection($event)"
+    [fileName]="imageName"
+  />
   <div>
-    <mat-error *ngIf="this.submitState && getRequiredErrorState('image')"
+    <mat-error *ngIf="this.submitState && !this.imageFile"
       >Required field</mat-error
     >
   </div>

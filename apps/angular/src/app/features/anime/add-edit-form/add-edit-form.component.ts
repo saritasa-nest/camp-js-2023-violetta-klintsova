@@ -1,4 +1,4 @@
-import { Observable, concatMap, map, tap } from 'rxjs';
+import { EMPTY, Observable, concatMap, map, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -30,7 +30,9 @@ import { AnimeNullableForm } from '@js-camp/core/models/anime-form';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditFormComponent implements OnInit {
-	private imageFile: File | null = null;
+
+	/** Image file. */
+	protected imageFile: File | null = null;
 
 	/** Image name to show in file uploader component. */
 	public imageName = '';
@@ -91,14 +93,14 @@ export class AddEditFormComponent implements OnInit {
 			source: [null, Validators.required],
 			status: [null, Validators.required],
 			season: [null, Validators.required],
-			synopsis: '',
-			youtubeTrailerId: '',
+			synopsis: ['', Validators.required],
+			youtubeTrailerId: ['', Validators.required],
 			genres: [],
 			studios: [],
 			airedStartDate: null,
 			airedEndDate: null,
 			airing: [null, Validators.required],
-			thumbnailUrl: [null, Validators.required],
+			thumbnailUrl: null,
 		});
 	}
 
@@ -253,7 +255,7 @@ export class AddEditFormComponent implements OnInit {
 		if (this.imageFile) {
 			return this.s3Service.uploadImage(this.imageFile);
 		}
-		throw new Error('No image supplied.');
+		return EMPTY;
 	}
 
 	/**
