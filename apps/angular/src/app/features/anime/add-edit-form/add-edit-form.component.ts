@@ -1,4 +1,4 @@
-import { Observable, concatMap, map, take, tap } from 'rxjs';
+import { Observable, concatMap, map, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ import { AnimeFormMapper } from '@js-camp/core/mappers/anime-form.mapper';
 import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { onMessageOrFailed } from '@js-camp/angular/core/utils/on-message-or-failed';
 import { getImageName } from '@js-camp/core/utils/get-image.name';
+import { Anime } from '@js-camp/core/models/anime';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -82,7 +83,7 @@ export class AddEditFormComponent implements OnInit {
 		private readonly changeDetector: ChangeDetectorRef,
 	) {
 		this.animeForm = this.fb.group({
-			titleEng: ['', Validators.required],
+			titleEng: '',
 			titleJpn: ['', Validators.required],
 			type: [null, Validators.required],
 			rating: [null, Validators.required],
@@ -105,42 +106,7 @@ export class AddEditFormComponent implements OnInit {
 		this.id = this.activatedRoute.snapshot.params['id'];
 
 		if (this.id) {
-			this.animeService
-				.fetchAnimeDetails(this.id)
-				.pipe(takeUntilDestroyed(this.destroyRef))
-				.subscribe(details => {
-					console.log(details);
-					this.changeDetector.markForCheck();
-					
-					this.animeForm = this.fb.group({
-						titleEng: [details.titleEng, Validators.required],
-						titleJpn: [details.titleJpn, Validators.required],
-						type: [details.type, Validators.required],
-						rating: [details.rating, Validators.required],
-						source: [details.source, Validators.required],
-						status: [details.status, Validators.required],
-						season: [details.season, Validators.required],
-						synopsis: details.synopsis,
-						youtubeTrailerId: details.youtubeTrailerId,
-						genres: details.genres,
-						studios: details.studios,
-						airedStartDate: details.airedStartDate,
-						airedEndDate: details.airedEndDate,
-						airing: [details.airing, Validators.required],
-						thumbnailUrl: [details.thumbnailUrl, Validators.required],
-					});
-
-					this.genreAutocomplete.items = details.genres;
-					this.studioAutocomplete.items = details.studios;
-					this.animeForm.get('genres')?.patchValue(this.genreAutocomplete.items);
-					this.animeForm.get('studios')?.patchValue(this.studioAutocomplete.items);
-
-					this.animeForm.get('airing')?.patchValue(details.airing.toString());
-					
-					this.imageName = getImageName(details.thumbnailUrl);
-					console.log(this.animeForm.getRawValue());
-
-				});
+			this.getAnimeDetails(this.id);
 		}
 	}
 
@@ -153,35 +119,105 @@ export class AddEditFormComponent implements OnInit {
 			return;
 		}
 
-		console.log(this.animeForm.getRawValue());
-		// this.isLoading = true;
+		this.isLoading = true;
 
-		// if (this.animeForm.get('thumbnailUrl')) {
-		// 	this.animeService
-		// 		.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))
-		// 		.pipe(
-		// 			takeUntilDestroyed(this.destroyRef),
-		// 			onMessageOrFailed(() => {
-		// 				this.isLoading = false;
-		// 			}),
-		// 		)
-		// 		.subscribe();
-		// } else {
-		// 	this.uploadImage()
-		// 		.pipe(
-		// 			tap(res => this.animeForm.get('thumbnailUrl')?.setValue(res)),
-		// 			tap(_ => console.log(this.animeForm.getRawValue())),
-		// 			concatMap(() => this.animeService.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))),
-		// 			takeUntilDestroyed(this.destroyRef),
-		// 			onMessageOrFailed(() => {
-		// 				this.isLoading = false;
-		// 			}),
-		// 		)
-		// 		.subscribe(anime => {
-		// 			console.log(anime);
-		// 			// this.router.navigate([`anime/${anime.id}`]);
-		// 		});
-		// }
+		if (this.id) {
+			this.editAnime(this.id);
+		} else {
+			this.addAnime();
+		}
+	}
+
+	/**
+	 * Edits current anime.
+	 * @param id ID.
+	 */
+	private editAnime(id: Anime['id']): void {
+		if (this.imageFile) {
+			this.uploadImage()
+				.pipe(
+					tap(res => this.animeForm.get('thumbnailUrl')?.setValue(res)),
+					concatMap(() => this.animeService.editAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()), id)),
+					takeUntilDestroyed(this.destroyRef),
+					onMessageOrFailed(() => {
+						this.isLoading = false;
+					}),
+				)
+				.subscribe(anime => {
+					console.log(anime);
+					this.navigateToDetails(anime.id);
+				});
+		} else {
+			this.animeService
+				.editAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()), id)
+				.pipe(
+					takeUntilDestroyed(this.destroyRef),
+					onMessageOrFailed(() => {
+						this.isLoading = false;
+					}),
+				)
+				.subscribe(anime => {
+					console.log(anime);
+					this.navigateToDetails(anime.id);
+				});
+		}
+	}
+
+	/** Adds new anime. */
+	private addAnime(): void {
+		this.uploadImage()
+			.pipe(
+				tap(res => this.animeForm.get('thumbnailUrl')?.setValue(res)),
+				concatMap(() => this.animeService.addAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()))),
+				takeUntilDestroyed(this.destroyRef),
+				onMessageOrFailed(() => {
+					this.isLoading = false;
+				}),
+			)
+			.subscribe(anime => {
+				console.log(anime);
+				this.navigateToDetails(anime.id);
+			});
+	}
+
+	/**
+	 * Gets current anime details.
+	 * @param id Anime ID.
+	 */
+	private getAnimeDetails(id: Anime['id']): void {
+		this.animeService
+			.fetchAnimeDetails(id)
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe(details => {
+				this.changeDetector.markForCheck();
+
+				this.animeForm = this.fb.group({
+					titleEng: details.titleEng,
+					titleJpn: [details.titleJpn, Validators.required],
+					type: [details.type, Validators.required],
+					rating: [details.rating, Validators.required],
+					source: [details.source, Validators.required],
+					status: [details.status, Validators.required],
+					season: [details.season, Validators.required],
+					synopsis: details.synopsis,
+					youtubeTrailerId: details.youtubeTrailerId,
+					genres: details.genres,
+					studios: details.studios,
+					airedStartDate: details.airedStartDate,
+					airedEndDate: details.airedEndDate,
+					airing: [details.airing, Validators.required],
+					thumbnailUrl: [details.thumbnailUrl, Validators.required],
+				});
+
+				this.genreAutocomplete.items = details.genres;
+				this.studioAutocomplete.items = details.studios;
+				this.animeForm.get('genres')?.patchValue(this.genreAutocomplete.items);
+				this.animeForm.get('studios')?.patchValue(this.studioAutocomplete.items);
+
+				this.animeForm.get('airing')?.patchValue(details.airing.toString());
+
+				this.imageName = getImageName(details.thumbnailUrl);
+			});
 	}
 
 	/**
@@ -222,5 +258,13 @@ export class AddEditFormComponent implements OnInit {
 	 */
 	protected getRequiredErrorState(fieldName: string): boolean | undefined {
 		return this.animeForm.get(fieldName)?.hasError('required');
+	}
+
+	/**
+	 * Navigates to the page with details.
+	 * @param id Anime id.
+	 */
+	private navigateToDetails(id: Anime['id']): void {
+		this.router.navigate([`anime/details/${id}`]);
 	}
 }
