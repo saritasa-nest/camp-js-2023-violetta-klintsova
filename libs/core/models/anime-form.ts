@@ -1,3 +1,5 @@
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
 import { DistributionTypes } from './distribution-types';
 import { Genre } from './genre';
 import { ProductionStatuses } from './production-statuses';
@@ -8,7 +10,10 @@ import { Studio } from './studio';
 
 /** Anime form type with null as a possible option. */
 export type AnimeNullableForm = {
-	[K in keyof AnimeForm]: AnimeForm[K] | null;
+	[K in keyof AnimeForm]:
+	| (string | null | ((control: AbstractControl<unknown, unknown>) => ValidationErrors | null))[]
+	| string
+	| null;
 };
 
 /** Anime form. */
@@ -39,7 +44,7 @@ export interface AnimeForm {
 	readonly synopsis: string;
 
 	/** Youtube trailer ID. */
-	readonly youtubeTrailer: string;
+	readonly youtubeTrailerId: string;
 
 	/** Genres. */
 	readonly genres: Genre[];
@@ -48,14 +53,14 @@ export interface AnimeForm {
 	readonly studios: Studio[];
 
 	/** Airing start date. */
-	readonly startDate: Date | null;
+	readonly airedStartDate: Date | null;
 
 	/** Airing end date. */
-	readonly endDate: Date | null;
+	readonly airedEndDate: Date | null;
 
 	/** Airing. */
 	readonly airing: boolean;
 
 	/** Image file. */
-	readonly image: string;
+	readonly thumbnailUrl: string;
 }

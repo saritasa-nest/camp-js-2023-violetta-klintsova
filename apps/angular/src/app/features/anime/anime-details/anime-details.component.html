@@ -1,6 +1,6 @@
 <main class="main" *ngIf="animeDetails$ | async as details">
   <div class="management">
-    <button type="button" mat-raised-button color="primary" class="edit-btn">
+    <button type="button" mat-raised-button color="primary" class="edit-btn" routerLink="/anime/edit/{{details.id}}">
       Edit
     </button>
     <button type="button" mat-raised-button color="accent" (click)="openConfirmationDialog(details.id)">Delete</button>

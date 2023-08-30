@@ -20,6 +20,7 @@ import { AnimeService } from '@js-camp/angular/core/services/anime.service';
 import { onMessageOrFailed } from '@js-camp/angular/core/utils/on-message-or-failed';
 import { getImageName } from '@js-camp/core/utils/get-image.name';
 import { Anime } from '@js-camp/core/models/anime';
+import { AnimeNullableForm } from '@js-camp/core/models/anime-form';
 
 /** Add/Edit anime details component. */
 @Component({
@@ -82,7 +83,7 @@ export class AddEditFormComponent implements OnInit {
 		private readonly activatedRoute: ActivatedRoute,
 		private readonly changeDetector: ChangeDetectorRef,
 	) {
-		this.animeForm = this.fb.group({
+		this.animeForm = this.fb.group<AnimeNullableForm>({
 			titleEng: '',
 			titleJpn: ['', Validators.required],
 			type: [null, Validators.required],
@@ -136,8 +137,10 @@ export class AddEditFormComponent implements OnInit {
 		if (this.imageFile) {
 			this.uploadImage()
 				.pipe(
-					tap(res => this.animeForm.get('thumbnailUrl')?.setValue(res)),
-					concatMap(() => this.animeService.editAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()), id)),
+					concatMap(res => {
+						this.animeForm.get('thumbnailUrl')?.setValue(res);
+						return this.animeService.editAnime(AnimeFormMapper.toDto(this.animeForm.getRawValue()), id);
+					}),
 					takeUntilDestroyed(this.destroyRef),
 					onMessageOrFailed(() => {
 						this.isLoading = false;
@@ -190,6 +193,7 @@ export class AddEditFormComponent implements OnInit {
 			.pipe(takeUntilDestroyed(this.destroyRef))
 			.subscribe(details => {
 				this.changeDetector.markForCheck();
+				console.log(details);
 
 				this.animeForm = this.fb.group({
 					titleEng: details.titleEng,

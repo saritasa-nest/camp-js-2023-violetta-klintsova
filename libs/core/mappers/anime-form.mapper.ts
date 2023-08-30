@@ -25,38 +25,14 @@ export namespace AnimeFormMapper {
 			status: ProductionStatusesMapper.toDto(model.status),
 			season: SeasonMapper.toDto(model.season),
 			synopsis: model.synopsis,
-			trailer_youtube_id: model.youtubeTrailer,
+			trailer_youtube_id: model.youtubeTrailerId,
 			genres: genresToDto(model.genres),
 			studios: studiosToDto(model.studios),
-			aired: { start: DateMapper.toDto(model.startDate), end: DateMapper.toDto(model.endDate) },
+			aired: { start: DateMapper.toDto(model.airedStartDate), end: DateMapper.toDto(model.airedEndDate) },
 			airing: Boolean(model.airing),
-			image: model.image,
+			image: model.thumbnailUrl,
 		};
 	}
-
-	// /**
-	//  * Maps anime details to anime form.
-	//  * @param data Anime details dto.
-	//  */
-	// export function toAnimeForm(data: AnimeDetails): AnimeForm {
-	// 	return {
-	// 		titleEng: data.titleEng,
-	// 		titleJpn: data.titleJpn,
-	// 		type: data.type,
-	// 		rating: data.rating,
-	// 		source: data.source,
-	// 		status: data.status,
-	// 		season: data.season,
-	// 		synopsis: data.synopsis,
-	// 		youtubeTrailer: data.youtubeTrailerId,
-	// 		genres: data.genres,
-	// 		studios: data.studios,
-	// 		startDate: data.airedStartDate,
-	// 		endDate: data.airedEndDate,
-	// 		airing: data.airing,
-	// 		image: data.thumbnailUrl,
-	// 	};
-	// }
 
 	/**
 	 * Converts an array of genre objects to array of only their IDs.
